@@ -3,7 +3,10 @@ import React from 'react';
 const content = {
   title: 'Ballotview',
   subtitle: 'Voting made easy.',
-  blurb: 'Ballotview provides an intuitive, clear platform for voters to access detailed, non-partisan ballot content before an election. Our goal is to provide an easy experience for voters to learn about candidates and measures, record preferences, and be better engaged with the voting process.',
+  blurb: 'Ballotview provides an intuitive, clear platform for voters to access detailed, \
+  non-partisan ballot content before an election. Our goal is to provide an easy experience \
+  for voters to learn about candidates and measures, record preferences, \
+  and be better engaged with the voting process.',
   exampleEmail: 'youremail@domain.ext'
 };
 
