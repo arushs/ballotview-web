@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css?family=Roboto';
+@import 'https://fonts.googleapis.com/css?family=Questrial|Roboto:400,700';
 @import 'normalize';
 
 $font-size: 14px;
@@ -27,20 +27,30 @@ main#landing {
   section#main {
     position: absolute;
     left: 0;
-    right: 0;
+    right: 170px;
     top: 0;
     bottom: 0;
     background-color: #FFF;
-    padding: 20px;
+    padding: 100px 50px 0 50px;
     text-align: center;
 
     #logo_wrap {
       #logo {
+        font-family: 'Questrial', sans-serif;
         display: block;
-        font-size: 18px;
+        font-size: 28px;
+        line-height: 1;
       }
     }
 
+  }
+
+  section#side {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 150px;
   }
 
 }
