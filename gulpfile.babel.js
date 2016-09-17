@@ -9,10 +9,14 @@ import babelify from 'babelify';
 import uglify from 'gulp-uglify';
 import rimraf from 'rimraf';
 import notify from 'gulp-notify';
+import nodemon from 'gulp-nodemon';
 import browserSync, { reload } from 'browser-sync';
 import sourcemaps from 'gulp-sourcemaps';
 import postcss from 'gulp-postcss';
+import sass from 'gulp-sass';
+import cleanCSS from 'gulp-clean-css';
 import rename from 'gulp-rename';
+import scss from 'postcss-scss';
 import nested from 'postcss-nested';
 import vars from 'postcss-simple-vars';
 import extend from 'postcss-simple-extend';
@@ -26,13 +30,16 @@ import ghPages from 'gulp-gh-pages';
 const paths = {
   bundle: 'app.js',
   entry: 'src/Index.js',
+  src: 'src/',
   srcCss: 'src/**/*.scss',
   srcImg: 'src/images/**',
   srcLint: ['src/**/*.js', 'test/**/*.js'],
   dist: 'dist',
   distJs: 'dist/js',
   distImg: 'dist/images',
-  distDeploy: './dist/**/*'
+  distCss: 'dist/styles',
+  distDeploy: './dist/**/*',
+  server: 'src/server'
 };
 
 const customOpts = {
@@ -49,11 +56,9 @@ gulp.task('clean', cb => {
 });
 
 gulp.task('browserSync', () => {
-  browserSync({
-    server: {
-      baseDir: './'
-    }
-  });
+  browserSync.init(null, {
+		proxy: "http://localhost:5000",
+	});
 });
 
 gulp.task('watchify', () => {
@@ -88,12 +93,11 @@ gulp.task('browserify', () => {
 });
 
 gulp.task('styles', () => {
-  gulp.src(paths.srcCss)
-  .pipe(rename({ extname: '.css' }))
-  .pipe(sourcemaps.init())
+  gulp.src(paths.src + '/styles/main.scss')
+  .pipe(sass().on('error', sass.logError))
+  .pipe(cleanCSS({ compatibility: 'ie8' }))
   .pipe(postcss([vars, extend, nested, autoprefixer, cssnano]))
-  .pipe(sourcemaps.write('.'))
-  .pipe(gulp.dest(paths.dist))
+  .pipe(gulp.dest(paths.dist + '/styles'))
   .pipe(reload({ stream: true }));
 });
 
@@ -122,6 +126,12 @@ gulp.task('lint', () => {
 gulp.task('watchTask', () => {
   gulp.watch(paths.srcCss, ['styles']);
   gulp.watch(paths.srcLint, ['lint']);
+  nodemon({
+    script: paths.server + '/app.js',
+    watch: paths.server,
+    ext: 'js',
+    env: { NODE_ENV: 'development' },
+  });
 });
 
 gulp.task('deploy', () => {
@@ -130,7 +140,7 @@ gulp.task('deploy', () => {
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['browserSync', 'watchTask', 'watchify', 'styles', 'lint', 'images'], cb);
+  runSequence('clean', ['watchTask', 'watchify', 'styles', 'lint', 'images', 'browserSync'], cb);
 });
 
 gulp.task('build', cb => {
