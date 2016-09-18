@@ -26378,6 +26378,132 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _BallotHeading = require('./BallotHeading');
+
+var _BallotHeading2 = _interopRequireDefault(_BallotHeading);
+
+var _BallotPoll = require('./BallotPoll');
+
+var _BallotPoll2 = _interopRequireDefault(_BallotPoll);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BallotCard = function BallotCard(_ref) {
+  var children = _ref.children;
+
+
+  var title = "I. President and Vice President of the United States";
+  var titleCallback = function titleCallback() {
+    console.log("Do something");
+  };
+  var secondary = "Vote for 1 pair";
+  var poll = [];
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'ballot_card' },
+    _react2.default.createElement(_BallotHeading2.default, {
+      title: title,
+      titleCallback: titleCallback,
+      secondary: secondary
+    }),
+    _react2.default.createElement(_BallotPoll2.default, {
+      poll: poll
+    }),
+    children
+  );
+};
+
+exports.default = BallotCard;
+
+},{"./BallotHeading":237,"./BallotPoll":238,"react":232}],237:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BallotHeading = function BallotHeading(props) {
+  var title = props.title;
+  var titleCallback = props.titleCallback;
+  var secondary = props.secondary;
+
+
+  return _react2.default.createElement(
+    "div",
+    { className: "ballot_heading" },
+    _react2.default.createElement(
+      "div",
+      { className: "title" },
+      _react2.default.createElement(
+        "span",
+        { onClick: titleCallback, className: "clickable" },
+        title
+      )
+    ),
+    _react2.default.createElement(
+      "div",
+      { className: "sub" },
+      _react2.default.createElement(
+        "span",
+        null,
+        secondary
+      )
+    )
+  );
+};
+
+exports.default = BallotHeading;
+
+},{"react":232}],238:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BallotPoll = function BallotPoll(props) {
+  var poll = props.poll;
+
+
+  return _react2.default.createElement(
+    "ul",
+    { className: "ballot_poll" },
+    poll.map(function (data, i) {
+      return _react2.default.createElement("li", { key: "i" });
+    })
+  );
+};
+
+exports.default = BallotPoll;
+
+},{"react":232}],239:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _BallotCard = require('../ballot/BallotCard');
+
+var _BallotCard2 = _interopRequireDefault(_BallotCard);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var content = {
@@ -26448,7 +26574,8 @@ var MainSection = function MainSection(_ref) {
         { disabled: !emailIsValid },
         'Notify Me'
       )
-    )
+    ),
+    _react2.default.createElement(_BallotCard2.default, null)
   );
 };
 
@@ -26460,7 +26587,7 @@ MainSection.propTypes = {
 
 exports.default = MainSection;
 
-},{"react":232}],237:[function(require,module,exports){
+},{"../ballot/BallotCard":236,"react":232}],240:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -26526,7 +26653,7 @@ var SidebarSection = function SidebarSection() {
 
 exports.default = SidebarSection;
 
-},{"react":232}],238:[function(require,module,exports){
+},{"react":232}],241:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -26559,7 +26686,7 @@ window.React = _react2.default;
   )
 ), document.getElementById('app'));
 
-},{"./views/App":239,"./views/Landing":240,"react":232,"react-dom":50,"react-router":80}],239:[function(require,module,exports){
+},{"./views/App":242,"./views/Landing":243,"react":232,"react-dom":50,"react-router":80}],242:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26587,7 +26714,7 @@ App.propTypes = { children: _react2.default.PropTypes.object };
 
 exports.default = App;
 
-},{"react":232}],240:[function(require,module,exports){
+},{"react":232}],243:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26673,7 +26800,7 @@ var Landing = function (_Component) {
 
 exports.default = Landing;
 
-},{"../api-interface":235,"../components/landing/MainSection":236,"../components/landing/SidebarSection":237,"react":232}]},{},[238])
+},{"../api-interface":235,"../components/landing/MainSection":239,"../components/landing/SidebarSection":240,"react":232}]},{},[241])
 
 
 //# sourceMappingURL=app.js.map

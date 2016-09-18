@@ -1,5 +1,7 @@
 import React from 'react';
 
+import BallotCard from '../ballot/BallotCard';
+
 const content = {
   title: 'Ballotview',
   subtitle: 'Voting made easy.',
@@ -31,6 +33,7 @@ const MainSection = ({ email, emailIsValid, onUpdateEmail }) => (
       <button disabled={!emailIsValid}>Notify Me</button>
       {/*<div><a>Why do we need your address?</a></div>*/}
     </div>
+    <BallotCard />
   </section>
 );
 
