@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MainSection from '../components/landing/MainSection';
 import SidebarSection from '../components/landing/SidebarSection';
+import api from '../api-interface';
 
 class Landing extends Component {
 
