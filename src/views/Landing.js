@@ -16,14 +16,14 @@ class Landing extends Component {
 
   onUpdateEmail(e) {
     this.setState({
-      email_collect: e.target.value
+      email: e.target.value
     }, () => {
       // check if email is valid
     });
   }
 
   onSubmitEmail() {
-    if (this.state.email_is_valid) {
+    if (this.state.emailIsValid) {
       // handle submit
     }
   }

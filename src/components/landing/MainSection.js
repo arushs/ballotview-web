@@ -18,16 +18,18 @@ const MainSection = ({ email, emailIsValid, onUpdateEmail }) => (
     </div>
     <div id="blurb">
       <span>{content.blurb}</span>
+      <div><span id="coming_soon">Coming in October</span></div>
     </div>
     <div id="email_collect">
+      <span>Get notified when Ballotview is ready for you</span>
       <input
         type="text"
         placeholder={content.exampleEmail}
         value={email}
         onChange={onUpdateEmail}
       />
-      <button disabled={!emailIsValid}>Submit</button>
-      <a>Why do we need your address?</a>
+      <button disabled={!emailIsValid}>Notify Me</button>
+      {/*<div><a>Why do we need your address?</a></div>*/}
     </div>
   </section>
 );
