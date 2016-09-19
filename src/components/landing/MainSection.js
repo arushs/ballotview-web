@@ -20,7 +20,10 @@ const MainSection = ({ email, emailIsValid, onUpdateEmail, onSubmitEmail }) => (
     </div>
     <div id="blurb">
       <span>{content.blurb}</span>
-      <div><span id="coming_soon">Coming in October</span></div>
+    </div>
+    <BallotCard />
+    <div>
+      <span id="coming_soon">Coming in October</span>
     </div>
     <div id="email_collect">
       <span>Get notified when Ballotview is ready for you</span>
@@ -33,7 +36,6 @@ const MainSection = ({ email, emailIsValid, onUpdateEmail, onSubmitEmail }) => (
       <button disabled={!emailIsValid} onClick={onSubmitEmail}>Notify Me</button>
       {/* <div><a>Why do we need your address?</a></div>*/}
     </div>
-    <BallotCard />
   </section>
 );
 

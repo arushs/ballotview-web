@@ -1,22 +1,21 @@
 import React from 'react';
+import BallotClickableText from './BallotClickableText';
 
-const BallotHeading = (props) => {
-  let { title, titleCallback, secondary } = props;
-
-  return (
+const BallotHeading = ({ title, secondary, click }) => (
   <div className="ballot_heading">
     <div className="title">
-      <span onClick={titleCallback} className="clickable">{title}</span>
+      <BallotClickableText text={title} click={click} />
     </div>
-    <div className="sub"><span>{secondary}</span></div>
+    <div className="sub">
+      <BallotClickableText text={secondary} click={click} />
+    </div>
   </div>
-  );
-};
+);
 
 BallotHeading.propTypes = {
-  title: React.PropTypes.string.isRequired,
-  titleCallback: React.PropTypes.function,
-  secondary: React.PropTypes.string.isRequired
+  title: React.PropTypes.array.isRequired,
+  secondary: React.PropTypes.array.isRequired,
+  click: React.PropTypes.func
 };
 
 export default BallotHeading;

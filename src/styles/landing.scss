@@ -14,6 +14,7 @@ main#landing {
     background-color: #FFF;
     padding: 120px 50px 0 50px;
     text-align: center;
+    overflow: auto;
 
     #logo_wrap {
       #logo {
@@ -29,18 +30,18 @@ main#landing {
       max-width: 800px;
       margin: 48px auto;
       font-size: 15px;
+    }
 
-      #coming_soon {
-        text-transform: uppercase;
-        font-size: 12px;
-        line-height: 12px;
-        border: 1px solid #CCC;
-        color: #AAA;
-        padding: 6px;
-        border-radius: 3px;
-        margin-top: 40px;
-        display: inline-block;
-      }
+    #coming_soon {
+      text-transform: uppercase;
+      font-size: 12px;
+      line-height: 12px;
+      border: 1px solid #CCC;
+      color: #AAA;
+      padding: 6px;
+      border-radius: 3px;
+      margin: 40px auto;
+      display: inline-block;
     }
 
     #email_collect {

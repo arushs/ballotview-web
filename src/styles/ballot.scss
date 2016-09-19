@@ -1,12 +1,17 @@
+$font-md: 14px;
+$font-sm: 12px;
+$faded: #AAA;
+
 .ballot_card {
   text-align: left;
   background-color: #FFF;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  max-width: 500px;
+  max-width: 400px;
   border-radius: 3px;
   padding: 16px;
   margin: 16px auto;
   box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+  font-size: $font-md;
 
   .ballot_heading {
     .title {
@@ -14,17 +19,96 @@
     }
 
     .sub {
-      color: #AAA;
-      font-size: 0.8em;
+      color: $faded;
+      font-size: $font-sm;
     }
   }
 
   .clickable {
-    display: inline-block;
     cursor: pointer;
     &:hover {
       cursor: pointer;
       background-color:#FFFBCC;
+    }
+  }
+
+  ul.ballot_poll {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-right: -16px;
+
+      .radio {
+        width: 28px;
+        height: 28px;
+        background-color: #CCC;
+        padding: 2px;
+        border-radius: 14px;
+        float: left;
+        margin-right: 16px;
+        // margin-top: 2px;
+        cursor: pointer;
+
+        > span {
+          display: block;
+          width: 24px;
+          height: 24px;
+          border-radius: 12px;
+          background-color: #FFF;
+        }
+
+        &:hover {
+          > span {
+            border: 2px solid #FFF;
+            background-color: rgba(255, 255, 255, 0.5);
+          }
+        }
+
+        &.selected {
+          > span {
+            opacity: 0 !important;
+          }
+        }
+      }
+
+      &:after {
+        content: '';
+        display: block;
+        clear: both;
+      }
+
+      .info {
+        overflow: hidden;
+
+        .trail {
+          float: right;
+          font-size: $font-sm;
+          color: $faded;
+        }
+
+        .option_title {
+          font-weight: bold;
+          margin-right: 4px;
+        }
+
+        .option_sub {
+          font-size: $font-sm;
+          color: $faded;
+          margin-right: 4px;
+        }
+
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+        padding-right: 16px;
+      }
+
+      &:last-of-type > .info {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
     }
   }
 }
