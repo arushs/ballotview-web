@@ -6,25 +6,23 @@ const request = require('request');
 const methods = {};
 
 function interfacer(reqUrl, verb, queries = {}) {
-
   let queriesString = '';
   for (let key in queries) {
-    queriesString += '&' + key + '=' + queries[key];
+    if ({}.hasOwnProperty.call(queries, key)) {
+      queriesString += '&${key}={queries[key]}';
+    }
   }
 
   return new Promise((resolve, reject) => {
-    reqUrl = "http://localhost:3000/api" + reqUrl;
-    console.log(reqUrl);
-    console.log(verb);
+    const requestUrl = 'http://localhost:3000/api' + reqUrl;
     buffer();
     function buffer() {
-      console.log("In buffer");
       request({
-        uri: '/api' + reqUrl + '?' + queriesString,
-        method: 'get',
-      }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-         resolve(response);
+        uri: '/api' + requestUrl + '?' + queriesString,
+        method: 'get'
+      }, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+          resolve(response);
         } else {
           reject(response);
         }
@@ -48,8 +46,7 @@ function interfacer(reqUrl, verb, queries = {}) {
 //   });
 // };
 
-methods.submitEmail = function (courses = []) {
-  console.log('in submit');
+methods.submitEmail = function () {
   return new Promise((resolve, reject) => {
     interfacer('/email/submit', 'post', {}).then((data) => {
       resolve(data);
