@@ -6,28 +6,28 @@ class BallotCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: [{text:'I. ', click: false}, {text: 'President and Vice President of the United States', click: true}],
-      secondary: [{text: 'Vote for 1 pair', click: false}],
+      title: [{ text: 'I. ', click: false }, { text: 'President and Vice President of the United States', click: true }],
+      secondary: [{ text: 'Vote for 1 pair', click: false }],
       poll: [{
         selected: false,
         info: [{
-          title: [{text: 'Hilary Clinton', click: true}],
-          sub: [{text: 'for ', click: false}, {text: 'President', click: true}]
+          title: [{ text: 'Hilary Clinton', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
         }, {
-          title: [{text: 'Tim Kaine', click: true}],
-          sub: [{text: 'for ', click: false}, {text: 'Vice President', click: true}]
+          title: [{ text: 'Tim Kaine', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
         }],
-        trail: [{text: 'Democrat', click: true}]
+        trail: [{ text: 'Democrat', click: true }]
       }, {
         selected: false,
         info: [{
-          title: [{text: 'Donald Trump', click: true}],
-          sub: [{text: 'for ', click: false}, {text: 'President', click: true}]
+          title: [{ text: 'Donald Trump', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
         }, {
-          title: [{text: 'Mike Pence', click: true}],
-          sub: [{text: 'for ', click: false}, {text: 'Vice President', click: true}]
+          title: [{ text: 'Mike Pence', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
         }],
-        trail: [{text: 'Republican', click: true}]
+        trail: [{ text: 'Republican', click: true }]
       }]
     };
 
@@ -40,15 +40,12 @@ class BallotCard extends Component {
   }
 
   pollSelectOption(index) {
-    let tempPoll = this.state.poll;
-
-    tempPoll.map((option, i) => {
-      option.selected = (i == index && !option.selected);
-      return option;
-    });
-
     this.setState({
-      poll: tempPoll
+      poll: this.state.poll.map((option, i) => {
+        const option2 = option;
+        option2.selected = (i === index && !option.selected);
+        return option2;
+      })
     });
   }
 
