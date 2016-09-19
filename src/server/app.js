@@ -6,9 +6,17 @@ const indexPath = path.join(__dirname, '/../../www/index.html')
 const publicPath = express.static(path.join(__dirname, '../public'))
 app.use('/public', publicPath)
 
-app.get('/', function (_, res) { res.sendFile(indexPath) })
+app.get('/', function (_, res) { res.sendFile(indexPath) });
+app.get('/api/email/submit', function (req, res) { 
+	res.status(200).json({ error: 'message' });
+});
 
 // const api = require('./api');
+
+// app.get('/api/email/submit', function (req, res) {
+// 	console.log('In express api');	
+//   res.send('Got a POST request');
+// });
 
 app.set('port', (process.env.PORT || 5000));
 

@@ -18,13 +18,14 @@ class Landing extends Component {
     this.setState({
       email: e.target.value
     }, () => {
-      // check if email is valid
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      this.state.emailIsValid = re.test(this.state.email);
     });
   }
 
   onSubmitEmail() {
-    if (this.state.emailIsValid) {
-      // handle submit
+    if (this.state.email_is_valid) {
+     api.submitEmail(this.state.email).then((data) => {console.log(data)}).catch(()=>{});
     }
   }
 

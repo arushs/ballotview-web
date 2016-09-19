@@ -1,8 +1,37 @@
-// import ajax from 'reqwest';
-// import Promise from 'bluebird';
+import Promise from 'bluebird';
 // import _ from 'lodash';
 
-// let methods = {};
+const request = require('request');
+
+const methods = {};
+
+function interfacer(reqUrl, verb, queries = {}) {
+
+  let queriesString = '';
+  for (let key in queries) {
+    queriesString += '&' + key + '=' + queries[key];
+  }
+
+  return new Promise((resolve, reject) => {
+    reqUrl = "http://localhost:3000/api" + reqUrl;
+    console.log(reqUrl);
+    console.log(verb);
+    buffer();
+    function buffer() {
+      console.log("In buffer");
+      request({
+        uri: '/api' + reqUrl + '?' + queriesString,
+        method: 'get',
+      }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+         resolve(response);
+        } else {
+          reject(response);
+        }
+      });
+    }
+  });
+}
 
 // methods.verify = function (courseId, term) {
 //   return new Promise((resolve, reject) => {
@@ -19,37 +48,13 @@
 //   });
 // };
 
-// methods.generateSchedules = function (courses = []) {
-//   return new Promise((resolve, reject) => {
-//     interfacer('method', 'generateSchedules', { courses }).then((data) => {
-//       resolve(data);
-//     }).error(reject);
-//   });
-// };
+methods.submitEmail = function (courses = []) {
+  console.log('in submit');
+  return new Promise((resolve, reject) => {
+    interfacer('/email/submit', 'post', {}).then((data) => {
+      resolve(data);
+    }).error(reject);
+  });
+};
 
-// export default methods;
-
-// function interfacer(method, action, queries = {}) {
-//   let queriesString = '';
-//   for (let key in queries) {
-//     queriesString += '&' + key + '=' + queries[key];
-//   }
-
-//   return new Promise((resolve, reject) => {
-//     buffer();
-//     function buffer() {
-//       ajax({
-//         url: '/api/' + method + '.' + action + '?' + queriesString,
-//         method: 'get',
-//         success: function (res) {
-//           resolve(res);
-//         },
-
-//         error: function (err) {
-//           console.error('ajax err:', err._url.href);
-//           setTimeout(buffer, 200);
-//         },
-//       });
-//     }
-//   });
-// };
+export default methods;

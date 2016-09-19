@@ -52,7 +52,8 @@
     "history": "^2.0.0",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
-    "react-router": "^2.0.0"
+    "react-router": "^2.0.0",
+    "request": "^2.75.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.0",
