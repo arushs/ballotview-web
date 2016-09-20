@@ -85002,7 +85002,8 @@ var BallotCard = function (_Component) {
           title: [{ text: 'Tim Kaine', click: true }],
           sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
         }],
-        trail: [{ text: 'Democrat', click: true }]
+        trail: [{ text: 'Democrat', click: true }],
+        color: '#0D47A1'
       }, {
         info: [{
           title: [{ text: 'Donald Trump', click: true }],
@@ -85011,9 +85012,30 @@ var BallotCard = function (_Component) {
           title: [{ text: 'Mike Pence', click: true }],
           sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
         }],
-        trail: [{ text: 'Republican', click: true }]
+        trail: [{ text: 'Republican', click: true }],
+        color: '#B71C1C'
+      }, {
+        info: [{
+          title: [{ text: 'Gary Johnson', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
+        }, {
+          title: [{ text: 'William Weld', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
+        }],
+        trail: [{ text: 'Libertarian', click: true }],
+        color: '#F57F17'
+      }, {
+        info: [{
+          title: [{ text: 'Jill Stein', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
+        }, {
+          title: [{ text: 'Ajamu Baraka', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
+        }],
+        trail: [{ text: 'Green', click: true }],
+        color: '#558B2F'
       }],
-      tally: [false, false]
+      tally: [false, false, false, false]
     };
 
     _this.click = _this.click.bind(_this);
@@ -85207,7 +85229,8 @@ var BallotPoll = function BallotPoll(_ref) {
             className: (0, _classnames2.default)('radio', { selected: pollTally[i] }),
             onClick: function onClick(e) {
               pollSelectOption(i, e);
-            }
+            },
+            style: { backgroundColor: data.color }
           },
           _react2.default.createElement('span', null)
         ),
@@ -85217,7 +85240,11 @@ var BallotPoll = function BallotPoll(_ref) {
           _react2.default.createElement(
             'div',
             { className: 'trail' },
-            _react2.default.createElement(_BallotClickableText2.default, { text: data.trail, click: click })
+            _react2.default.createElement(_BallotClickableText2.default, {
+              text: data.trail,
+              click: click,
+              style: { color: data.color }
+            })
           ),
           data.info.map(function (option, j) {
             return _react2.default.createElement(
@@ -85266,7 +85293,7 @@ var DetailSection = function DetailSection(_ref) {
   var onSubmitEmail = _ref.onSubmitEmail;
   return _react2.default.createElement(
     'section',
-    { id: 'detailed' },
+    { id: 'detail' },
     _react2.default.createElement(_BallotCard2.default, null)
   );
 };
@@ -85287,8 +85314,6 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var content = {
-  title: 'BallotView',
-  subtitle: 'Voting made easy',
   message: 'Inspect the ballot',
   blurb: 'Access detailed, non-partisan ballot content before the election ' + 'so that you can vote easy.',
   exampleEmail: 'youremail@domain.ext'
@@ -85310,8 +85335,13 @@ var MainSection = function MainSection(_ref) {
         { className: 'title' },
         _react2.default.createElement(
           'span',
-          null,
-          content.title
+          { className: 'blue' },
+          'Ballot'
+        ),
+        _react2.default.createElement(
+          'span',
+          { className: 'red' },
+          'View'
         )
       ),
       _react2.default.createElement(
@@ -85320,7 +85350,7 @@ var MainSection = function MainSection(_ref) {
         _react2.default.createElement(
           'span',
           null,
-          content.subtitle
+          'Voting made easy'
         )
       )
     ),
@@ -85381,7 +85411,7 @@ var MainSection = function MainSection(_ref) {
     _react2.default.createElement(
       'div',
       { id: 'down_arrow' },
-      _react2.default.createElement('img', { src: '/dist/images/noun_149006_cc.png', atr: '' })
+      _react2.default.createElement('img', { src: '/dist/images/noun_149006_cc.png' })
     )
   );
 };
@@ -85410,17 +85440,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import { Link } from 'react-router';
 
-var SidebarSection = function SidebarSection() {
+var TabsSection = function TabsSection() {
   return _react2.default.createElement(
     "section",
-    { id: "side" },
+    { id: "tabs" },
     _react2.default.createElement(
       "div",
       { id: "step_0", className: "module_first" },
       _react2.default.createElement(
         "span",
         { className: "title" },
-        "Get ready for election day:"
+        "Get ready for election day Nov 8th, 2016:"
       )
     ),
     _react2.default.createElement(
@@ -85468,7 +85498,7 @@ var SidebarSection = function SidebarSection() {
   );
 };
 
-exports.default = SidebarSection;
+exports.default = TabsSection;
 
 },{"react":427}],498:[function(require,module,exports){
 'use strict';
@@ -85548,9 +85578,9 @@ var _MainSection = require('../components/landing/MainSection');
 
 var _MainSection2 = _interopRequireDefault(_MainSection);
 
-var _SidebarSection = require('../components/landing/SidebarSection');
+var _TabsSection = require('../components/landing/TabsSection');
 
-var _SidebarSection2 = _interopRequireDefault(_SidebarSection);
+var _TabsSection2 = _interopRequireDefault(_TabsSection);
 
 var _DetailSection = require('../components/landing/DetailSection');
 
@@ -85612,7 +85642,7 @@ var Landing = function (_Component) {
       return _react2.default.createElement(
         'main',
         { id: 'landing' },
-        _react2.default.createElement(_SidebarSection2.default, null),
+        _react2.default.createElement(_TabsSection2.default, null),
         _react2.default.createElement(_MainSection2.default, {
           email: this.state.email,
           emailIsValid: this.state.emailIsValid,
@@ -85629,7 +85659,7 @@ var Landing = function (_Component) {
 
 exports.default = Landing;
 
-},{"../api-interface":490,"../components/landing/DetailSection":495,"../components/landing/MainSection":496,"../components/landing/SidebarSection":497,"react":427}]},{},[498])
+},{"../api-interface":490,"../components/landing/DetailSection":495,"../components/landing/MainSection":496,"../components/landing/TabsSection":497,"react":427}]},{},[498])
 
 
 //# sourceMappingURL=app.js.map

@@ -19,6 +19,13 @@ main#landing {
         font-family: 'Questrial', sans-serif;
         font-size: 28px;
         line-height: 1;
+
+        // .blue {
+        //   color: #0D47A1;
+        // }
+        // .red {
+        //   color: #b71c1c;
+        // }
       }
 
       .sub {
@@ -28,11 +35,16 @@ main#landing {
 
     #blurb {
       max-width: 700px;
+      font-weight: 300;
       margin: 0 auto $pad-lg auto;
       font-size: 24px;
       .large {
         font-size: 44px;
+        font-weight: bold;
         margin-bottom: $unit * 2;
+        span {
+          background-color:#FFFBCC;
+        }
       }
     }
 
@@ -41,7 +53,8 @@ main#landing {
       margin: $pad-lg;
 
       span {
-        font-size: 18px;
+        font-size: $font-lg;
+        font-weight: bold;
         display: block;
         margin-bottom: $pad;
       }
@@ -102,12 +115,13 @@ main#landing {
 
       img {
         width: 540px * (30 / 540);
+        opacity: ((1 - 242/255) * 2);
       }
     }
 
   }
 
-  section#side {
+  section#tabs {
     position: relative;
 
     img {
@@ -160,6 +174,10 @@ main#landing {
       clear: both;
     }
 
+  }
+
+  section#detail {
+    padding: $pad-lg $pad;
   }
 
 }

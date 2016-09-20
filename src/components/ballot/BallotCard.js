@@ -16,7 +16,8 @@ class BallotCard extends Component {
           title: [{ text: 'Tim Kaine', click: true }],
           sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
         }],
-        trail: [{ text: 'Democrat', click: true }]
+        trail: [{ text: 'Democrat', click: true }],
+        color: '#0D47A1'
       }, {
         info: [{
           title: [{ text: 'Donald Trump', click: true }],
@@ -25,9 +26,30 @@ class BallotCard extends Component {
           title: [{ text: 'Mike Pence', click: true }],
           sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
         }],
-        trail: [{ text: 'Republican', click: true }]
+        trail: [{ text: 'Republican', click: true }],
+        color: '#B71C1C'
+      }, {
+        info: [{
+          title: [{ text: 'Gary Johnson', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
+        }, {
+          title: [{ text: 'William Weld', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
+        }],
+        trail: [{ text: 'Libertarian', click: true }],
+        color: '#F57F17'
+      }, {
+        info: [{
+          title: [{ text: 'Jill Stein', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
+        }, {
+          title: [{ text: 'Ajamu Baraka', click: true }],
+          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
+        }],
+        trail: [{ text: 'Green', click: true }],
+        color: '#558B2F'
       }],
-      tally: [false, false]
+      tally: [false, false, false, false]
     };
 
     this.click = this.click.bind(this);

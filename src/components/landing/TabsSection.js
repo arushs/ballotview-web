@@ -1,10 +1,10 @@
 import React from 'react';
 // import { Link } from 'react-router';
 
-const SidebarSection = () => (
-  <section id="side">
+const TabsSection = () => (
+  <section id="tabs">
     <div id="step_0" className="module_first">
-      <span className="title">Get ready for election day:</span>
+      <span className="title">Get ready for election day Nov 8th, 2016:</span>
     </div>
     <div id="step_1" className="module">
       <span className="title">1. Register to vote</span>
@@ -21,4 +21,4 @@ const SidebarSection = () => (
   </section>
 );
 
-export default SidebarSection;
+export default TabsSection;

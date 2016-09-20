@@ -1,8 +1,6 @@
 import React from 'react';
 
 const content = {
-  title: 'BallotView',
-  subtitle: 'Voting made easy',
   message: 'Inspect the ballot',
   blurb: 'Access detailed, non-partisan ballot content before the election ' +
   'so that you can vote easy.',
@@ -12,8 +10,8 @@ const content = {
 const MainSection = ({ email, emailIsValid, onUpdateEmail, onSubmitEmail }) => (
   <section id="main">
     <div id="logo">
-      <div className="title"><span>{content.title}</span></div>
-      <div className="sub"><span>{content.subtitle}</span></div>
+      <div className="title"><span className="blue">Ballot</span><span className="red">View</span></div>
+      <div className="sub"><span>Voting made easy</span></div>
     </div>
     <div id="blurb">
       <div className="large"><span>{content.message}</span></div>
@@ -35,7 +33,7 @@ const MainSection = ({ email, emailIsValid, onUpdateEmail, onSubmitEmail }) => (
       {/* <div><a>Why do we need your address?</a></div>*/}
     </div>
     <div id="down_arrow">
-      <img src="/dist/images/noun_149006_cc.png" atr="" />
+      <img src="/dist/images/noun_149006_cc.png" />
     </div>
   </section>
 );

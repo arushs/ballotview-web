@@ -10,11 +10,16 @@ const BallotPoll = ({ pollData, pollTally, pollSelectOption, click }) => (
         <div
           className={classNames('radio', { selected: pollTally[i] })}
           onClick={((e) => { pollSelectOption(i, e); })}
+          style={{ backgroundColor: data.color }}
         ><span /></div>
 
         <div className="info">
           <div className="trail">
-            <BallotClickableText text={data.trail} click={click} />
+            <BallotClickableText
+              text={data.trail}
+              click={click}
+              style={{ color: data.color }}
+            />
           </div>
           {data.info.map((option, j) => (
             <div className="ballot_option" key={j}>
