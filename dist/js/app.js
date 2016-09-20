@@ -84995,7 +84995,6 @@ var BallotCard = function (_Component) {
       title: [{ text: 'I. ', click: false }, { text: 'President and Vice President of the United States', click: true }],
       secondary: [{ text: 'Vote for 1 pair', click: false }],
       poll: [{
-        selected: false,
         info: [{
           title: [{ text: 'Hilary Clinton', click: true }],
           sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
@@ -85005,7 +85004,6 @@ var BallotCard = function (_Component) {
         }],
         trail: [{ text: 'Democrat', click: true }]
       }, {
-        selected: false,
         info: [{
           title: [{ text: 'Donald Trump', click: true }],
           sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
@@ -85014,7 +85012,8 @@ var BallotCard = function (_Component) {
           sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
         }],
         trail: [{ text: 'Republican', click: true }]
-      }]
+      }],
+      tally: [false, false]
     };
 
     _this.click = _this.click.bind(_this);
@@ -85027,14 +85026,18 @@ var BallotCard = function (_Component) {
     value: function click() {}
   }, {
     key: 'pollSelectOption',
-    value: function pollSelectOption(index) {
-      this.setState({
-        poll: this.state.poll.map(function (option, i) {
-          var option2 = option;
-          option2.selected = i === index && !option.selected;
-          return option2;
-        })
-      });
+    value: function pollSelectOption(index, e) {
+      e.stopPropagation();
+      this.setState({ tally: this.state.tally.map(function (bool, i) {
+          return index == i && !bool;
+        }) });
+    }
+  }, {
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(newProps, newState) {
+      for (var i in this.state.tally) {
+        if (this.state.tally[i] !== newState.tally) return true;
+      }return false;
     }
   }, {
     key: 'render',
@@ -85049,6 +85052,7 @@ var BallotCard = function (_Component) {
         }),
         _react2.default.createElement(_BallotPoll2.default, {
           pollData: this.state.poll,
+          pollTally: this.state.tally,
           pollSelectOption: this.pollSelectOption,
           click: this.click
         }),
@@ -85187,6 +85191,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var BallotPoll = function BallotPoll(_ref) {
   var pollData = _ref.pollData;
+  var pollTally = _ref.pollTally;
   var pollSelectOption = _ref.pollSelectOption;
   var click = _ref.click;
   return _react2.default.createElement(
@@ -85199,9 +85204,9 @@ var BallotPoll = function BallotPoll(_ref) {
         _react2.default.createElement(
           'div',
           {
-            className: (0, _classnames2.default)('radio', { selected: data.selected }),
-            onClick: function onClick() {
-              pollSelectOption(i);
+            className: (0, _classnames2.default)('radio', { selected: pollTally[i] }),
+            onClick: function onClick(e) {
+              pollSelectOption(i, e);
             }
           },
           _react2.default.createElement('span', null)
@@ -85230,6 +85235,7 @@ var BallotPoll = function BallotPoll(_ref) {
 
 BallotPoll.propTypes = {
   pollData: _react2.default.PropTypes.array.isRequired,
+  pollTally: _react2.default.PropTypes.array.isRequired,
   pollSelectOption: _react2.default.PropTypes.func,
   click: _react2.default.PropTypes.func
 };
@@ -85253,10 +85259,38 @@ var _BallotCard2 = _interopRequireDefault(_BallotCard);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var DetailSection = function DetailSection(_ref) {
+  var email = _ref.email;
+  var emailIsValid = _ref.emailIsValid;
+  var onUpdateEmail = _ref.onUpdateEmail;
+  var onSubmitEmail = _ref.onSubmitEmail;
+  return _react2.default.createElement(
+    'section',
+    { id: 'detailed' },
+    _react2.default.createElement(_BallotCard2.default, null)
+  );
+};
+
+exports.default = DetailSection;
+
+},{"../ballot/BallotCard":491,"react":427}],496:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var content = {
-  title: 'Ballotview',
-  subtitle: 'Voting made easy.',
-  blurb: 'Ballotview provides an intuitive, clear platform for voters to access detailed, ' + 'non-partisan ballot content before an election. Our goal is to provide an easy experience ' + 'for voters to learn about candidates and measures, record preferences, ' + 'and be better engaged with the voting process.',
+  title: 'BallotView',
+  subtitle: 'Voting made easy',
+  message: 'Inspect the ballot',
+  blurb: 'Access detailed, non-partisan ballot content before the election ' + 'so that you can vote easy.',
   exampleEmail: 'youremail@domain.ext'
 };
 
@@ -85270,35 +85304,55 @@ var MainSection = function MainSection(_ref) {
     { id: 'main' },
     _react2.default.createElement(
       'div',
-      { id: 'logo_wrap' },
+      { id: 'logo' },
       _react2.default.createElement(
-        'span',
-        { id: 'logo' },
-        content.title
+        'div',
+        { className: 'title' },
+        _react2.default.createElement(
+          'span',
+          null,
+          content.title
+        )
       ),
       _react2.default.createElement(
-        'span',
-        null,
-        content.subtitle
+        'div',
+        { className: 'sub' },
+        _react2.default.createElement(
+          'span',
+          null,
+          content.subtitle
+        )
       )
     ),
     _react2.default.createElement(
       'div',
       { id: 'blurb' },
       _react2.default.createElement(
-        'span',
-        null,
-        content.blurb
-      )
-    ),
-    _react2.default.createElement(_BallotCard2.default, null),
-    _react2.default.createElement(
-      'div',
-      null,
+        'div',
+        { className: 'large' },
+        _react2.default.createElement(
+          'span',
+          null,
+          content.message
+        )
+      ),
       _react2.default.createElement(
-        'span',
-        { id: 'coming_soon' },
-        'Coming in October'
+        'div',
+        null,
+        _react2.default.createElement(
+          'span',
+          null,
+          content.blurb
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'span',
+          { className: 'coming_soon' },
+          'Coming in October'
+        )
       )
     ),
     _react2.default.createElement(
@@ -85307,7 +85361,7 @@ var MainSection = function MainSection(_ref) {
       _react2.default.createElement(
         'span',
         null,
-        'Get notified when Ballotview is ready for you'
+        'Get notified when BallotView is ready for you'
       ),
       _react2.default.createElement('input', {
         type: 'text',
@@ -85317,9 +85371,17 @@ var MainSection = function MainSection(_ref) {
       }),
       _react2.default.createElement(
         'button',
-        { disabled: !emailIsValid, onClick: onSubmitEmail },
+        {
+          disabled: !emailIsValid,
+          onClick: onSubmitEmail
+        },
         'Notify Me'
       )
+    ),
+    _react2.default.createElement(
+      'div',
+      { id: 'down_arrow' },
+      _react2.default.createElement('img', { src: '/dist/images/noun_149006_cc.png', atr: '' })
     )
   );
 };
@@ -85333,7 +85395,7 @@ MainSection.propTypes = {
 
 exports.default = MainSection;
 
-},{"../ballot/BallotCard":491,"react":427}],496:[function(require,module,exports){
+},{"react":427}],497:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -85354,44 +85416,53 @@ var SidebarSection = function SidebarSection() {
     { id: "side" },
     _react2.default.createElement(
       "div",
-      { id: "step_1", className: "module" },
-      _react2.default.createElement(
-        "div",
-        null,
-        "1"
-      ),
+      { id: "step_0", className: "module_first" },
       _react2.default.createElement(
         "span",
         { className: "title" },
-        "Register to vote"
+        "Get ready for election day:"
       )
     ),
     _react2.default.createElement(
       "div",
-      { id: "step_2", className: "module" },
-      _react2.default.createElement(
-        "div",
-        null,
-        "2"
-      ),
+      { id: "step_1", className: "module" },
       _react2.default.createElement(
         "span",
         { className: "title" },
-        "Cast your votes on Ballotview"
+        "1. Register to vote"
+      ),
+      _react2.default.createElement(
+        "span",
+        { className: "sub" },
+        "with Rock the Vote"
+      )
+    ),
+    _react2.default.createElement(
+      "div",
+      { id: "step_2", className: "module active" },
+      _react2.default.createElement(
+        "span",
+        { className: "title" },
+        "2. Inspect the ballot"
+      ),
+      _react2.default.createElement(
+        "span",
+        { className: "sub" },
+        "with BallotView"
       )
     ),
     _react2.default.createElement(
       "div",
       { id: "step_3", className: "module" },
       _react2.default.createElement(
-        "div",
-        null,
-        "3"
+        "span",
+        { className: "title" },
+        "3. Find your voting booth"
       ),
       _react2.default.createElement(
         "span",
-        { className: "title" },
-        "Bring your ballot to a voting booth"
+        { className: "sub" },
+        "Coming in November"
       )
     )
   );
@@ -85399,7 +85470,7 @@ var SidebarSection = function SidebarSection() {
 
 exports.default = SidebarSection;
 
-},{"react":427}],497:[function(require,module,exports){
+},{"react":427}],498:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -85432,7 +85503,7 @@ window.React = _react2.default;
   )
 ), document.getElementById('app'));
 
-},{"./views/App":498,"./views/Landing":499,"react":427,"react-dom":245,"react-router":275}],498:[function(require,module,exports){
+},{"./views/App":499,"./views/Landing":500,"react":427,"react-dom":245,"react-router":275}],499:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85460,7 +85531,7 @@ App.propTypes = { children: _react2.default.PropTypes.object };
 
 exports.default = App;
 
-},{"react":427}],499:[function(require,module,exports){
+},{"react":427}],500:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85480,6 +85551,10 @@ var _MainSection2 = _interopRequireDefault(_MainSection);
 var _SidebarSection = require('../components/landing/SidebarSection');
 
 var _SidebarSection2 = _interopRequireDefault(_SidebarSection);
+
+var _DetailSection = require('../components/landing/DetailSection');
+
+var _DetailSection2 = _interopRequireDefault(_DetailSection);
 
 var _apiInterface = require('../api-interface');
 
@@ -85537,13 +85612,14 @@ var Landing = function (_Component) {
       return _react2.default.createElement(
         'main',
         { id: 'landing' },
+        _react2.default.createElement(_SidebarSection2.default, null),
         _react2.default.createElement(_MainSection2.default, {
           email: this.state.email,
           emailIsValid: this.state.emailIsValid,
           onUpdateEmail: this.onUpdateEmail,
           onSubmitEmail: this.onSubmitEmail
         }),
-        _react2.default.createElement(_SidebarSection2.default, null)
+        _react2.default.createElement(_DetailSection2.default, null)
       );
     }
   }]);
@@ -85553,7 +85629,7 @@ var Landing = function (_Component) {
 
 exports.default = Landing;
 
-},{"../api-interface":490,"../components/landing/MainSection":495,"../components/landing/SidebarSection":496,"react":427}]},{},[497])
+},{"../api-interface":490,"../components/landing/DetailSection":495,"../components/landing/MainSection":496,"../components/landing/SidebarSection":497,"react":427}]},{},[498])
 
 
 //# sourceMappingURL=app.js.map

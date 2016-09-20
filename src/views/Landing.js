@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MainSection from '../components/landing/MainSection';
 import SidebarSection from '../components/landing/SidebarSection';
+import DetailSection from '../components/landing/DetailSection'
 import api from '../api-interface';
 
 class Landing extends Component {
@@ -32,13 +33,14 @@ class Landing extends Component {
   render() {
     return (
       <main id="landing">
+        <SidebarSection />
         <MainSection
           email={this.state.email}
           emailIsValid={this.state.emailIsValid}
           onUpdateEmail={this.onUpdateEmail}
           onSubmitEmail={this.onSubmitEmail}
         />
-        <SidebarSection />
+        <DetailSection />
       </main>
     );
   }

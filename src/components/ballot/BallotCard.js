@@ -9,7 +9,6 @@ class BallotCard extends Component {
       title: [{ text: 'I. ', click: false }, { text: 'President and Vice President of the United States', click: true }],
       secondary: [{ text: 'Vote for 1 pair', click: false }],
       poll: [{
-        selected: false,
         info: [{
           title: [{ text: 'Hilary Clinton', click: true }],
           sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
@@ -19,7 +18,6 @@ class BallotCard extends Component {
         }],
         trail: [{ text: 'Democrat', click: true }]
       }, {
-        selected: false,
         info: [{
           title: [{ text: 'Donald Trump', click: true }],
           sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
@@ -28,7 +26,8 @@ class BallotCard extends Component {
           sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
         }],
         trail: [{ text: 'Republican', click: true }]
-      }]
+      }],
+      tally: [false, false]
     };
 
     this.click = this.click.bind(this);
@@ -39,14 +38,17 @@ class BallotCard extends Component {
 
   }
 
-  pollSelectOption(index) {
-    this.setState({
-      poll: this.state.poll.map((option, i) => {
-        const option2 = option;
-        option2.selected = (i === index && !option.selected);
-        return option2;
-      })
-    });
+  pollSelectOption(index, e) {
+    e.stopPropagation();
+    this.setState({ tally: this.state.tally.map((bool, i) => {
+      return (index == i && !bool);
+    }) });
+  }
+
+  shouldComponentUpdate(newProps, newState) {
+    for (var i in this.state.tally)
+      if (this.state.tally[i] !== newState.tally) return true;
+    return false;
   }
 
   render() {
@@ -59,6 +61,7 @@ class BallotCard extends Component {
         />
         <BallotPoll
           pollData={this.state.poll}
+          pollTally={this.state.tally}
           pollSelectOption={this.pollSelectOption}
           click={this.click}
         />

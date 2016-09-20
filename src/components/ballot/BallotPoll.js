@@ -2,14 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import BallotClickableText from './BallotClickableText';
 
-const BallotPoll = ({ pollData, pollSelectOption, click }) => (
+const BallotPoll = ({ pollData, pollTally, pollSelectOption, click }) => (
   <ul className="ballot_poll">
     {pollData.map((data, i) => (
       <li key={i}>
 
         <div
-          className={classNames('radio', { selected: data.selected })}
-          onClick={() => { pollSelectOption(i); }}
+          className={classNames('radio', { selected: pollTally[i] })}
+          onClick={((e) => { pollSelectOption(i, e); })}
         ><span /></div>
 
         <div className="info">
@@ -31,6 +31,7 @@ const BallotPoll = ({ pollData, pollSelectOption, click }) => (
 
 BallotPoll.propTypes = {
   pollData: React.PropTypes.array.isRequired,
+  pollTally: React.PropTypes.array.isRequired,
   pollSelectOption: React.PropTypes.func,
   click: React.PropTypes.func
 };
