@@ -5,6 +5,61 @@ main#landing {
     color: inherit;
   }
 
+  nav {
+    position: relative;
+    margin-top: -$pad / 2;
+
+    img {
+      max-width: 80%;
+    }
+
+    .module, .module_first {
+      float: left;
+      width: percentage(1/4);
+      padding: $pad / 2;
+
+      .title {
+        font-size: $font-md;
+        display: inline-block;
+        margin: 0 $unit 0 0;
+      }
+
+      .sub {
+        font-size: $font-sm;
+        color: $faded;
+        display: inline-block;
+      }
+
+    }
+
+    #step_0 {
+      color: $faded;
+    }
+
+    .module {
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+
+      &.active {
+        background-color: #FFF;
+
+        .title {
+          font-weight: bold;
+        }
+      }
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+  }
+
   section#main {
     position: relative;
     background-color: #FFF;
@@ -35,13 +90,6 @@ main#landing {
         font-size: 32px;
         line-height: 1;
         overflow: hidden;
-
-        // .blue {
-        //   color: #0D47A1;
-        // }
-        // .red {
-        //   color: #b71c1c;
-        // }
       }
 
       .sub {
@@ -154,61 +202,6 @@ main#landing {
     iframe {
       border: none;
     }
-  }
-
-  nav {
-    position: relative;
-
-    img {
-      max-width: 80%;
-    }
-
-    .module, .module_first {
-      float: left;
-      width: percentage(1/4);
-      padding: $pad / 2;
-      margin-top: -$pad;
-
-      .title {
-        font-size: $font-md;
-        display: inline-block;
-        margin: 0 $unit 0 0;
-      }
-
-      .sub {
-        font-size: $font-sm;
-        color: $faded;
-        display: inline-block;
-      }
-
-    }
-
-    #step_0 {
-      color: $faded;
-    }
-
-    .module {
-      cursor: pointer;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-
-      &.active {
-        background-color: #FFF;
-
-        .title {
-          font-weight: bold;
-        }
-      }
-    }
-
-    &:after {
-      content: '';
-      display: block;
-      clear: both;
-    }
-
   }
 
   section#detail {

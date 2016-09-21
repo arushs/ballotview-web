@@ -4,33 +4,47 @@ import BallotClickableText from './BallotClickableText';
 
 const BallotPoll = ({ pollData, pollTally, pollSelectOption, click }) => (
   <ul className="ballot_poll">
-    {pollData.map((data, i) => (
-      <li key={i}>
+    {pollData.map((data, i) => {
+
+      let selectOption = (e) => {
+        e.stopPropagation();
+        pollSelectOption(i);
+      }
+
+      return (<li key={i}>
 
         <div
           className={classNames('radio', { selected: pollTally[i] })}
-          onClick={((e) => { pollSelectOption(i, e); })}
+          onClick={selectOption}
           style={{ backgroundColor: data.color }}
         ><span /></div>
 
         <div className="info">
-          <div className="trail">
-            <BallotClickableText
-              text={data.trail}
-              click={click}
-              style={{ color: data.color }}
-            />
-          </div>
+          {(() => { if (data.trail) {
+            return (<div className="trail">
+              <BallotClickableText
+                text={data.trail}
+                click={click}
+                style={{ color: data.color }}
+              />
+            </div>);
+          }})()}
           {data.info.map((option, j) => (
             <div className="ballot_option" key={j}>
-              <BallotClickableText className="option_title" text={option.title} click={click} />
-              <BallotClickableText className="option_sub" text={option.sub} click={click} />
+              {(() => { if (option.title) {
+                return (<BallotClickableText className="option_title" text={option.title} click={click} />);
+              }})()}
+
+              {(() => { if (option.sub) {
+                return (<BallotClickableText className="option_sub" text={option.sub} click={click} />);
+              }})()}
+
             </div>
           ))}
         </div>
 
-      </li>
-    ))}
+      </li>);
+    })}
   </ul>
 );
 

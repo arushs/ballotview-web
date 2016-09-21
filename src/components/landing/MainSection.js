@@ -7,11 +7,12 @@ const content = {
   exampleEmail: 'youremail@domain.ext'
 };
 
+
 const MainSection = ({ email, emailIsValid, onUpdateEmail, onSubmitEmail }) => (
   <section id="main">
     <div id="logo">
       <div className="logo_img"><img src="/dist/images/ivoted.png" /></div>
-      <div className="title"><span className="blue">Ballot</span><span className="red">View</span></div>
+      <div className="title">BallotView</div>
       <div className="sub"><span>Voting made easy</span></div>
     </div>
     <div id="right_feature">

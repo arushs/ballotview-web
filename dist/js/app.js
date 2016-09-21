@@ -84961,15 +84961,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _BallotHeading = require('./BallotHeading');
+var _BallotClickableText = require('./BallotClickableText');
 
-var _BallotHeading2 = _interopRequireDefault(_BallotHeading);
+var _BallotClickableText2 = _interopRequireDefault(_BallotClickableText);
 
 var _BallotPoll = require('./BallotPoll');
 
@@ -84977,129 +84975,80 @@ var _BallotPoll2 = _interopRequireDefault(_BallotPoll);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var BallotCard = function BallotCard(_ref) {
+  var id = _ref.id;
+  var title = _ref.title;
+  var secondary = _ref.secondary;
+  var poll = _ref.poll;
+  var tally = _ref.tally;
+  var onUpdate = _ref.onUpdate;
+  var click = _ref.click;
+  var children = _ref.children;
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BallotCard = function (_Component) {
-  _inherits(BallotCard, _Component);
-
-  function BallotCard(props) {
-    _classCallCheck(this, BallotCard);
-
-    var _this = _possibleConstructorReturn(this, (BallotCard.__proto__ || Object.getPrototypeOf(BallotCard)).call(this, props));
-
-    _this.state = {
-      title: [{ text: 'I. ', click: false }, { text: 'President and Vice President of the United States', click: true }],
-      secondary: [{ text: 'Vote for 1 pair', click: false }],
-      poll: [{
-        info: [{
-          title: [{ text: 'Hilary Clinton', click: true }],
-          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
-        }, {
-          title: [{ text: 'Tim Kaine', click: true }],
-          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
-        }],
-        trail: [{ text: 'Democrat', click: true }],
-        color: '#0D47A1'
-      }, {
-        info: [{
-          title: [{ text: 'Donald Trump', click: true }],
-          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
-        }, {
-          title: [{ text: 'Mike Pence', click: true }],
-          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
-        }],
-        trail: [{ text: 'Republican', click: true }],
-        color: '#B71C1C'
-      }, {
-        info: [{
-          title: [{ text: 'Gary Johnson', click: true }],
-          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
-        }, {
-          title: [{ text: 'William Weld', click: true }],
-          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
-        }],
-        trail: [{ text: 'Libertarian', click: true }],
-        color: '#F57F17'
-      }, {
-        info: [{
-          title: [{ text: 'Jill Stein', click: true }],
-          sub: [{ text: 'for ', click: false }, { text: 'President', click: true }]
-        }, {
-          title: [{ text: 'Ajamu Baraka', click: true }],
-          sub: [{ text: 'for ', click: false }, { text: 'Vice President', click: true }]
-        }],
-        trail: [{ text: 'Green', click: true }],
-        color: '#558B2F'
-      }],
-      tally: [false, false, false, false]
-    };
-
-    _this.click = _this.click.bind(_this);
-    _this.pollSelectOption = _this.pollSelectOption.bind(_this);
-    return _this;
+  function pollSelectOption(index) {
+    var newTally = tally.map(function (bool, i) {
+      return index === i && !bool;
+    });
+    onUpdate(id, newTally);
   }
 
-  _createClass(BallotCard, [{
-    key: 'click',
-    value: function click() {}
-  }, {
-    key: 'pollSelectOption',
-    value: function pollSelectOption(index, e) {
-      e.stopPropagation();
-      this.setState({ tally: this.state.tally.map(function (bool, i) {
-          return index == i && !bool;
-        }) });
-    }
-  }, {
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(newProps, newState) {
-      for (var i in this.state.tally) {
-        if (this.state.tally[i] !== newState.tally) return true;
-      }return false;
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return _react2.default.createElement(
-        'div',
-        { className: 'ballot_card' },
-        _react2.default.createElement(_BallotHeading2.default, {
-          title: this.state.title,
-          secondary: this.state.secondary,
-          click: this.click
-        }),
-        _react2.default.createElement(_BallotPoll2.default, {
-          pollData: this.state.poll,
-          pollTally: this.state.tally,
-          pollSelectOption: this.pollSelectOption,
-          click: this.click
-        }),
-        this.props.children
-      );
-    }
-  }]);
+  // shouldComponentUpdate(newProps, newState) {
+  //   for (var i in this.state.tally)
+  //     if (this.state.tally[i] !== newState.tally) return true;
+  //   return false;
+  // }
 
-  return BallotCard;
-}(_react.Component);
+  return _react2.default.createElement(
+    'div',
+    { className: 'ballot_card' },
+    _react2.default.createElement(
+      'div',
+      { className: 'heading' },
+      _react2.default.createElement(
+        'div',
+        { className: 'title' },
+        _react2.default.createElement(_BallotClickableText2.default, { text: title, click: click })
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'sub' },
+        _react2.default.createElement(_BallotClickableText2.default, { text: secondary, click: click })
+      )
+    ),
+    _react2.default.createElement(_BallotPoll2.default, {
+      pollData: poll,
+      pollTally: tally,
+      pollSelectOption: pollSelectOption,
+      click: click
+    }),
+    children
+  );
+};
 
 BallotCard.propTypes = {
-  children: _react2.default.PropTypes.element
+  children: _react2.default.PropTypes.element,
+  title: _react2.default.PropTypes.array,
+  secondary: _react2.default.PropTypes.array,
+  click: _react2.default.PropTypes.func,
+  poll: _react2.default.PropTypes.array,
+  tally: _react2.default.PropTypes.array,
+  onUpdate: _react2.default.PropTypes.func,
+  id: _react2.default.PropTypes.number
 };
 
 exports.default = BallotCard;
 
-},{"./BallotHeading":493,"./BallotPoll":494,"react":427}],492:[function(require,module,exports){
-"use strict";
+},{"./BallotClickableText":492,"./BallotPoll":494,"react":427}],492:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require("react");
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -85111,27 +85060,36 @@ var BallotClickableText = function BallotClickableText(_ref) {
   var text = _ref.text;
   var click = _ref.click;
 
-  var other = _objectWithoutProperties(_ref, ["text", "click"]);
+  var other = _objectWithoutProperties(_ref, ['text', 'click']);
 
   return _react2.default.createElement(
-    "span",
+    'span',
     other,
     text.map(function (data, i) {
-      if (data.click) {
-        return _react2.default.createElement(
-          "span",
-          {
-            key: i,
-            className: "clickable",
-            onClick: click(data.text)
-          },
-          data.text
-        );
+
+      if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
+        if (data.click) {
+          return _react2.default.createElement(
+            'span',
+            {
+              key: i,
+              className: 'clickable',
+              onClick: click(data.text)
+            },
+            data.text
+          );
+        } else {
+          return _react2.default.createElement(
+            'span',
+            { key: i },
+            data.text
+          );
+        }
       } else {
         return _react2.default.createElement(
-          "span",
+          'span',
           { key: i },
-          data.text
+          data
         );
       }
     })
@@ -85165,27 +85123,44 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var BallotHeading = function BallotHeading(_ref) {
   var title = _ref.title;
   var secondary = _ref.secondary;
-  var click = _ref.click;
+  var sub = _ref.sub;
   return _react2.default.createElement(
     'div',
     { className: 'ballot_heading' },
     _react2.default.createElement(
       'div',
       { className: 'title' },
-      _react2.default.createElement(_BallotClickableText2.default, { text: title, click: click })
+      _react2.default.createElement(
+        'span',
+        null,
+        title
+      )
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'title' },
+      _react2.default.createElement(
+        'span',
+        null,
+        secondary
+      )
     ),
     _react2.default.createElement(
       'div',
       { className: 'sub' },
-      _react2.default.createElement(_BallotClickableText2.default, { text: secondary, click: click })
+      _react2.default.createElement(
+        'span',
+        null,
+        sub
+      )
     )
   );
 };
 
 BallotHeading.propTypes = {
-  title: _react2.default.PropTypes.array.isRequired,
-  secondary: _react2.default.PropTypes.array.isRequired,
-  click: _react2.default.PropTypes.func
+  title: _react2.default.PropTypes.string.isRequired,
+  secondary: _react2.default.PropTypes.string.isRequired,
+  sub: _react2.default.PropTypes.string.isRequired
 };
 
 exports.default = BallotHeading;
@@ -85220,6 +85195,12 @@ var BallotPoll = function BallotPoll(_ref) {
     'ul',
     { className: 'ballot_poll' },
     pollData.map(function (data, i) {
+
+      var selectOption = function selectOption(e) {
+        e.stopPropagation();
+        pollSelectOption(i);
+      };
+
       return _react2.default.createElement(
         'li',
         { key: i },
@@ -85227,9 +85208,7 @@ var BallotPoll = function BallotPoll(_ref) {
           'div',
           {
             className: (0, _classnames2.default)('radio', { selected: pollTally[i] }),
-            onClick: function onClick(e) {
-              pollSelectOption(i, e);
-            },
+            onClick: selectOption,
             style: { backgroundColor: data.color }
           },
           _react2.default.createElement('span', null)
@@ -85237,21 +85216,33 @@ var BallotPoll = function BallotPoll(_ref) {
         _react2.default.createElement(
           'div',
           { className: 'info' },
-          _react2.default.createElement(
-            'div',
-            { className: 'trail' },
-            _react2.default.createElement(_BallotClickableText2.default, {
-              text: data.trail,
-              click: click,
-              style: { color: data.color }
-            })
-          ),
+          function () {
+            if (data.trail) {
+              return _react2.default.createElement(
+                'div',
+                { className: 'trail' },
+                _react2.default.createElement(_BallotClickableText2.default, {
+                  text: data.trail,
+                  click: click,
+                  style: { color: data.color }
+                })
+              );
+            }
+          }(),
           data.info.map(function (option, j) {
             return _react2.default.createElement(
               'div',
               { className: 'ballot_option', key: j },
-              _react2.default.createElement(_BallotClickableText2.default, { className: 'option_title', text: option.title, click: click }),
-              _react2.default.createElement(_BallotClickableText2.default, { className: 'option_sub', text: option.sub, click: click })
+              function () {
+                if (option.title) {
+                  return _react2.default.createElement(_BallotClickableText2.default, { className: 'option_title', text: option.title, click: click });
+                }
+              }(),
+              function () {
+                if (option.sub) {
+                  return _react2.default.createElement(_BallotClickableText2.default, { className: 'option_sub', text: option.sub, click: click });
+                }
+              }()
             );
           })
         )
@@ -85275,32 +85266,214 @@ exports.default = BallotPoll;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var party = {
+  dem: '#0D47A1',
+  rep: '#B71C1C',
+  lib: '#F57F17',
+  gre: '#558B2F'
+};
+
+var presidential = {
+  title: ['I. ', { text: 'President and Vice President of the United States', click: true }],
+  secondary: ['Vote for 1 pair'],
+  poll: [{
+    info: [{
+      title: [{ text: 'Hilary Clinton', click: true }],
+      sub: ['for ', { text: 'President', click: true }]
+    }, {
+      title: [{ text: 'Tim Kaine', click: true }],
+      sub: ['for ', { text: 'Vice President', click: true }]
+    }],
+    trail: [{ text: 'Democrat', click: true }],
+    color: party.dem
+  }, {
+    info: [{
+      title: [{ text: 'Donald Trump', click: true }],
+      sub: ['for ', { text: 'President', click: true }]
+    }, {
+      title: [{ text: 'Mike Pence', click: true }],
+      sub: ['for ', { text: 'Vice President', click: true }]
+    }],
+    trail: [{ text: 'Republican', click: true }],
+    color: party.rep
+  }, {
+    info: [{
+      title: [{ text: 'Gary Johnson', click: true }],
+      sub: ['for ', { text: 'President', click: true }]
+    }, {
+      title: [{ text: 'William Weld', click: true }],
+      sub: ['for ', { text: 'Vice President', click: true }]
+    }],
+    trail: [{ text: 'Libertarian', click: true }],
+    color: party.lib
+  }, {
+    info: [{
+      title: [{ text: 'Jill Stein', click: true }],
+      sub: ['for ', { text: 'President', click: true }]
+    }, {
+      title: [{ text: 'Ajamu Baraka', click: true }],
+      sub: ['for ', { text: 'Vice President', click: true }]
+    }],
+    trail: [{ text: 'Green', click: true }],
+    color: party.gre
+  }]
+};
+
+var senator = {
+  title: ['II. ', { text: 'US Senator, California', click: true }],
+  secondary: ['Vote for 1'],
+  poll: [{
+    info: [{
+      title: [{ text: 'Kamala Harris', click: true }]
+    }],
+    trail: [{ text: 'Democrat', click: true }],
+    color: party.dem
+  }, {
+    info: [{
+      title: [{ text: 'Loretta Sanchez', click: true }]
+    }],
+    trail: [{ text: 'Democrat', click: true }],
+    color: party.dem
+  }]
+};
+
+var prop51 = {
+  title: [{ text: 'California Proposition 51', click: true }, ', ', 'Public School Facility Bonds'],
+  secondary: [{ text: 'Education', click: true }, '. ', { text: 'CISS', click: true }, '. ', '$9 billion in bonds for education and schools.'],
+  poll: [{
+    info: [{
+      title: [{ text: 'Yes', click: true }]
+    }, {
+      sub: ['A "yes" vote supports the state issuing $9 billion in bonds to fund improvement and construction of school facilities for K-12 schools and community colleges.']
+    }]
+  }, {
+    info: [{
+      title: [{ text: 'No', click: true }]
+    }, {
+      sub: ['A "no" vote opposes the state issuing $9 billion in new debt to fund the improvement and construction of education facilities.']
+    }]
+  }]
+};
+
+var prop52 = {
+  title: [{ text: 'California Proposition 52', click: true }, ', ', 'Voter Approval to Divert Hospital Fee Revenue Dedicated to Medi-Cal'],
+  secondary: [{ text: 'Healthcare', click: true }, '. ', { text: 'CICA/SS', click: true }, '. ', 'Voter approval of changes to the hospital fee program.'],
+  poll: [{
+    info: [{
+      title: [{ text: 'Yes', click: true }]
+    }, {
+      sub: ['A "yes" vote supports requiring voter approval to change the dedicated use of certain fees from hospitals used to draw matching federal money and fund Medi-Cal services. The initiative was also designed to require a two-thirds majority vote of the California Legislature to end the hospital fee program.']
+    }]
+  }, {
+    info: [{
+      title: [{ text: 'No', click: true }]
+    }, {
+      sub: ['A "no" vote opposes this initiative, allowing the legislature to change, extend, or eliminate the hospital fee program with a majority vote.']
+    }]
+  }]
+};
+
+exports.default = [presidential, senator, prop51, prop52];
+
+},{}],496:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _BallotHeading = require('../ballot/BallotHeading');
+
+var _BallotHeading2 = _interopRequireDefault(_BallotHeading);
+
 var _BallotCard = require('../ballot/BallotCard');
 
 var _BallotCard2 = _interopRequireDefault(_BallotCard);
 
+var _sample_data = require('../ballot/examples/sample_data');
+
+var _sample_data2 = _interopRequireDefault(_sample_data);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var DetailSection = function DetailSection(_ref) {
-  var email = _ref.email;
-  var emailIsValid = _ref.emailIsValid;
-  var onUpdateEmail = _ref.onUpdateEmail;
-  var onSubmitEmail = _ref.onSubmitEmail;
-  return _react2.default.createElement(
-    'section',
-    { id: 'detail' },
-    _react2.default.createElement(_BallotCard2.default, null)
-  );
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var tallies = _sample_data2.default.map(function (ballot) {
+  return ballot.poll.map(function (option) {
+    return false;
+  });
+});
+
+var DetailSection = function (_Component) {
+  _inherits(DetailSection, _Component);
+
+  function DetailSection(props) {
+    _classCallCheck(this, DetailSection);
+
+    var _this = _possibleConstructorReturn(this, (DetailSection.__proto__ || Object.getPrototypeOf(DetailSection)).call(this, props));
+
+    _this.state = {
+      ballots: _sample_data2.default,
+      tallies: tallies
+    };
+    _this.onUpdate = _this.onUpdate.bind(_this);
+    return _this;
+  }
+
+  _createClass(DetailSection, [{
+    key: 'onUpdate',
+    value: function onUpdate(index, newTally) {
+      this.setState({
+        tallies: this.state.tallies.map(function (tally, i) {
+          return i === index ? newTally : tally;
+        })
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'section',
+        { id: 'detail' },
+        _react2.default.createElement(_BallotHeading2.default, {
+          title: 'Consolidated General Election',
+          secondary: 'LOS ANGELES, CALIFORNIA',
+          sub: 'Nov 8, 2016'
+        }),
+        this.state.ballots.map(function (ballot, i) {
+          return _react2.default.createElement(_BallotCard2.default, {
+            key: i,
+            id: i,
+            title: ballot.title,
+            secondary: ballot.secondary,
+            poll: ballot.poll,
+            tally: _this2.state.tallies[i],
+            onUpdate: _this2.onUpdate,
+            click: function click() {}
+          });
+        })
+      );
+    }
+  }]);
+
+  return DetailSection;
+}(_react.Component);
 
 exports.default = DetailSection;
 
-},{"../ballot/BallotCard":491,"react":427}],496:[function(require,module,exports){
+},{"../ballot/BallotCard":491,"../ballot/BallotHeading":493,"../ballot/examples/sample_data":495,"react":427}],497:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85345,7 +85518,7 @@ var FooterSection = function FooterSection() {
 
 exports.default = FooterSection;
 
-},{"classnames":67,"react":427}],497:[function(require,module,exports){
+},{"classnames":67,"react":427}],498:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85383,16 +85556,7 @@ var MainSection = function MainSection(_ref) {
       _react2.default.createElement(
         'div',
         { className: 'title' },
-        _react2.default.createElement(
-          'span',
-          { className: 'blue' },
-          'Ballot'
-        ),
-        _react2.default.createElement(
-          'span',
-          { className: 'red' },
-          'View'
-        )
+        'BallotView'
       ),
       _react2.default.createElement(
         'div',
@@ -85494,7 +85658,7 @@ MainSection.propTypes = {
 
 exports.default = MainSection;
 
-},{"react":427}],498:[function(require,module,exports){
+},{"react":427}],499:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85527,7 +85691,7 @@ var RockTheVoteSection = function RockTheVoteSection() {
 
 exports.default = RockTheVoteSection;
 
-},{"classnames":67,"react":427}],499:[function(require,module,exports){
+},{"classnames":67,"react":427}],500:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85611,7 +85775,7 @@ TabsSection.propTypes = {
 
 exports.default = TabsSection;
 
-},{"classnames":67,"react":427,"react-router":275}],500:[function(require,module,exports){
+},{"classnames":67,"react":427,"react-router":275}],501:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -85652,7 +85816,7 @@ var RockTheVote = function RockTheVote() {
   )
 ), document.getElementById('app'));
 
-},{"./views/App":501,"./views/Landing":502,"react":427,"react-dom":245,"react-router":275}],501:[function(require,module,exports){
+},{"./views/App":502,"./views/Landing":503,"react":427,"react-dom":245,"react-router":275}],502:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85680,7 +85844,7 @@ App.propTypes = { children: _react2.default.PropTypes.object };
 
 exports.default = App;
 
-},{"react":427}],502:[function(require,module,exports){
+},{"react":427}],503:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85799,7 +85963,7 @@ var Landing = function (_Component) {
 
 exports.default = Landing;
 
-},{"../api-interface":490,"../components/landing/DetailSection":495,"../components/landing/FooterSection":496,"../components/landing/MainSection":497,"../components/landing/RockTheVoteSection":498,"../components/landing/TabsSection":499,"react":427}]},{},[500])
+},{"../api-interface":490,"../components/landing/DetailSection":496,"../components/landing/FooterSection":497,"../components/landing/MainSection":498,"../components/landing/RockTheVoteSection":499,"../components/landing/TabsSection":500,"react":427}]},{},[501])
 
 
 //# sourceMappingURL=app.js.map
