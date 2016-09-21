@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import api from '../../api-interface';
 
 const content = {
   message: 'Inspect the ballot',
@@ -37,7 +38,7 @@ class MainSection extends Component {
   }
 
   onSubmitEmail() {
-    if (this.state.email_is_valid) {
+    if (this.state.emailIsValid) {
       api.submitEmail(this.state.email).then((data) => { console.log(data); }).catch(() => {});
     }
   }

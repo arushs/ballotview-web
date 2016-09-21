@@ -1,18 +1,57 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const request = require('request');
+const config = require('../config');
 
-// middleware that is specific to this router
+/*********************
+*                    *
+*      HELPERS       *
+*                    *
+**********************/
+
+function renderUser(email) {
+	var data = {};
+	data.email_address = email;
+	data.status = 'subscribed';
+	return data;
+}
+
+
+/*********************
+*                    *
+*       ROUTES       *
+*                    *
+**********************/
 router.use(function timeLog(req, res, next) {
   console.log('Time: ', Date.now());
   next();
 });
-// define the home page route
-// router.get('/', function(req, res) {
-//   res.send('Birds home page');
-// });
-// define the about route
-router.get('/submit', function(req, res) {
-  res.status(200).json({ error: 'message' });
+
+router.post('/submit', function(req, res) {
+	var data = {};
+	data.members = [];
+	data.members.push(renderUser(req.body.email));
+	console.log(data);
+	var req = request({
+    uri: 'https://us8.api.mailchimp.com/3.0/lists/' + config.mailchimp_list_id,
+    method: 'post',
+    json: true,
+    body: data,
+    auth: {
+	    user: config.mailchimp_username,
+	    pass: config.mailchimp_apikey,
+	    'sendImmediately': true
+  	}
+  }, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+    	// TODO: Add error handling here
+    	// console.log(response);
+    } else {
+      // console.log(error);
+    }
+  });
+  
+  res.status(200);
 });
 
 module.exports = router;
