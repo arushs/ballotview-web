@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
+import api from '../../api-interface';
 
 const content = {
   message: 'Inspect your ballot',
