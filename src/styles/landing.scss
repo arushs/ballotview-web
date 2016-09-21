@@ -142,7 +142,15 @@ main#landing {
         border-radius: 5px;
         height: $pad + (2 * 12px) + (2 * 1px);
         margin: 0 4px;
-        width: 250px
+        max-width: 100%;
+
+        &.email {
+          width: 250px;
+        }
+
+        &.state {
+          width: 80px;
+        }
       }
 
       button {
@@ -206,6 +214,36 @@ main#landing {
 
   section#detail {
     padding: $pad-lg $pad;
+
+    #left, #right {
+      width: 50%;
+      float: left;
+      overflow: hidden;
+    }
+
+    #left {
+      text-align: center;
+    }
+
+    #right {
+      section.detail_module {
+        margin: $pad * 4 0;
+
+        .title {
+          font-size: 24px;
+          font-weight: 300;
+          margin-bottom: $pad;
+        }
+
+      }
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
   }
 
   footer {

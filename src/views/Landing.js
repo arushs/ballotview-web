@@ -6,59 +6,29 @@ import RockTheVoteSection from '../components/landing/RockTheVoteSection';
 import FooterSection from '../components/landing/FooterSection';
 import api from '../api-interface';
 
-class Landing extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: '',
-      emailIsValid: false
-    };
-    this.onUpdateEmail = this.onUpdateEmail.bind(this);
-    this.onSubmitEmail = this.onSubmitEmail.bind(this);
-  }
+const Landing = ({ view }) => (
+  <main id="landing">
+    <TabsSection view={view}/>
+    {(() => {
+      if (view === 1) {
+        return (
+          <RockTheVoteSection />
+        );
+      } else {
+        return (
+          <div>
+            <MainSection />
+            <DetailSection />
+          </div>
+        );
+      }
+    })()}
+    <FooterSection />
+  </main>
+);
 
-  onUpdateEmail(e) {
-    this.setState({
-      email: e.target.value
-    }, () => {
-      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      this.state.emailIsValid = re.test(this.state.email);
-    });
-  }
-
-  onSubmitEmail() {
-    if (this.state.email_is_valid) {
-      api.submitEmail(this.state.email).then((data) => { console.log(data); }).catch(() => {});
-    }
-  }
-
-  render() {
-    return (
-      <main id="landing">
-        <TabsSection view={this.props.view}/>
-        {(() => {
-          if (this.props.view === 1) {
-            return (
-              <RockTheVoteSection />
-            );
-          } else {
-            return (
-              <div>
-                <MainSection
-                  email={this.state.email}
-                  emailIsValid={this.state.emailIsValid}
-                  onUpdateEmail={this.onUpdateEmail}
-                  onSubmitEmail={this.onSubmitEmail}
-                />
-                <DetailSection />
-              </div>
-            );
-          }
-        })()}
-        <FooterSection />
-      </main>
-    );
-  }
-}
+Landing.propTypes = {
+  view: React.PropTypes.number
+};
 
 export default Landing;

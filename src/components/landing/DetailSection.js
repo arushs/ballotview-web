@@ -29,23 +29,39 @@ class DetailSection extends Component {
   render() {
     return (
       <section id="detail">
-      <BallotHeading
-        title="Consolidated General Election"
-        secondary="LOS ANGELES, CALIFORNIA"
-        sub="Nov 8, 2016"
-      />
-      {this.state.ballots.map((ballot, i) => (
-        <BallotCard
-          key={i}
-          id={i}
-          title={ballot.title}
-          secondary={ballot.secondary}
-          poll={ballot.poll}
-          tally={this.state.tallies[i]}
-          onUpdate={this.onUpdate}
-          click={() => {}}
-        />
-      ))}
+        <section id="left">
+          <BallotHeading
+            title="Consolidated General Election"
+            secondary="LOS ANGELES, CALIFORNIA"
+            sub="Nov 8, 2016"
+          />
+          {this.state.ballots.map((ballot, i) => (
+            <BallotCard
+              key={i}
+              id={i}
+              title={ballot.title}
+              secondary={ballot.secondary}
+              poll={ballot.poll}
+              tally={this.state.tallies[i]}
+              onUpdate={this.onUpdate}
+              click={() => {}}
+            />
+          ))}
+        </section>
+        <section id="right">
+          <section className="detail_module">
+            <div className="title"><span>Vote online</span></div>
+            <div className="desc"><span>Something here...</span></div>
+          </section>
+          <section className="detail_module">
+            <div className="title"><span>Inspect the ballot</span></div>
+            <div className="desc"><span>Something here...</span></div>
+          </section>
+          <section className="detail_module">
+            <div className="title"><span>Your votes are private</span></div>
+            <div className="desc"><span>Something here...</span></div>
+          </section>
+        </section>
       </section>
     );
   }

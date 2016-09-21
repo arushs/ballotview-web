@@ -85447,23 +85447,97 @@ var DetailSection = function (_Component) {
       return _react2.default.createElement(
         'section',
         { id: 'detail' },
-        _react2.default.createElement(_BallotHeading2.default, {
-          title: 'Consolidated General Election',
-          secondary: 'LOS ANGELES, CALIFORNIA',
-          sub: 'Nov 8, 2016'
-        }),
-        this.state.ballots.map(function (ballot, i) {
-          return _react2.default.createElement(_BallotCard2.default, {
-            key: i,
-            id: i,
-            title: ballot.title,
-            secondary: ballot.secondary,
-            poll: ballot.poll,
-            tally: _this2.state.tallies[i],
-            onUpdate: _this2.onUpdate,
-            click: function click() {}
-          });
-        })
+        _react2.default.createElement(
+          'section',
+          { id: 'left' },
+          _react2.default.createElement(_BallotHeading2.default, {
+            title: 'Consolidated General Election',
+            secondary: 'LOS ANGELES, CALIFORNIA',
+            sub: 'Nov 8, 2016'
+          }),
+          this.state.ballots.map(function (ballot, i) {
+            return _react2.default.createElement(_BallotCard2.default, {
+              key: i,
+              id: i,
+              title: ballot.title,
+              secondary: ballot.secondary,
+              poll: ballot.poll,
+              tally: _this2.state.tallies[i],
+              onUpdate: _this2.onUpdate,
+              click: function click() {}
+            });
+          })
+        ),
+        _react2.default.createElement(
+          'section',
+          { id: 'right' },
+          _react2.default.createElement(
+            'section',
+            { className: 'detail_module' },
+            _react2.default.createElement(
+              'div',
+              { className: 'title' },
+              _react2.default.createElement(
+                'span',
+                null,
+                'Vote online'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'desc' },
+              _react2.default.createElement(
+                'span',
+                null,
+                'Something here...'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'section',
+            { className: 'detail_module' },
+            _react2.default.createElement(
+              'div',
+              { className: 'title' },
+              _react2.default.createElement(
+                'span',
+                null,
+                'Inspect the ballot'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'desc' },
+              _react2.default.createElement(
+                'span',
+                null,
+                'Something here...'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'section',
+            { className: 'detail_module' },
+            _react2.default.createElement(
+              'div',
+              { className: 'title' },
+              _react2.default.createElement(
+                'span',
+                null,
+                'Your votes are private'
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'desc' },
+              _react2.default.createElement(
+                'span',
+                null,
+                'Something here...'
+              )
+            )
+          )
+        )
       );
     }
   }]);
@@ -85525,11 +85599,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var content = {
   message: 'Inspect the ballot',
@@ -85537,124 +85619,181 @@ var content = {
   exampleEmail: 'youremail@domain.ext'
 };
 
-var MainSection = function MainSection(_ref) {
-  var email = _ref.email;
-  var emailIsValid = _ref.emailIsValid;
-  var onUpdateEmail = _ref.onUpdateEmail;
-  var onSubmitEmail = _ref.onSubmitEmail;
-  return _react2.default.createElement(
-    'section',
-    { id: 'main' },
-    _react2.default.createElement(
-      'div',
-      { id: 'logo' },
-      _react2.default.createElement(
-        'div',
-        { className: 'logo_img' },
-        _react2.default.createElement('img', { src: '/dist/images/ivoted.png' })
-      ),
-      _react2.default.createElement(
-        'div',
-        { className: 'title' },
-        'BallotView'
-      ),
-      _react2.default.createElement(
-        'div',
-        { className: 'sub' },
-        _react2.default.createElement(
-          'span',
-          null,
-          'Voting made easy'
-        )
-      )
-    ),
-    _react2.default.createElement(
-      'div',
-      { id: 'right_feature' },
-      _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'span',
-          null,
-          'a ',
-          _react2.default.createElement(
-            'a',
-            { href: 'http://futurethon.org/' },
-            'Futurethon'
-          ),
-          ' project.'
-        )
-      )
-    ),
-    _react2.default.createElement(
-      'div',
-      { id: 'blurb' },
-      _react2.default.createElement(
-        'div',
-        { className: 'large' },
-        _react2.default.createElement(
-          'span',
-          null,
-          content.message
-        )
-      ),
-      _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'span',
-          null,
-          content.blurb
-        )
-      ),
-      _react2.default.createElement(
-        'div',
-        { className: 'coming_soon' },
-        _react2.default.createElement(
-          'span',
-          null,
-          'Coming in October'
-        )
-      )
-    ),
-    _react2.default.createElement(
-      'div',
-      { id: 'email_collect' },
-      _react2.default.createElement(
-        'span',
-        null,
-        'Get notified when BallotView is ready for you'
-      ),
-      _react2.default.createElement('input', {
-        type: 'text',
-        placeholder: content.exampleEmail,
-        value: email,
-        onChange: onUpdateEmail
-      }),
-      _react2.default.createElement(
-        'button',
-        {
-          disabled: !emailIsValid,
-          onClick: onSubmitEmail
-        },
-        'Notify Me'
-      )
-    ),
-    _react2.default.createElement(
-      'div',
-      { id: 'down_arrow' },
-      _react2.default.createElement('img', { src: '/dist/images/noun_149006_cc.png' })
-    )
-  );
-};
+var MainSection = function (_Component) {
+  _inherits(MainSection, _Component);
 
-MainSection.propTypes = {
-  email: _react2.default.PropTypes.string,
-  emailIsValid: _react2.default.PropTypes.bool,
-  onUpdateEmail: _react2.default.PropTypes.func,
-  onSubmitEmail: _react2.default.PropTypes.func
-};
+  function MainSection(props) {
+    _classCallCheck(this, MainSection);
+
+    var _this = _possibleConstructorReturn(this, (MainSection.__proto__ || Object.getPrototypeOf(MainSection)).call(this, props));
+
+    _this.state = {
+      email: '',
+      state: '',
+      emailIsValid: false
+    };
+    _this.onUpdateEmail = _this.onUpdateEmail.bind(_this);
+    _this.onUpdateState = _this.onUpdateState.bind(_this);
+    _this.onSubmitEmail = _this.onSubmitEmail.bind(_this);
+    return _this;
+  }
+
+  _createClass(MainSection, [{
+    key: 'onUpdateEmail',
+    value: function onUpdateEmail(e) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      this.setState({
+        email: e.target.value,
+        emailIsValid: re.test(e.target.value)
+      });
+    }
+  }, {
+    key: 'onUpdateState',
+    value: function onUpdateState(e) {
+      this.setState({
+        state: e.target.value
+      });
+    }
+  }, {
+    key: 'onSubmitEmail',
+    value: function onSubmitEmail() {
+      if (this.state.email_is_valid) {
+        api.submitEmail(this.state.email).then(function (data) {
+          console.log(data);
+        }).catch(function () {});
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _state = this.state;
+      var email = _state.email;
+      var state = _state.state;
+      var emailIsValid = _state.emailIsValid;
+
+      var onUpdateEmail = this.onUpdateEmail;
+      var onUpdateState = this.onUpdateState;
+      var onSubmitEmail = this.onSubmitEmail;
+
+      return _react2.default.createElement(
+        'section',
+        { id: 'main' },
+        _react2.default.createElement(
+          'div',
+          { id: 'logo' },
+          _react2.default.createElement(
+            'div',
+            { className: 'logo_img' },
+            _react2.default.createElement('img', { src: '/dist/images/ivoted.png' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'title' },
+            'BallotView'
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'sub' },
+            _react2.default.createElement(
+              'span',
+              null,
+              'Voting made easy'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'right_feature' },
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+              'span',
+              null,
+              'a ',
+              _react2.default.createElement(
+                'a',
+                { href: 'http://futurethon.org/' },
+                'Futurethon'
+              ),
+              ' project.'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'blurb' },
+          _react2.default.createElement(
+            'div',
+            { className: 'large' },
+            _react2.default.createElement(
+              'span',
+              null,
+              content.message
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+              'span',
+              null,
+              content.blurb
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'coming_soon' },
+            _react2.default.createElement(
+              'span',
+              null,
+              'Coming in October'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'email_collect' },
+          _react2.default.createElement(
+            'span',
+            null,
+            'Get notified when BallotView is ready for you'
+          ),
+          _react2.default.createElement('input', {
+            type: 'text',
+            className: 'email',
+            placeholder: content.exampleEmail,
+            value: email,
+            onChange: onUpdateEmail
+          }),
+          _react2.default.createElement('input', {
+            type: 'text',
+            className: 'state',
+            placeholder: 'State',
+            value: state,
+            onChange: onUpdateState
+          }),
+          _react2.default.createElement(
+            'button',
+            {
+              disabled: !emailIsValid,
+              onClick: onSubmitEmail
+            },
+            'Notify Me'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { id: 'down_arrow' },
+          _react2.default.createElement('img', { src: '/dist/images/noun_149006_cc.png' })
+        )
+      );
+    }
+  }]);
+
+  return MainSection;
+}(_react.Component);
 
 exports.default = MainSection;
 
@@ -85851,8 +85990,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -85883,83 +86020,31 @@ var _apiInterface2 = _interopRequireDefault(_apiInterface);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Landing = function (_Component) {
-  _inherits(Landing, _Component);
-
-  function Landing(props) {
-    _classCallCheck(this, Landing);
-
-    var _this = _possibleConstructorReturn(this, (Landing.__proto__ || Object.getPrototypeOf(Landing)).call(this, props));
-
-    _this.state = {
-      email: '',
-      emailIsValid: false
-    };
-    _this.onUpdateEmail = _this.onUpdateEmail.bind(_this);
-    _this.onSubmitEmail = _this.onSubmitEmail.bind(_this);
-    return _this;
-  }
-
-  _createClass(Landing, [{
-    key: 'onUpdateEmail',
-    value: function onUpdateEmail(e) {
-      var _this2 = this;
-
-      this.setState({
-        email: e.target.value
-      }, function () {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        _this2.state.emailIsValid = re.test(_this2.state.email);
-      });
-    }
-  }, {
-    key: 'onSubmitEmail',
-    value: function onSubmitEmail() {
-      if (this.state.email_is_valid) {
-        _apiInterface2.default.submitEmail(this.state.email).then(function (data) {
-          console.log(data);
-        }).catch(function () {});
+var Landing = function Landing(_ref) {
+  var view = _ref.view;
+  return _react2.default.createElement(
+    'main',
+    { id: 'landing' },
+    _react2.default.createElement(_TabsSection2.default, { view: view }),
+    function () {
+      if (view === 1) {
+        return _react2.default.createElement(_RockTheVoteSection2.default, null);
+      } else {
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(_MainSection2.default, null),
+          _react2.default.createElement(_DetailSection2.default, null)
+        );
       }
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this3 = this;
+    }(),
+    _react2.default.createElement(_FooterSection2.default, null)
+  );
+};
 
-      return _react2.default.createElement(
-        'main',
-        { id: 'landing' },
-        _react2.default.createElement(_TabsSection2.default, { view: this.props.view }),
-        function () {
-          if (_this3.props.view === 1) {
-            return _react2.default.createElement(_RockTheVoteSection2.default, null);
-          } else {
-            return _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(_MainSection2.default, {
-                email: _this3.state.email,
-                emailIsValid: _this3.state.emailIsValid,
-                onUpdateEmail: _this3.onUpdateEmail,
-                onSubmitEmail: _this3.onSubmitEmail
-              }),
-              _react2.default.createElement(_DetailSection2.default, null)
-            );
-          }
-        }(),
-        _react2.default.createElement(_FooterSection2.default, null)
-      );
-    }
-  }]);
-
-  return Landing;
-}(_react.Component);
+Landing.propTypes = {
+  view: _react2.default.PropTypes.number
+};
 
 exports.default = Landing;
 
