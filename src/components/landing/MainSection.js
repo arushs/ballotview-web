@@ -13,6 +13,9 @@ const MainSection = ({ email, emailIsValid, onUpdateEmail, onSubmitEmail }) => (
       <div className="title"><span className="blue">Ballot</span><span className="red">View</span></div>
       <div className="sub"><span>Voting made easy</span></div>
     </div>
+    <div id="right_feature">
+      <div><span>a <a href="http://futurethon.org/">Futurethon</a> project.</span></div>
+    </div>
     <div id="blurb">
       <div className="large"><span>{content.message}</span></div>
       <div><span>{content.blurb}</span></div>

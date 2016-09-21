@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router';
 
 const TabsSection = ({ view }) => (
-  <section id="tabs">
+  <nav>
     <div id="step_0" className="module_first">
       <span className="title">Get ready for election day Nov 8th, 2016:</span>
     </div>
@@ -19,7 +19,7 @@ const TabsSection = ({ view }) => (
       <span className="title">3. Find your voting booth</span>
       <span className="sub">Coming in November</span>
     </Link>
-  </section>
+  </nav>
 );
 
 TabsSection.propTypes = {

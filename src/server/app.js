@@ -22,7 +22,7 @@ app.get('/api/email/submit', (req, res) => {
 app.set('port', (process.env.PORT || 5000));
 
 app.use('/dist', express.static(path.join(__dirname, '..', '..', 'dist')));
-app.use('*', express.static(path.join(__dirname, '..', 'www')));
+app.get('*', (_, res) => { res.sendFile(indexPath); });
 
 
 http.listen(app.get('port'), () => {

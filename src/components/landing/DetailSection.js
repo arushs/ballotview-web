@@ -4,7 +4,7 @@ import BallotCard from '../ballot/BallotCard';
 
 const DetailSection = ({ email, emailIsValid, onUpdateEmail, onSubmitEmail }) => (
   <section id="detail">
-      <BallotCard />
+    <BallotCard />
   </section>
 );
 

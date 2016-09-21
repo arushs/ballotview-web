@@ -1,6 +1,10 @@
 main#landing {
   padding: $pad;
 
+  a {
+    color: inherit;
+  }
+
   section#main {
     position: relative;
     background-color: #FFF;
@@ -31,6 +35,14 @@ main#landing {
       .sub {
         font-size: $font-md;
       }
+    }
+
+    #right_feature {
+      text-align: right;
+      position: absolute;
+      right: $pad;
+      top: $pad;
+      opacity: 0.5;
     }
 
     #blurb {
@@ -97,7 +109,7 @@ main#landing {
         a {
           cursor: pointer;
           text-decoration: underline;
-          color: #AAA;
+          color: $faded;
         }
       }
     }
@@ -132,12 +144,8 @@ main#landing {
     }
   }
 
-  section#tabs {
+  nav {
     position: relative;
-
-    a {
-      color: black;
-    }
 
     img {
       max-width: 80%;
@@ -193,6 +201,13 @@ main#landing {
 
   section#detail {
     padding: $pad-lg $pad;
+  }
+
+  footer {
+    padding: $pad-lg $pad;
+    text-align: center;
+    font-size: $font-sm;
+    opacity: 0.5;
   }
 
 }

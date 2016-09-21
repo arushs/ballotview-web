@@ -85311,6 +85311,51 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FooterSection = function FooterSection() {
+  return _react2.default.createElement(
+    'footer',
+    null,
+    'In parnership with ',
+    _react2.default.createElement(
+      'a',
+      { href: 'https://www.globalshapers.org/' },
+      'Global Shapers Community'
+    ),
+    ', the ',
+    _react2.default.createElement(
+      'a',
+      { href: 'http://usc.edu' },
+      'University of Southern California'
+    ),
+    ', and the ',
+    _react2.default.createElement(
+      'a',
+      { href: 'https://lacounty.gov' },
+      'County of Los Angeles'
+    ),
+    '.'
+  );
+};
+
+exports.default = FooterSection;
+
+},{"classnames":67,"react":427}],497:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var content = {
@@ -85351,6 +85396,25 @@ var MainSection = function MainSection(_ref) {
           'span',
           null,
           'Voting made easy'
+        )
+      )
+    ),
+    _react2.default.createElement(
+      'div',
+      { id: 'right_feature' },
+      _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'span',
+          null,
+          'a ',
+          _react2.default.createElement(
+            'a',
+            { href: 'http://futurethon.org/' },
+            'Futurethon'
+          ),
+          ' project.'
         )
       )
     ),
@@ -85425,7 +85489,7 @@ MainSection.propTypes = {
 
 exports.default = MainSection;
 
-},{"react":427}],497:[function(require,module,exports){
+},{"react":427}],498:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85458,7 +85522,7 @@ var RockTheVoteSection = function RockTheVoteSection() {
 
 exports.default = RockTheVoteSection;
 
-},{"classnames":67,"react":427}],498:[function(require,module,exports){
+},{"classnames":67,"react":427}],499:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85480,8 +85544,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var TabsSection = function TabsSection(_ref) {
   var view = _ref.view;
   return _react2.default.createElement(
-    'section',
-    { id: 'tabs' },
+    'nav',
+    null,
     _react2.default.createElement(
       'div',
       { id: 'step_0', className: 'module_first' },
@@ -85542,7 +85606,7 @@ TabsSection.propTypes = {
 
 exports.default = TabsSection;
 
-},{"classnames":67,"react":427,"react-router":275}],499:[function(require,module,exports){
+},{"classnames":67,"react":427,"react-router":275}],500:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -85583,7 +85647,7 @@ var RockTheVote = function RockTheVote() {
   )
 ), document.getElementById('app'));
 
-},{"./views/App":500,"./views/Landing":501,"react":427,"react-dom":245,"react-router":275}],500:[function(require,module,exports){
+},{"./views/App":501,"./views/Landing":502,"react":427,"react-dom":245,"react-router":275}],501:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85611,7 +85675,7 @@ App.propTypes = { children: _react2.default.PropTypes.object };
 
 exports.default = App;
 
-},{"react":427}],501:[function(require,module,exports){
+},{"react":427}],502:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85639,6 +85703,10 @@ var _DetailSection2 = _interopRequireDefault(_DetailSection);
 var _RockTheVoteSection = require('../components/landing/RockTheVoteSection');
 
 var _RockTheVoteSection2 = _interopRequireDefault(_RockTheVoteSection);
+
+var _FooterSection = require('../components/landing/FooterSection');
+
+var _FooterSection2 = _interopRequireDefault(_FooterSection);
 
 var _apiInterface = require('../api-interface');
 
@@ -85715,7 +85783,8 @@ var Landing = function (_Component) {
               _react2.default.createElement(_DetailSection2.default, null)
             );
           }
-        }()
+        }(),
+        _react2.default.createElement(_FooterSection2.default, null)
       );
     }
   }]);
@@ -85725,7 +85794,7 @@ var Landing = function (_Component) {
 
 exports.default = Landing;
 
-},{"../api-interface":490,"../components/landing/DetailSection":495,"../components/landing/MainSection":496,"../components/landing/RockTheVoteSection":497,"../components/landing/TabsSection":498,"react":427}]},{},[499])
+},{"../api-interface":490,"../components/landing/DetailSection":495,"../components/landing/FooterSection":496,"../components/landing/MainSection":497,"../components/landing/RockTheVoteSection":498,"../components/landing/TabsSection":499,"react":427}]},{},[500])
 
 
 //# sourceMappingURL=app.js.map
