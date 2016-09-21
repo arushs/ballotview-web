@@ -85480,7 +85480,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'View your local ballot'
+                '1. View your local ballot'
               )
             ),
             _react2.default.createElement(
@@ -85489,7 +85489,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'Something here...'
+                'Access ballot content you\'ll see on election day. Enter the home address linked to your voter registration to bring up your specific ballot.'
               )
             )
           ),
@@ -85502,7 +85502,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'Inspect the candidates and measures'
+                '2. Inspect the details of candidates and measures'
               )
             ),
             _react2.default.createElement(
@@ -85511,7 +85511,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'Something here...'
+                'Getting informed on ballot content has never been easier. Simply click on candidates, measures, or titles to access detailed, nonpartisan information to help you make your decisions.'
               )
             )
           ),
@@ -85524,7 +85524,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'Record your preferences'
+                '3. Record your preferences'
               )
             ),
             _react2.default.createElement(
@@ -85533,7 +85533,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'Something here...'
+                'Select your preferences and send yourself a receipt via email. We also provide a link in the email, so that you can easily return to your ballot whenever you want.'
               )
             )
           ),
@@ -85546,7 +85546,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'We\'ll keep your selections private and anonymized'
+                '4. We\'ll keep your selections private and anonymized'
               )
             ),
             _react2.default.createElement(
@@ -85555,7 +85555,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'Something here...'
+                'We don\'t store any personally identifiable information, so all of your preferences are anonymous.'
               )
             )
           )
@@ -85627,6 +85627,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -85647,17 +85651,19 @@ var MainSection = function (_Component) {
   function MainSection(props) {
     _classCallCheck(this, MainSection);
 
-    var _this = _possibleConstructorReturn(this, (MainSection.__proto__ || Object.getPrototypeOf(MainSection)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (MainSection.__proto__ || Object.getPrototypeOf(MainSection)).call(this, props));
 
-    _this.state = {
+    _this2.state = {
       email: '',
       state: '',
-      emailIsValid: false
+      emailIsValid: false,
+      sending: false,
+      sent: ''
     };
-    _this.onUpdateEmail = _this.onUpdateEmail.bind(_this);
-    _this.onUpdateState = _this.onUpdateState.bind(_this);
-    _this.onSubmitEmail = _this.onSubmitEmail.bind(_this);
-    return _this;
+    _this2.onUpdateEmail = _this2.onUpdateEmail.bind(_this2);
+    _this2.onUpdateState = _this2.onUpdateState.bind(_this2);
+    _this2.onSubmitEmail = _this2.onSubmitEmail.bind(_this2);
+    return _this2;
   }
 
   _createClass(MainSection, [{
@@ -85680,9 +85686,20 @@ var MainSection = function (_Component) {
   }, {
     key: 'onSubmitEmail',
     value: function onSubmitEmail() {
-      if (this.state.email_is_valid) {
+      var _this3 = this;
+
+      var _this = this;
+      if (this.state.emailIsValid && !this.state.sending) {
+        this.setState({ sending: true });
         api.submitEmail(this.state.email).then(function (data) {
           console.log(data);
+          _this.setState({
+            email: '',
+            state: '',
+            emailIsValid: false,
+            sending: false,
+            sent: _this3.state.email
+          });
         }).catch(function () {});
       }
     }
@@ -85693,6 +85710,8 @@ var MainSection = function (_Component) {
       var email = _state.email;
       var state = _state.state;
       var emailIsValid = _state.emailIsValid;
+      var sending = _state.sending;
+      var sent = _state.sent;
 
       var onUpdateEmail = this.onUpdateEmail;
       var onUpdateState = this.onUpdateState;
@@ -85787,23 +85806,40 @@ var MainSection = function (_Component) {
             className: 'email',
             placeholder: content.exampleEmail,
             value: email,
-            onChange: onUpdateEmail
+            onChange: onUpdateEmail,
+            disabled: sending
           }),
           _react2.default.createElement('input', {
             type: 'text',
             className: 'state',
             placeholder: 'State',
             value: state,
-            onChange: onUpdateState
+            onChange: onUpdateState,
+            disabled: sending
           }),
           _react2.default.createElement(
             'button',
             {
-              disabled: !emailIsValid,
+              disabled: !emailIsValid || sending,
               onClick: onSubmitEmail
             },
-            'Notify Me'
-          )
+            !sending ? 'Notify Me' : 'Subscribing...'
+          ),
+          function () {
+            if (sent !== '') {
+              return _react2.default.createElement(
+                'div',
+                { className: 'highlight' },
+                _react2.default.createElement(
+                  'span',
+                  null,
+                  'Thanks! We\'ve added ',
+                  sent,
+                  ' to our VIP list.'
+                )
+              );
+            }
+          }()
         ),
         _react2.default.createElement(
           'div',
@@ -85819,7 +85855,7 @@ var MainSection = function (_Component) {
 
 exports.default = MainSection;
 
-},{"react":427}],499:[function(require,module,exports){
+},{"classnames":67,"react":427}],499:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

@@ -50,20 +50,20 @@ class DetailSection extends Component {
         </section>
         <section id="right">
           <section className="detail_module">
-            <div className="title"><span>View your local ballot</span></div>
-            <div className="desc"><span>Something here...</span></div>
+            <div className="title"><span>1. View your local ballot</span></div>
+            <div className="desc"><span>Access ballot content you'll see on election day. Enter the home address linked to your voter registration to bring up your specific ballot.</span></div>
           </section>
           <section className="detail_module">
-            <div className="title"><span>Inspect the candidates and measures</span></div>
-            <div className="desc"><span>Something here...</span></div>
+            <div className="title"><span>2. Inspect the details of candidates and measures</span></div>
+            <div className="desc"><span>Getting informed on ballot content has never been easier. Simply click on candidates, measures, or titles to access detailed, nonpartisan information to help you make your decisions.</span></div>
           </section>
           <section className="detail_module">
-            <div className="title"><span>Record your preferences</span></div>
-            <div className="desc"><span>Something here...</span></div>
+            <div className="title"><span>3. Record your preferences</span></div>
+            <div className="desc"><span>Select your preferences and send yourself a receipt via email. We also provide a link in the email, so that you can easily return to your ballot whenever you want.</span></div>
           </section>
           <section className="detail_module">
-            <div className="title"><span>We'll keep your selections private and anonymized</span></div>
-            <div className="desc"><span>Something here...</span></div>
+            <div className="title"><span>4. We'll keep your selections private and anonymized</span></div>
+            <div className="desc"><span>We don't store any personally identifiable information, so all of your preferences are anonymous.</span></div>
           </section>
         </section>
       </section>

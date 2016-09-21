@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 
 const content = {
   message: 'Inspect your ballot',
@@ -14,7 +15,9 @@ class MainSection extends Component {
     this.state = {
       email: '',
       state: '',
-      emailIsValid: false
+      emailIsValid: false,
+      sending: false,
+      sent: ''
     };
     this.onUpdateEmail = this.onUpdateEmail.bind(this);
     this.onUpdateState = this.onUpdateState.bind(this);
@@ -37,13 +40,24 @@ class MainSection extends Component {
   }
 
   onSubmitEmail() {
-    if (this.state.email_is_valid) {
-      api.submitEmail(this.state.email).then((data) => { console.log(data); }).catch(() => {});
+    let _this = this;
+    if (this.state.emailIsValid && !this.state.sending) {
+      this.setState({ sending: true });
+      api.submitEmail(this.state.email).then((data) => {
+        console.log(data);
+        _this.setState({
+          email: '',
+          state: '',
+          emailIsValid: false,
+          sending: false,
+          sent: this.state.email
+        });
+      }).catch(() => {});
     }
   }
 
   render() {
-    let { email, state, emailIsValid } = this.state;
+    let { email, state, emailIsValid, sending, sent } = this.state;
     let onUpdateEmail = this.onUpdateEmail;
     let onUpdateState = this.onUpdateState;
     let onSubmitEmail = this.onSubmitEmail;
@@ -71,6 +85,7 @@ class MainSection extends Component {
             placeholder={content.exampleEmail}
             value={email}
             onChange={onUpdateEmail}
+            disabled={sending}
           />
           <input
             type="text"
@@ -78,11 +93,17 @@ class MainSection extends Component {
             placeholder="State"
             value={state}
             onChange={onUpdateState}
+            disabled={sending}
           />
           <button
-            disabled={!emailIsValid}
+            disabled={!emailIsValid || sending}
             onClick={onSubmitEmail}
-          >Notify Me</button>
+          >{(!sending) ? 'Notify Me' : 'Subscribing...'}</button>
+          {(() => {
+            if (sent !== '') {
+              return (<div className="highlight"><span>Thanks! We've added {sent} to our VIP list.</span></div>);
+            }
+          })()}
           {/* <div><a>Why do we need your address?</a></div>*/}
         </div>
         <div id="down_arrow">

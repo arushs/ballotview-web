@@ -65,12 +65,14 @@
           height: 24px;
           border-radius: 12px;
           background-color: #FFF;
+          transition: background-color .15s, opacity .15s cubic-bezier(.215,.61,.355,1);
+          animation-fill-mode:both;
         }
 
         &:hover {
           > span {
             border: 2px solid #FFF;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.7);
           }
         }
 
