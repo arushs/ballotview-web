@@ -6,10 +6,14 @@ import Landing from './views/Landing';
 
 window.React = React;
 
+const BallotView = () => (<Landing view={2} />);
+const RockTheVote = () => (<Landing view={1} />);
+
 render(
   (<Router history={browserHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={Landing} />
+      <IndexRoute component={BallotView} />
+      <Route path="rockthevote" component={RockTheVote} />
     </Route>
   </Router>),
   document.getElementById('app')

@@ -16,7 +16,7 @@ const MainSection = ({ email, emailIsValid, onUpdateEmail, onSubmitEmail }) => (
     <div id="blurb">
       <div className="large"><span>{content.message}</span></div>
       <div><span>{content.blurb}</span></div>
-      <div><span className="coming_soon">Coming in October</span></div>
+      <div className="coming_soon"><span>Coming in October</span></div>
     </div>
     <div id="email_collect">
       <span>Get notified when BallotView is ready for you</span>

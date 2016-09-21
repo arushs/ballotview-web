@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import MainSection from '../components/landing/MainSection';
 import TabsSection from '../components/landing/TabsSection';
-import DetailSection from '../components/landing/DetailSection'
+import DetailSection from '../components/landing/DetailSection';
+import RockTheVoteSection from '../components/landing/RockTheVoteSection';
 import api from '../api-interface';
 
 class Landing extends Component {
@@ -33,14 +34,26 @@ class Landing extends Component {
   render() {
     return (
       <main id="landing">
-        <TabsSection />
-        <MainSection
-          email={this.state.email}
-          emailIsValid={this.state.emailIsValid}
-          onUpdateEmail={this.onUpdateEmail}
-          onSubmitEmail={this.onSubmitEmail}
-        />
-        <DetailSection />
+        <TabsSection view={this.props.view}/>
+        {(() => {
+          if (this.props.view === 1) {
+            return (
+              <RockTheVoteSection />
+            );
+          } else {
+            return (
+              <div>
+                <MainSection
+                  email={this.state.email}
+                  emailIsValid={this.state.emailIsValid}
+                  onUpdateEmail={this.onUpdateEmail}
+                  onSubmitEmail={this.onSubmitEmail}
+                />
+                <DetailSection />
+              </div>
+            );
+          }
+        })()}
       </main>
     );
   }

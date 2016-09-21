@@ -121,8 +121,23 @@ main#landing {
 
   }
 
+  section#rockthevote {
+    position: relative;
+    background-color: #FFF;
+    padding: 0;
+    text-align: left;
+
+    iframe {
+      border: none;
+    }
+  }
+
   section#tabs {
     position: relative;
+
+    a {
+      color: black;
+    }
 
     img {
       max-width: 80%;
@@ -183,13 +198,15 @@ main#landing {
 }
 
 .coming_soon {
-  text-transform: uppercase;
-  font-size: $font-sm;
-  line-height: $font-sm;
-  border: 1px solid #CCC;
-  color: #AAA;
-  padding: 6px;
-  border-radius: 3px;
-  margin: $pad auto 0 auto;
-  display: inline-block;
+  margin: $pad-lg auto;
+  span {
+      text-transform: uppercase;
+      font-size: $font-sm;
+      line-height: $font-sm;
+      border: 1px solid #CCC;
+      color: #AAA;
+      padding: 6px;
+      border-radius: 3px;
+      display: inline-block;
+  }
 }

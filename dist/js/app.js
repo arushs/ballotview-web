@@ -85377,10 +85377,10 @@ var MainSection = function MainSection(_ref) {
       ),
       _react2.default.createElement(
         'div',
-        null,
+        { className: 'coming_soon' },
         _react2.default.createElement(
           'span',
-          { className: 'coming_soon' },
+          null,
           'Coming in October'
         )
       )
@@ -85426,81 +85426,123 @@ MainSection.propTypes = {
 exports.default = MainSection;
 
 },{"react":427}],497:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import { Link } from 'react-router';
-
-var TabsSection = function TabsSection() {
+var RockTheVoteSection = function RockTheVoteSection() {
   return _react2.default.createElement(
-    "section",
-    { id: "tabs" },
+    'section',
+    { id: 'rockthevote' },
+    _react2.default.createElement('iframe', {
+      src: 'https://register2.rockthevote.com/registrants/map/?source=iframe&partner=35840',
+      width: '100%',
+      height: '1200',
+      marginheight: '0',
+      frameborder: '0'
+    })
+  );
+};
+
+exports.default = RockTheVoteSection;
+
+},{"classnames":67,"react":427}],498:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _reactRouter = require('react-router');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TabsSection = function TabsSection(_ref) {
+  var view = _ref.view;
+  return _react2.default.createElement(
+    'section',
+    { id: 'tabs' },
     _react2.default.createElement(
-      "div",
-      { id: "step_0", className: "module_first" },
+      'div',
+      { id: 'step_0', className: 'module_first' },
       _react2.default.createElement(
-        "span",
-        { className: "title" },
-        "Get ready for election day Nov 8th, 2016:"
+        'span',
+        { className: 'title' },
+        'Get ready for election day Nov 8th, 2016:'
       )
     ),
     _react2.default.createElement(
-      "div",
-      { id: "step_1", className: "module" },
+      _reactRouter.Link,
+      { to: '/rockthevote', id: 'step_1', className: (0, _classnames2.default)('module', { active: view === 1 }) },
       _react2.default.createElement(
-        "span",
-        { className: "title" },
-        "1. Register to vote"
+        'span',
+        { className: 'title' },
+        '1. Register to vote'
       ),
       _react2.default.createElement(
-        "span",
-        { className: "sub" },
-        "with Rock the Vote"
+        'span',
+        { className: 'sub' },
+        'with Rock the Vote'
       )
     ),
     _react2.default.createElement(
-      "div",
-      { id: "step_2", className: "module active" },
+      _reactRouter.Link,
+      { to: '/', id: 'step_2', className: (0, _classnames2.default)('module', { active: view === 2 }) },
       _react2.default.createElement(
-        "span",
-        { className: "title" },
-        "2. Inspect the ballot"
+        'span',
+        { className: 'title' },
+        '2. Inspect the ballot'
       ),
       _react2.default.createElement(
-        "span",
-        { className: "sub" },
-        "with BallotView"
+        'span',
+        { className: 'sub' },
+        'with BallotView'
       )
     ),
     _react2.default.createElement(
-      "div",
-      { id: "step_3", className: "module" },
+      _reactRouter.Link,
+      { id: 'step_3', className: (0, _classnames2.default)('module', { active: view === 3 }) },
       _react2.default.createElement(
-        "span",
-        { className: "title" },
-        "3. Find your voting booth"
+        'span',
+        { className: 'title' },
+        '3. Find your voting booth'
       ),
       _react2.default.createElement(
-        "span",
-        { className: "sub" },
-        "Coming in November"
+        'span',
+        { className: 'sub' },
+        'Coming in November'
       )
     )
   );
 };
 
+TabsSection.propTypes = {
+  view: _react2.default.PropTypes.number
+};
+
 exports.default = TabsSection;
 
-},{"react":427}],498:[function(require,module,exports){
+},{"classnames":67,"react":427,"react-router":275}],499:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -85523,17 +85565,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 window.React = _react2.default;
 
+var BallotView = function BallotView() {
+  return _react2.default.createElement(_Landing2.default, { view: 2 });
+};
+var RockTheVote = function RockTheVote() {
+  return _react2.default.createElement(_Landing2.default, { view: 1 });
+};
+
 (0, _reactDom.render)(_react2.default.createElement(
   _reactRouter.Router,
   { history: _reactRouter.browserHistory },
   _react2.default.createElement(
     _reactRouter.Route,
     { path: '/', component: _App2.default },
-    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Landing2.default })
+    _react2.default.createElement(_reactRouter.IndexRoute, { component: BallotView }),
+    _react2.default.createElement(_reactRouter.Route, { path: 'rockthevote', component: RockTheVote })
   )
 ), document.getElementById('app'));
 
-},{"./views/App":499,"./views/Landing":500,"react":427,"react-dom":245,"react-router":275}],499:[function(require,module,exports){
+},{"./views/App":500,"./views/Landing":501,"react":427,"react-dom":245,"react-router":275}],500:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85561,7 +85611,7 @@ App.propTypes = { children: _react2.default.PropTypes.object };
 
 exports.default = App;
 
-},{"react":427}],500:[function(require,module,exports){
+},{"react":427}],501:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85585,6 +85635,10 @@ var _TabsSection2 = _interopRequireDefault(_TabsSection);
 var _DetailSection = require('../components/landing/DetailSection');
 
 var _DetailSection2 = _interopRequireDefault(_DetailSection);
+
+var _RockTheVoteSection = require('../components/landing/RockTheVoteSection');
+
+var _RockTheVoteSection2 = _interopRequireDefault(_RockTheVoteSection);
 
 var _apiInterface = require('../api-interface');
 
@@ -85639,17 +85693,29 @@ var Landing = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this3 = this;
+
       return _react2.default.createElement(
         'main',
         { id: 'landing' },
-        _react2.default.createElement(_TabsSection2.default, null),
-        _react2.default.createElement(_MainSection2.default, {
-          email: this.state.email,
-          emailIsValid: this.state.emailIsValid,
-          onUpdateEmail: this.onUpdateEmail,
-          onSubmitEmail: this.onSubmitEmail
-        }),
-        _react2.default.createElement(_DetailSection2.default, null)
+        _react2.default.createElement(_TabsSection2.default, { view: this.props.view }),
+        function () {
+          if (_this3.props.view === 1) {
+            return _react2.default.createElement(_RockTheVoteSection2.default, null);
+          } else {
+            return _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(_MainSection2.default, {
+                email: _this3.state.email,
+                emailIsValid: _this3.state.emailIsValid,
+                onUpdateEmail: _this3.onUpdateEmail,
+                onSubmitEmail: _this3.onSubmitEmail
+              }),
+              _react2.default.createElement(_DetailSection2.default, null)
+            );
+          }
+        }()
       );
     }
   }]);
@@ -85659,7 +85725,7 @@ var Landing = function (_Component) {
 
 exports.default = Landing;
 
-},{"../api-interface":490,"../components/landing/DetailSection":495,"../components/landing/MainSection":496,"../components/landing/TabsSection":497,"react":427}]},{},[498])
+},{"../api-interface":490,"../components/landing/DetailSection":495,"../components/landing/MainSection":496,"../components/landing/RockTheVoteSection":497,"../components/landing/TabsSection":498,"react":427}]},{},[499])
 
 
 //# sourceMappingURL=app.js.map
