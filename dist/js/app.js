@@ -85697,7 +85697,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'Access ballot content you\'ll see on election day. Enter the home address linked to your voter registration to bring up your specific ballot.'
+                'Access a sample of the ballot you\'ll see on election day. Enter the home address linked to your voter registration to bring up your specific ballot.'
               )
             )
           ),
@@ -85741,7 +85741,7 @@ var DetailSection = function (_Component) {
               _react2.default.createElement(
                 'span',
                 null,
-                'Select your preferences and send yourself a receipt via email. We also provide a link in the email, so that you can easily return to your ballot whenever you want.'
+                'Select your preferences and send yourself a receipt via email. We give you a link so that you can easily return to your ballot whenever you want.'
               )
             )
           ),
