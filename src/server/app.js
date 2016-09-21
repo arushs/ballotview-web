@@ -4,13 +4,16 @@ const http = require('http').Server(app);
 const path = require('path');
 const indexPath = path.join(__dirname, '/../../www/index.html');
 const publicPath = express.static(path.join(__dirname, '../public'));
+const email = require('./controllers/email');
 
 app.use('/public', publicPath);
-
 app.get('/', (_, res) => { res.sendFile(indexPath); });
-app.get('/api/email/submit', (req, res) => {
-  res.status(200).json({ error: 'message' });
-});
+// app.get('/api/email/submit', (req, res) => {
+//   res.status(200).json({ error: 'message' });
+// });
+
+
+app.use('/api/email', email);
 
 // const api = require('./api');
 
