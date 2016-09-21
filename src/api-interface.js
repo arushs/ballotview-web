@@ -12,7 +12,7 @@ const methods = {};
 // data: JSON Data
 function interfacer(reqUrl, verb, data) {
   return new Promise((resolve, reject) => {
-    const requestUrl = 'http://localhost:3000/api' + reqUrl;
+    const requestUrl = '/api' + reqUrl;
     buffer();
     function buffer() {
       var req = request({
