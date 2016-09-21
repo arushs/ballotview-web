@@ -26,7 +26,7 @@
     "babel": "inherit"
   },
   "scripts": {
-    "start": "node src/server/app.js",
+    "start": "gulp build; node src/server/app.js",
     "watch": "gulp watch",
     "build": "gulp build",
     "deploy": "gulp deploy",
