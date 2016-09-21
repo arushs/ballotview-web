@@ -78,7 +78,7 @@ class MainSection extends Component {
           <div className="coming_soon"><span>Coming in October</span></div>
         </div>
         <div id="email_collect">
-          <span>Get notified when BallotView is ready for you</span>
+          <div className="title"><span>Get notified when BallotView is ready for you</span></div>
           <input
             type="text"
             className="email"
@@ -101,7 +101,7 @@ class MainSection extends Component {
           >{(!sending) ? 'Notify Me' : 'Subscribing...'}</button>
           {(() => {
             if (sent !== '') {
-              return (<div className="highlight"><span>Thanks! We've added {sent} to our VIP list.</span></div>);
+              return (<div className="highlight"><span>Thanks! We've added <b>{sent}</b> to our VIP list.</span></div>);
             }
           })()}
           {/* <div><a>Why do we need your address?</a></div>*/}

@@ -6,7 +6,7 @@ main#landing {
   }
 
   .highlight {
-    span {
+    > span {
       background-color: $highlight;
     }
   }
@@ -130,7 +130,7 @@ main#landing {
 
       margin: $pad-lg;
 
-      span {
+      .title {
         font-size: $font-lg;
         font-weight: bold;
         display: block;

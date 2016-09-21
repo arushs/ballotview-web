@@ -85797,9 +85797,13 @@ var MainSection = function (_Component) {
           'div',
           { id: 'email_collect' },
           _react2.default.createElement(
-            'span',
-            null,
-            'Get notified when BallotView is ready for you'
+            'div',
+            { className: 'title' },
+            _react2.default.createElement(
+              'span',
+              null,
+              'Get notified when BallotView is ready for you'
+            )
           ),
           _react2.default.createElement('input', {
             type: 'text',
@@ -85834,7 +85838,11 @@ var MainSection = function (_Component) {
                   'span',
                   null,
                   'Thanks! We\'ve added ',
-                  sent,
+                  _react2.default.createElement(
+                    'b',
+                    null,
+                    sent
+                  ),
                   ' to our VIP list.'
                 )
               );
