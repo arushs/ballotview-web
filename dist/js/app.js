@@ -85377,6 +85377,11 @@ var MainSection = function MainSection(_ref) {
       { id: 'logo' },
       _react2.default.createElement(
         'div',
+        { className: 'logo_img' },
+        _react2.default.createElement('img', { src: '/dist/images/ivoted.png' })
+      ),
+      _react2.default.createElement(
+        'div',
         { className: 'title' },
         _react2.default.createElement(
           'span',

@@ -19,10 +19,22 @@ main#landing {
       left: $pad;
       top: $pad;
 
+      .logo_img {
+        display: block;
+        width: 48px;
+        float: left;
+        margin-right: $unit * 2;
+
+        img {
+          max-width: 100%;
+        }
+      }
+
       .title {
         font-family: 'Questrial', sans-serif;
-        font-size: 28px;
+        font-size: 32px;
         line-height: 1;
+        overflow: hidden;
 
         // .blue {
         //   color: #0D47A1;
