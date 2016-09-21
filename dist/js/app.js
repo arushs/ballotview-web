@@ -85266,6 +85266,78 @@ exports.default = BallotPoll;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var BallotTranslateSwitch = function BallotTranslateSwitch(_ref) {
+  var es = _ref.es;
+  var translate = _ref.translate;
+
+  var other = _objectWithoutProperties(_ref, ['es', 'translate']);
+
+  var translateToEnglish = function translateToEnglish(e) {
+    e.stopPropagation();
+    if (es) {
+      translate(false);
+    }
+  };
+
+  var translateToSpanish = function translateToSpanish(e) {
+    e.stopPropagation();
+    if (!es) {
+      translate(true);
+    }
+  };
+
+  return _react2.default.createElement(
+    'div',
+    _extends({ className: 'ballot_switch' }, other),
+    _react2.default.createElement(
+      'div',
+      { className: (0, _classnames2.default)('state', { active: !es }), onClick: translateToEnglish },
+      _react2.default.createElement(
+        'span',
+        null,
+        'English'
+      )
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: (0, _classnames2.default)('state', { active: es }), onClick: translateToSpanish },
+      _react2.default.createElement(
+        'span',
+        null,
+        'Español'
+      )
+    )
+  );
+};
+
+BallotTranslateSwitch.propTypes = {
+  es: _react2.default.PropTypes.bool.isRequired, // spanish
+  translate: _react2.default.PropTypes.func.isRequired
+};
+
+exports.default = BallotTranslateSwitch;
+
+},{"classnames":67,"react":427}],496:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 var party = {
   dem: '#0D47A1',
   rep: '#B71C1C',
@@ -85375,7 +85447,122 @@ var prop52 = {
 
 exports.default = [presidential, senator, prop51, prop52];
 
-},{}],496:[function(require,module,exports){
+},{}],497:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var party = {
+  dem: '#0D47A1',
+  rep: '#B71C1C',
+  lib: '#F57F17',
+  gre: '#558B2F'
+};
+
+var presidential = {
+  title: ['I. ', { text: 'El presidente y el vicepresidente de los Estados Unidos', click: true }],
+  secondary: ['Votar por 1 par'],
+  poll: [{
+    info: [{
+      title: [{ text: 'Hilary Clinton', click: true }],
+      sub: ['para ', { text: 'el presidente', click: true }]
+    }, {
+      title: [{ text: 'Tim Kaine', click: true }],
+      sub: ['para ', { text: 'el vicepresidente', click: true }]
+    }],
+    trail: [{ text: 'Demócrata', click: true }],
+    color: party.dem
+  }, {
+    info: [{
+      title: [{ text: 'Donald Trump', click: true }],
+      sub: ['para ', { text: 'el presidente', click: true }]
+    }, {
+      title: [{ text: 'Mike Pence', click: true }],
+      sub: ['para ', { text: 'el vicepresidente', click: true }]
+    }],
+    trail: [{ text: 'Republicano', click: true }],
+    color: party.rep
+  }, {
+    info: [{
+      title: [{ text: 'Gary Johnson', click: true }],
+      sub: ['para ', { text: 'el presidente', click: true }]
+    }, {
+      title: [{ text: 'William Weld', click: true }],
+      sub: ['para ', { text: 'el vicepresidente', click: true }]
+    }],
+    trail: [{ text: 'Libertario', click: true }],
+    color: party.lib
+  }, {
+    info: [{
+      title: [{ text: 'Jill Stein', click: true }],
+      sub: ['para ', { text: 'el presidente', click: true }]
+    }, {
+      title: [{ text: 'Ajamu Baraka', click: true }],
+      sub: ['para ', { text: 'el vicepresidente', click: true }]
+    }],
+    trail: [{ text: 'Verde', click: true }],
+    color: party.gre
+  }]
+};
+
+var senator = {
+  title: ['II. ', { text: 'El senador de Estados Unidos, California', click: true }],
+  secondary: ['Vote por 1'],
+  poll: [{
+    info: [{
+      title: [{ text: 'Kamala Harris', click: true }]
+    }],
+    trail: [{ text: 'Demócrata', click: true }],
+    color: party.dem
+  }, {
+    info: [{
+      title: [{ text: 'Loretta Sanchez', click: true }]
+    }],
+    trail: [{ text: 'Demócrata', click: true }],
+    color: party.dem
+  }]
+};
+
+var prop51 = {
+  title: [{ text: 'La Propuesta 51 de California', click: true }, ', ', 'Bonos de Instalaciones Públicas'],
+  secondary: [{ text: 'Educación', click: true }, '. ', { text: 'CISS', click: true }, '. ', '$9 mil millones en bonos para la educación y las escuelas.'],
+  poll: [{
+    info: [{
+      title: [{ text: 'Sí', click: true }]
+    }, {
+      sub: ['Un voto de "sí" apoya el estado que emite $ 9 mil millones en bonos para financiar la mejora y construcción de las instalaciones escolares para escuelas K-12 y universidades de la comunidad.']
+    }]
+  }, {
+    info: [{
+      title: [{ text: 'No', click: true }]
+    }, {
+      sub: ['Un voto de "no" se opone al Estado emisor $ 9 mil millones en nueva deuda para financiar la mejora y construcción de instalaciones educativas.']
+    }]
+  }]
+};
+
+var prop52 = {
+  title: [{ text: 'La Propuesta 52 de California', click: true }, ', ', 'La aprobación de los votantes para desviar la atención hospitalaria ingresos dedicados a Medi-Cal'],
+  secondary: [{ text: 'Cuidado de la salud', click: true }, '. ', { text: 'CICA/SS', click: true }, '. ', 'Aprobación de los votantes de los cambios en el programa de tarifas hospital.'],
+  poll: [{
+    info: [{
+      title: [{ text: 'Sí', click: true }]
+    }, {
+      sub: ['Un voto de "sí" admite que requieran aprobación de los votantes para cambiar el uso dedicado de ciertas cuotas de los hospitales se utilizan para dibujar a juego crédito de fondos federales servicios de Medi-Cal. La iniciativa también fue diseñado para requerir una mayoría de dos tercios de la Legislatura de California para poner fin al programa de tarifas hospital.']
+    }]
+  }, {
+    info: [{
+      title: [{ text: 'No', click: true }]
+    }, {
+      sub: ['Un voto de "no" se opone a esta iniciativa, permite que el legislador de modificar, ampliar o eliminar el programa de tarifa hospital con un voto de la mayoría.']
+    }]
+  }]
+};
+
+exports.default = [presidential, senator, prop51, prop52];
+
+},{}],498:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85388,6 +85575,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _BallotTranslateSwitch = require('../ballot/BallotTranslateSwitch');
+
+var _BallotTranslateSwitch2 = _interopRequireDefault(_BallotTranslateSwitch);
+
 var _BallotHeading = require('../ballot/BallotHeading');
 
 var _BallotHeading2 = _interopRequireDefault(_BallotHeading);
@@ -85399,6 +85590,10 @@ var _BallotCard2 = _interopRequireDefault(_BallotCard);
 var _sample_data = require('../ballot/examples/sample_data');
 
 var _sample_data2 = _interopRequireDefault(_sample_data);
+
+var _sample_data_es = require('../ballot/examples/sample_data_es');
+
+var _sample_data_es2 = _interopRequireDefault(_sample_data_es);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -85424,9 +85619,12 @@ var DetailSection = function (_Component) {
 
     _this.state = {
       ballots: _sample_data2.default,
-      tallies: tallies
+      ballotsEs: _sample_data_es2.default,
+      tallies: tallies,
+      es: false
     };
     _this.onUpdate = _this.onUpdate.bind(_this);
+    _this.onSwitchTranslate = _this.onSwitchTranslate.bind(_this);
     return _this;
   }
 
@@ -85440,9 +85638,18 @@ var DetailSection = function (_Component) {
       });
     }
   }, {
+    key: 'onSwitchTranslate',
+    value: function onSwitchTranslate(es) {
+      this.setState({ es: es });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
+
+      var es = this.state.es;
+
+      var ballots = !es ? this.state.ballots : this.state.ballotsEs;
 
       return _react2.default.createElement(
         'section',
@@ -85450,12 +85657,13 @@ var DetailSection = function (_Component) {
         _react2.default.createElement(
           'section',
           { id: 'left' },
+          _react2.default.createElement(_BallotTranslateSwitch2.default, { es: es, translate: this.onSwitchTranslate }),
           _react2.default.createElement(_BallotHeading2.default, {
-            title: 'Consolidated General Election',
-            secondary: 'LOS ANGELES, CALIFORNIA',
-            sub: 'Nov 8, 2016'
+            title: !es ? 'Consolidated General Election' : 'Consolidada elección general',
+            secondary: !es ? 'LOS ANGELES, CALIFORNIA' : 'LOS ANGELES, CALIFORNIA',
+            sub: !es ? 'Nov 8, 2016' : '8 Nov, 2016'
           }),
-          this.state.ballots.map(function (ballot, i) {
+          ballots.map(function (ballot, i) {
             return _react2.default.createElement(_BallotCard2.default, {
               key: i,
               id: i,
@@ -85569,7 +85777,7 @@ var DetailSection = function (_Component) {
 
 exports.default = DetailSection;
 
-},{"../ballot/BallotCard":491,"../ballot/BallotHeading":493,"../ballot/examples/sample_data":495,"react":427}],497:[function(require,module,exports){
+},{"../ballot/BallotCard":491,"../ballot/BallotHeading":493,"../ballot/BallotTranslateSwitch":495,"../ballot/examples/sample_data":496,"../ballot/examples/sample_data_es":497,"react":427}],499:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85614,7 +85822,7 @@ var FooterSection = function FooterSection() {
 
 exports.default = FooterSection;
 
-},{"classnames":67,"react":427}],498:[function(require,module,exports){
+},{"classnames":67,"react":427}],500:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85863,7 +86071,7 @@ var MainSection = function (_Component) {
 
 exports.default = MainSection;
 
-},{"classnames":67,"react":427}],499:[function(require,module,exports){
+},{"classnames":67,"react":427}],501:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85896,7 +86104,7 @@ var RockTheVoteSection = function RockTheVoteSection() {
 
 exports.default = RockTheVoteSection;
 
-},{"classnames":67,"react":427}],500:[function(require,module,exports){
+},{"classnames":67,"react":427}],502:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -85980,7 +86188,7 @@ TabsSection.propTypes = {
 
 exports.default = TabsSection;
 
-},{"classnames":67,"react":427,"react-router":275}],501:[function(require,module,exports){
+},{"classnames":67,"react":427,"react-router":275}],503:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -86021,7 +86229,7 @@ var RockTheVote = function RockTheVote() {
   )
 ), document.getElementById('app'));
 
-},{"./views/App":502,"./views/Landing":503,"react":427,"react-dom":245,"react-router":275}],502:[function(require,module,exports){
+},{"./views/App":504,"./views/Landing":505,"react":427,"react-dom":245,"react-router":275}],504:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -86049,7 +86257,7 @@ App.propTypes = { children: _react2.default.PropTypes.object };
 
 exports.default = App;
 
-},{"react":427}],503:[function(require,module,exports){
+},{"react":427}],505:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -86114,7 +86322,7 @@ Landing.propTypes = {
 
 exports.default = Landing;
 
-},{"../api-interface":490,"../components/landing/DetailSection":496,"../components/landing/FooterSection":497,"../components/landing/MainSection":498,"../components/landing/RockTheVoteSection":499,"../components/landing/TabsSection":500,"react":427}]},{},[501])
+},{"../api-interface":490,"../components/landing/DetailSection":498,"../components/landing/FooterSection":499,"../components/landing/MainSection":500,"../components/landing/RockTheVoteSection":501,"../components/landing/TabsSection":502,"react":427}]},{},[503])
 
 
 //# sourceMappingURL=app.js.map

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 
+import BallotTranslateSwitch from '../ballot/BallotTranslateSwitch';
 import BallotHeading from '../ballot/BallotHeading';
 import BallotCard from '../ballot/BallotCard';
+
 import sampleData from '../ballot/examples/sample_data';
+import sampleDataEs from '../ballot/examples/sample_data_es';
 
 const tallies = sampleData.map((ballot) => {
   return ballot.poll.map((option) => {
@@ -15,9 +18,12 @@ class DetailSection extends Component {
     super(props);
     this.state = {
       ballots: sampleData,
-      tallies: tallies
+      ballotsEs: sampleDataEs,
+      tallies: tallies,
+      es: false
     };
     this.onUpdate = this.onUpdate.bind(this);
+    this.onSwitchTranslate = this.onSwitchTranslate.bind(this);
   }
 
   onUpdate(index, newTally) {
@@ -26,16 +32,25 @@ class DetailSection extends Component {
     });
   }
 
+  onSwitchTranslate(es) {
+    this.setState({ es });
+  }
+
   render() {
+
+    let { es } = this.state;
+    let ballots = (!es) ? this.state.ballots : this.state.ballotsEs;
+
     return (
       <section id="detail">
         <section id="left">
+          <BallotTranslateSwitch es={es} translate={this.onSwitchTranslate} />
           <BallotHeading
-            title="Consolidated General Election"
-            secondary="LOS ANGELES, CALIFORNIA"
-            sub="Nov 8, 2016"
+            title={!es ? 'Consolidated General Election' : 'Consolidada elección general'}
+            secondary={!es ? 'LOS ANGELES, CALIFORNIA' : 'LOS ANGELES, CALIFORNIA'}
+            sub={!es ? 'Nov 8, 2016' : '8 Nov, 2016'}
           />
-          {this.state.ballots.map((ballot, i) => (
+          {ballots.map((ballot, i) => (
             <BallotCard
               key={i}
               id={i}
