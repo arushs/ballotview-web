@@ -12,7 +12,8 @@ const methods = {};
 // data: JSON Data
 function interfacer(reqUrl, verb, data) {
   return new Promise((resolve, reject) => {
-    const requestUrl = '/api' + reqUrl;
+    const requestUrl = window.location.href + 'api' + reqUrl;
+    console.log(requestUrl);
     buffer();
     function buffer() {
       var req = request({
