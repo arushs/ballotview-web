@@ -50,15 +50,19 @@ class DetailSection extends Component {
         </section>
         <section id="right">
           <section className="detail_module">
-            <div className="title"><span>Vote online</span></div>
+            <div className="title"><span>View your local ballot</span></div>
             <div className="desc"><span>Something here...</span></div>
           </section>
           <section className="detail_module">
-            <div className="title"><span>Inspect the ballot</span></div>
+            <div className="title"><span>Inspect the candidates and measures</span></div>
             <div className="desc"><span>Something here...</span></div>
           </section>
           <section className="detail_module">
-            <div className="title"><span>Your votes are private</span></div>
+            <div className="title"><span>Record your preferences</span></div>
+            <div className="desc"><span>Something here...</span></div>
+          </section>
+          <section className="detail_module">
+            <div className="title"><span>We'll keep your selections private and anonymized</span></div>
             <div className="desc"><span>Something here...</span></div>
           </section>
         </section>
