@@ -44,7 +44,7 @@ class MainSection extends Component {
     if (this.state.emailIsValid && !this.state.sending) {
       this.setState({ sending: true });
       api.submitEmail(this.state.email).then((data) => {
-        console.log(data);
+        // console.log(data);
         _this.setState({
           email: '',
           state: '',

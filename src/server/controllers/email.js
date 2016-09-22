@@ -49,9 +49,9 @@ router.post('/submit', function(req, res) {
     } else {
       // console.log(error);
     }
+
+    res.sendStatus(response.statusCode);
   });
-  
-  res.status(200);
 });
 
 module.exports = router;
