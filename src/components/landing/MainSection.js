@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import api from '../../api-interface';
 
 const content = {
-  message: 'Inspect your ballot',
+  message: 'Voting should be easy',
   blurb: 'Access detailed, non-partisan ballot content before the election ' +
   'so that you can vote easy.',
   exampleEmail: 'youremail@domain.ext'
