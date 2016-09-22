@@ -10,7 +10,7 @@ const presidential = {
   secondary: ['Vote for 1 pair'],
   poll: [{
     info: [{
-      title: [{ text: 'Hilary Clinton', click: true }],
+      title: [{ text: 'Hillary Clinton', click: true }],
       sub: ['for ', { text: 'President', click: true }]
     }, {
       title: [{ text: 'Tim Kaine', click: true }],
