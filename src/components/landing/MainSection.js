@@ -3,8 +3,7 @@ import api from '../../api-interface';
 
 const content = {
   message: 'Voting should be easy',
-  blurb: 'Access detailed, non-partisan ballot content before the election ' +
-  'so that you can vote easy.',
+  blurb: 'Access detailed, non-partisan ballot content before the election so that you can get informed and vote for what you believe in.',
   exampleEmail: 'youremail@domain.ext'
 };
 
@@ -65,7 +64,7 @@ class MainSection extends Component {
     return (
       <section id="main">
         <div id="logo">
-          <div className="logo_img"><img src="/dist/images/ivoted.png" /></div>
+          <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
           <div className="title">BallotView</div>
           <div className="sub"><span>Voting made easy</span></div>
         </div>
