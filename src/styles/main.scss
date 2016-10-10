@@ -1,4 +1,4 @@
-@import 'https://fonts.googleapis.com/css?family=Questrial|Roboto:300,400,700';
+// @import 'https://fonts.googleapis.com/css?family=Questrial|Roboto:300,400,700';
 @import 'normalize';
 
 $font-sm: 12px;
@@ -25,6 +25,9 @@ body {
   padding: 0;
   font-size: $font-md;
   line-height: 1.4;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  -webkit-text-size-adjust:100%;
 }
 
 @import 'landing';

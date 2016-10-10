@@ -1,21 +1,68 @@
 import React from 'react';
+import classNames from 'classnames';
 import BallotClickableText from './BallotClickableText';
-import BallotPoll from './BallotPoll';
 
-const BallotCard = ({ id, title, secondary, poll, tally, onUpdate, click, children }) => {
+const BallotPoll = ({ pollData, pollTally, pollSelectOption, click }) => (
+  <ul className="ballot_poll">
+    {pollData.map((data, i) => {
+
+      let selectOption = (e) => {
+        e.stopPropagation();
+        pollSelectOption(i);
+      }
+
+      return (<li key={i}>
+
+        <div
+          className={classNames('radio', { selected: pollTally[i] })}
+          onClick={selectOption}
+          style={{ backgroundColor: data.color }}
+        ><span /></div>
+
+        <div className="info">
+          {(() => { if (data.trail) {
+            return (<div className="trail">
+              <BallotClickableText
+                text={data.trail}
+                click={click}
+                style={{ color: data.color }}
+              />
+            </div>);
+          }})()}
+          {data.info.map((option, j) => (
+            <div className="ballot_option" key={j}>
+              {(() => { if (option.title) {
+                return (<BallotClickableText className="option_title" text={option.title} click={click} />);
+              }})()}
+
+              {(() => { if (option.sub) {
+                return (<BallotClickableText className="option_sub" text={option.sub} click={click} />);
+              }})()}
+
+            </div>
+          ))}
+        </div>
+
+      </li>);
+    })}
+  </ul>
+);
+
+BallotPoll.propTypes = {
+  pollData: React.PropTypes.array.isRequired,
+  pollTally: React.PropTypes.array.isRequired,
+  pollSelectOption: React.PropTypes.func,
+  click: React.PropTypes.func
+};
+
+const BallotCard = ({ ballotIndex, cardIndex, title, secondary, poll, tally, onUpdate, click, children }) => {
 
   function pollSelectOption(index) {
     let newTally = tally.map((bool, i) => {
       return (index === i && !bool);
     });
-    onUpdate(id, newTally);
+    onUpdate(ballotIndex, cardIndex, newTally);
   }
-
-  // shouldComponentUpdate(newProps, newState) {
-  //   for (var i in this.state.tally)
-  //     if (this.state.tally[i] !== newState.tally) return true;
-  //   return false;
-  // }
 
   return (
     <div className="ballot_card">
@@ -41,14 +88,15 @@ const BallotCard = ({ id, title, secondary, poll, tally, onUpdate, click, childr
 }
 
 BallotCard.propTypes = {
-  children: React.PropTypes.element,
+  ballotIndex: React.PropTypes.number,
+  cardIndex: React.PropTypes.number,
   title: React.PropTypes.array,
   secondary: React.PropTypes.array,
   click: React.PropTypes.func,
   poll: React.PropTypes.array,
   tally: React.PropTypes.array,
   onUpdate: React.PropTypes.func,
-  id: React.PropTypes.number
+  children: React.PropTypes.element
 };
 
 export default BallotCard;

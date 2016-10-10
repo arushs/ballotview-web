@@ -3,7 +3,6 @@ import React from 'react';
 const BallotClickableText = ({ text, click, ...other }) => (
   <span {...other}>
     {text.map((data, i) => {
-
       if (typeof data === 'object') {
         if (data.click) {
           return (
@@ -13,19 +12,14 @@ const BallotClickableText = ({ text, click, ...other }) => (
               onClick={click(data.text)}
             >{data.text}</span>
           );
-        } else {
-          return (<span key={i}>{data.text}</span>);
-        }
-      } else {
-        return (<span key={i}>{data}</span>);
-      }
+        } else return (<span key={i}>{data.text}</span>);
+      } else return (<span key={i}>{data}</span>);
     })}
   </span>
 );
 
 BallotClickableText.propTypes = {
-  text: React.PropTypes.array.isRequired,
-  click: React.PropTypes.func,
+  text: React.PropTypes.array.isRequired
 };
 
 export default BallotClickableText;
