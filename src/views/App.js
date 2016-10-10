@@ -2,9 +2,9 @@ import React from 'react';
 // import { version } from '../../package.json';
 
 const App = ({ children }) => (
-  <main>
+  <div>
     {children || '404'}
-  </main>
+  </div>
 );
 
 App.propTypes = { children: React.PropTypes.object };

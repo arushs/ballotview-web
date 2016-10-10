@@ -1,0 +1,71 @@
+
+#ballotview {
+
+  #ballot {
+    position: absolute;
+    left: 150px;
+    right: 400px;
+    & > .ballot {
+      width: 400px;
+      margin: 20px auto;
+    }
+  }
+
+  #inspector_nav {
+    width: 200px;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    #logo {
+      margin-bottom: 20px;
+    }
+
+    ul, li {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+  }
+
+  #inspector {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 400px;
+
+    .inspector_widget {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      top: 20px;
+      bottom: 20px;
+    }
+
+
+  }
+
+}
+
+
+.inspector_widget {
+  overflow: auto;
+  background-color: #FFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+
+  .heading {
+    background-color: rgb(13, 71, 161);
+    color: #FFF;
+    padding: 16px;
+  }
+
+  .content {
+    padding: 16px;
+  }
+}

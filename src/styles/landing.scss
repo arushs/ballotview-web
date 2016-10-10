@@ -74,33 +74,9 @@ main#landing {
     overflow: auto;
 
     #logo {
-      text-align: left;
-      display: block;
       position: absolute;
       left: $pad;
       top: $pad;
-
-      .logo_img {
-        display: block;
-        width: 48px;
-        float: left;
-        margin-right: $unit * 2;
-
-        img {
-          max-width: 100%;
-        }
-      }
-
-      .title {
-        font-family: 'Questrial', sans-serif;
-        font-size: 32px;
-        line-height: 1;
-        overflow: hidden;
-      }
-
-      .sub {
-        font-size: $font-md;
-      }
     }
 
     #right_feature {
@@ -295,5 +271,38 @@ main#landing {
       padding: 6px;
       border-radius: 3px;
       display: inline-block;
+  }
+}
+
+#logo {
+  text-align: left;
+  display: block;
+
+  .logo_img {
+    display: block;
+    width: 48px;
+    float: left;
+    margin-right: $unit * 2;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  .title {
+    font-family: 'Questrial', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+    overflow: hidden;
+  }
+
+  .sub {
+    font-size: $font-md;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
   }
 }

@@ -5,12 +5,18 @@ const party = {
   gre: '#558B2F'
 }
 
+const heading = {
+  title: 'Consolidated General Election',
+  location: 'LOS ANGELES, CALIFORNIA',
+  date: 'Nov 8, 2016'
+};
+
 const presidential = {
   title: ['I. ', { text: 'President and Vice President of the United States', click: true }],
-  secondary: ['Vote for 1 pair'],
+  subtext: ['Vote for 1 pair'],
   poll: [{
     info: [{
-      title: [{ text: 'Hillary Clinton', click: true }],
+      title: [{ text: 'Hilary Clinton', click: true }],
       sub: ['for ', { text: 'President', click: true }]
     }, {
       title: [{ text: 'Tim Kaine', click: true }],
@@ -53,7 +59,7 @@ const presidential = {
 
 const senator = {
   title: ['II. ', { text: 'US Senator, California', click: true }],
-  secondary: ['Vote for 1'],
+  subtext: ['Vote for 1'],
   poll: [{
     info: [{
       title: [{ text: 'Kamala Harris', click: true }]
@@ -71,7 +77,7 @@ const senator = {
 
 const prop51 = {
   title: [{ text: 'California Proposition 51', click: true }, ', ', 'Public School Facility Bonds'],
-  secondary: [{ text: 'Education', click: true }, '. ', { text: 'CISS', click: true }, '. ', '$9 billion in bonds for education and schools.'],
+  subtext: [{ text: 'Education', click: true }, '. ', { text: 'CISS', click: true }, '. ', '$9 billion in bonds for education and schools.'],
   poll: [{
     info: [{
       title: [{ text: 'Yes', click: true }]
@@ -89,7 +95,7 @@ const prop51 = {
 
 const prop52 = {
   title: [{ text: 'California Proposition 52', click: true }, ', ', 'Voter Approval to Divert Hospital Fee Revenue Dedicated to Medi-Cal'],
-  secondary: [{ text: 'Healthcare', click: true }, '. ', { text: 'CICA/SS', click: true }, '. ', 'Voter approval of changes to the hospital fee program.'],
+  subtext: [{ text: 'Healthcare', click: true }, '. ', { text: 'CICA/SS', click: true }, '. ', 'Voter approval of changes to the hospital fee program.'],
   poll: [{
     info: [{
       title: [{ text: 'Yes', click: true }]
@@ -105,4 +111,11 @@ const prop52 = {
   }]
 };
 
-export default [presidential, senator, prop51, prop52];
+export default { heading,
+  ballot: [{
+    title: 'Candidates',
+    cards: [presidential, senator]
+  }, {
+    title: 'State Measures',
+    cards: [prop51, prop52]
+}]};

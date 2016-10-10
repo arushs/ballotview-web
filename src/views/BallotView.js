@@ -1,28 +1,13 @@
 import React, { Component } from 'react';
+
 import Ballot from '../components/ballot/Ballot';
-import BallotClickableText from '../components/ballot/BallotClickableText';
+import Inspector from '../components/inspector/Inspector';
+import InspectorNav from '../components/inspector/InspectorNav';
 
 import ballots from '../components/ballot/examples/sample_data';
 const tallies = ballots.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
 
-const InspectorNav = ({ ballots }) => (
-  <ul className="nav">
-    {ballots.map((ballot, ballotIndex) => (
-      <li key={ballotIndex}>
-        <a>{ballot.title}</a>
-        <ul>
-          {ballot.cards.map((card, cardIndex) => (
-            <li key={cardIndex}>
-              <a><BallotClickableText text={[card.title]} /></a>
-            </li>
-          ))}
-        </ul>
-      </li>
-    ))}
-  </ul>
-);
-
-class Inspector extends Component {
+class BallotView extends Component {
   constructor(props) {
     super(props);
 
@@ -41,27 +26,27 @@ class Inspector extends Component {
 
   render() {
     return (
-      <main id="application">
+      <main id="ballotview">
         <section id="ballot">
           <Ballot
             heading={ballots.heading}
             ballots={ballots.ballot}
             tallies={tallies}
             onUpdate={this.onUpdate}
-            />
+          />
+        </section>
+        <section id="inspector_nav">
+          <div id="logo">
+            <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
+          </div>
           <InspectorNav ballots={ballots.ballot} />
         </section>
         <section id="inspector">
-          <section className="heading">
-          something
-          </section>
-          <section className="content">
-          something
-          </section>
+          <Inspector />
         </section>
       </main>
     );
   }
 }
 
-export default Inspector;
+export default BallotView;
