@@ -12,7 +12,9 @@ class BallotView extends Component {
     super(props);
 
     this.state = {
-
+      heading: ballots.heading,
+      ballots: ballots.ballot,
+      tallies: tallies
     };
 
     this.onUpdate = this.onUpdate.bind(this);
@@ -29,9 +31,9 @@ class BallotView extends Component {
       <main id="ballotview">
         <section id="ballot">
           <Ballot
-            heading={ballots.heading}
-            ballots={ballots.ballot}
-            tallies={tallies}
+            heading={this.state.heading}
+            ballots={this.state.ballots}
+            tallies={this.state.tallies}
             onUpdate={this.onUpdate}
           />
         </section>
@@ -40,6 +42,11 @@ class BallotView extends Component {
             <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
           </div>
           <InspectorNav ballots={ballots.ballot} />
+          <div id="saveActions">
+            <div>Edit Mode</div>
+            <button>Save Ballot</button>
+            <button>Share</button>
+          </div>
         </section>
         <section id="inspector">
           <Inspector />

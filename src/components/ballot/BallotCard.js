@@ -55,7 +55,7 @@ BallotPoll.propTypes = {
   click: React.PropTypes.func
 };
 
-const BallotCard = ({ ballotIndex, cardIndex, title, secondary, poll, tally, onUpdate, click, children }) => {
+const BallotCard = ({ ballotIndex, cardIndex, title, secondary, poll, tally, onUpdate, click, children, ...other }) => {
 
   function pollSelectOption(index) {
     let newTally = tally.map((bool, i) => {
@@ -65,7 +65,7 @@ const BallotCard = ({ ballotIndex, cardIndex, title, secondary, poll, tally, onU
   }
 
   return (
-    <div className="ballot_card">
+    <div className="ballot_card" {...other}>
       <div className="heading">
         <div className="title">
           <BallotClickableText text={title} click={click} />

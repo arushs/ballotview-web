@@ -5,10 +5,14 @@ const InspectorNav = ({ ballots }) => (
   <ul className="nav">
     {ballots.map((ballot, ballotIndex) => (
       <li key={ballotIndex}>
-        <a>{ballot.title}</a>
+        <a href={"#" + ballot.title}>{ballot.title}</a>
         <ul>
           {ballot.cards.map((card, cardIndex) => (
-            <li key={cardIndex}><a><BallotClickableText text={[card.title]} /></a></li>
+            <li key={cardIndex}>
+              <a href={"#" + ballotIndex + "-" + cardIndex}>
+                <BallotClickableText text={card.title} click={()=>{}} />
+              </a>
+            </li>
           ))}
         </ul>
       </li>

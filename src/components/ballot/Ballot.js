@@ -11,7 +11,7 @@ const Ballot = ({ heading, ballots, tallies, onUpdate }) => (
     />
     {ballots.map((ballot, ballotIndex) => (
       <section key={"ballot-" + ballotIndex}>
-        <h2>{ballot.title}</h2>
+        <h2 id={ballot.title}>{ballot.title}</h2>
         {ballot.cards.map((card, cardIndex) => (
           <BallotCard
             key={"card-" + cardIndex}
@@ -23,7 +23,8 @@ const Ballot = ({ heading, ballots, tallies, onUpdate }) => (
             tally={tallies[ballotIndex][cardIndex]}
             onUpdate={onUpdate}
             click={() => {}}
-            />
+            id={ballotIndex + "-" + cardIndex}
+          />
         ))}
       </section>
     ))}

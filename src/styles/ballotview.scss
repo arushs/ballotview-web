@@ -3,7 +3,7 @@
 
   #ballot {
     position: absolute;
-    left: 150px;
+    left: 180px;
     right: 400px;
     & > .ballot {
       width: 400px;
@@ -27,6 +27,41 @@
       list-style: none;
       padding: 0;
       margin: 0;
+    }
+
+    ul.nav {
+      a {
+        cursor: pointer;
+        color: #000;
+        font-size: $font-md;
+        display: block;
+        margin-bottom: 4px;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      ul {
+        a {
+          font-size: $font-sm;
+          margin-left: 8px;
+        }
+      }
+    }
+
+    #saveActions {
+      position: absolute;
+      bottom: 20px;
+      color: rgba(0, 0, 0, 0.4);
+      text-align: left;
+
+      button {
+        margin: 4px 0;
+        width: 100%;
+        padding: 0;
+        height: 40px;
+      }
     }
 
   }

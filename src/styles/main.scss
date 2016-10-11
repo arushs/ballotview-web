@@ -1,9 +1,9 @@
 // @import 'https://fonts.googleapis.com/css?family=Questrial|Roboto:300,400,700';
 @import 'normalize';
 
-$font-sm: 12px;
-$font-md: 14px;
-$font-lg: 16px;
+$font-sm: 13px;
+$font-md: 15px;
+$font-lg: 17px;
 
 $unit: 5px;
 $pad: $unit * 4;
@@ -30,6 +30,7 @@ body {
   -webkit-text-size-adjust:100%;
 }
 
+@import 'components';
 @import 'ballot';
 @import 'landing';
 @import 'ballotview';
