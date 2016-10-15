@@ -3,7 +3,7 @@ import React from 'react';
 const Inspector = (props) => (
   <section className="inspector_widget">
     <section className="heading">
-      something
+      <h2>Hilary Clinton</h2>
     </section>
     <section className="content">
         something

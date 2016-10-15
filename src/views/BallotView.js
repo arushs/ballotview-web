@@ -29,6 +29,17 @@ class BallotView extends Component {
   render() {
     return (
       <main id="ballotview">
+        <section id="toolbar">
+          <div id="logo">
+            <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
+            <div className="title">BallotView</div>
+          </div>
+          <div id="saveActions">
+            <span>Edit Mode</span>
+            <button>Save Ballot</button>
+            <button>Share</button>
+          </div>
+        </section>
         <section id="ballot">
           <Ballot
             heading={this.state.heading}
@@ -38,15 +49,7 @@ class BallotView extends Component {
           />
         </section>
         <section id="inspector_nav">
-          <div id="logo">
-            <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
-          </div>
           <InspectorNav ballots={ballots.ballot} />
-          <div id="saveActions">
-            <div>Edit Mode</div>
-            <button>Save Ballot</button>
-            <button>Share</button>
-          </div>
         </section>
         <section id="inspector">
           <Inspector />
