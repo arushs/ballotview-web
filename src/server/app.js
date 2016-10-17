@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 
 app.use('/api/email', email);
-app.use('/ballotinfo', googlecivic);
+app.use('/ballot', googlecivic);
 
 app.use('/dist', express.static(path.join(__dirname, '..', '..', 'dist')));
 
