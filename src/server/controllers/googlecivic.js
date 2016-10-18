@@ -2,6 +2,70 @@ const express = require('express');
 const router = express.Router();
 const request = require('request');
 
+const parties = {
+  Democratic: '#0D47A1',
+  Republican: '#B71C1C',
+  Libertarian: '#F57F17',
+  Green: '#558B2F'
+};
+
+function BuildReferendumObject(contest)
+{
+    data = {};
+    data['title'] = [contest.referendumTitle + ": "];
+    if ("referendumSubtitle" in contest)
+    {
+        data['title'].push(contest.referendumSubtitle);
+    }
+    else
+    {
+        data['title'].push(contest.referendumBrief);
+    }
+    data['subtext'] = [contest.referendumText];
+
+    data['poll'] = [];
+    var subPoll = {};
+    subPoll['info'] = [];
+    subPoll['info'].push({"title":["Yes"]});
+    data['poll'].push(subPoll);
+
+    subPoll = {};
+    subPoll['info'] = [];
+    subPoll['info'].push({"title":["No"]});
+    data['poll'].push(subPoll);
+    return data;
+}
+
+function BuildCandidateObject(contest)
+{
+    data = {};
+    data['title'] = [contest.office];
+    data['subtext'] = ["Vote for " + contest.numberVotingFor];
+    data['poll'] = [];
+
+    for (var i in contest.candidates)
+    {
+        candidate = contest.candidates[i];
+        var subPoll = {};
+        subPoll['info'] = [];
+        subPoll['info'].push({
+            "title":[candidate.name]
+        });
+        subPoll.info.trail = [candidate.party];
+        for (var key in parties)
+        {
+            if (candidate.party.includes(key))
+            {
+                subPoll.info['color'] = parties[key];
+            }
+        }
+
+        data['poll'].push(subPoll);
+    }
+
+    return data;
+}
+
 router.get('/', function(req, res) {
 	// var address = {};
 	var info = request({
@@ -15,52 +79,35 @@ router.get('/', function(req, res) {
       console.log(error);
     }
 
-    var j = "";
-    // console.log(response.body.contests);
     var resp = {};
-
     resp['ballot'] = [];
 
     var stateMeasureResp = {};
     stateMeasureResp['title'] = "State Measures";
     stateMeasureResp['cards'] = [];
 
+    var candidateResp = {};
+    candidateResp.title = "Candidates";
+    candidateResp.cards = [];
+
     for(var i in response.body.contests){
         var contest = response.body.contests[i];
         if (contest.type == 'Referendum')
         {
-            data = {};
-            data['title'] = [contest.referendumTitle + ": "];
-            if ("referendumSubtitle" in contest)
-            {
-                data['title'].push(contest.referendumSubtitle);
-            }
-            else
-            {
-                data['title'].push(contest.referendumBrief);
-            }
-            data['subtext'] = [contest.referendumText];
-
-            data['poll'] = [];
-            var subPoll = {};
-            subPoll['info'] = [];
-            subPoll['info'].push({"title":["Yes"]});
-            data['poll'].push(subPoll);
-
-            subPoll = {};
-            subPoll['info'] = [];
-            subPoll['info'].push({"title":["No"]});
-            data['poll'].push(subPoll);
-
+            var data = BuildReferendumObject(contest)    
             stateMeasureResp['cards'].push(data);
         }
         else if (contest.type == "General")
         {
-            console.log(contest);
+            var data = BuildCandidateObject(contest);
+            candidateResp['cards'].push(data);
+            // console.log(contest);
         }
     }
 
+    resp['ballot'].push(candidateResp);
     resp['ballot'].push(stateMeasureResp);
+    console.log(candidateResp);
     res.json(resp);
   });
 });
