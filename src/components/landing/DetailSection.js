@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import request from 'request';
 
 import BallotTranslateSwitch from '../ballot/BallotTranslateSwitch';
 import Ballot from '../ballot/Ballot';
 
 import sampleData from '../ballot/examples/sample_data';
-import sampleDataEs from '../ballot/examples/sample_data_es';
 
 const tallies = sampleData.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
 
@@ -13,14 +13,27 @@ class DetailSection extends Component {
     super(props);
     this.state = {
       heading: sampleData.heading,
-      headingEs: sampleDataEs.heading,
       ballots: sampleData.ballot,
-      ballotsEs: sampleDataEs.ballot,
       tallies: tallies,
       es: false
     };
     this.onUpdate = this.onUpdate.bind(this);
-    this.onSwitchTranslate = this.onSwitchTranslate.bind(this);
+  }
+
+  componentWillMount() {
+    let _this = this;
+
+    request.get(window.location.href + 'ballot', function (err, res, body) {
+        if (!err) {
+          let data = JSON.parse(body);
+          let tallies = data.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
+          console.log(data);
+          _this.setState({
+            ballots: data.ballot,
+            tallies: tallies
+          });
+        }
+    });
   }
 
   onUpdate(ballotIndex, cardIndex, newTally) {
@@ -29,20 +42,13 @@ class DetailSection extends Component {
     this.setState({ tallies });
   }
 
-  onSwitchTranslate(es) {
-    this.setState({ es });
-  }
-
   render() {
 
-    let { es, tallies } = this.state;
-    let heading = (!es) ? this.state.heading : this.state.headingEs;
-    let ballots = (!es) ? this.state.ballots : this.state.ballotsEs;
+    let { es, tallies, heading, ballots } = this.state;
 
     return (
       <section id="detail">
         <section id="left">
-          <BallotTranslateSwitch es={es} translate={this.onSwitchTranslate} />
           <Ballot
             heading={heading}
             ballots={ballots}

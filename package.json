@@ -33,7 +33,7 @@
     "test": "ava --tap | tap-nyan",
     "new-build": "webpack --config ./webpack.prod.config.js --progress --colors"
   },
-  "author": "Maurizio Mangione",
+  "author": "Ballotview Team",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Granze/react-starterify/issues"
@@ -50,6 +50,7 @@
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
     "express": "^4.14.0",
+    "firebase": "^3.5.0",
     "googleapis": "^14.0.0",
     "gulp-nodemon": "^2.1.0",
     "history": "^2.0.0",

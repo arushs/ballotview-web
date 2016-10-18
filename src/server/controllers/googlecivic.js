@@ -30,26 +30,26 @@ router.get('/', function(req, res) {
         if (contest.type == 'Referendum')
         {
             data = {};
-            data['title'] = contest.referendumTitle + ": ";
+            data['title'] = [contest.referendumTitle + ": "];
             if ("referendumSubtitle" in contest)
             {
-                data['title'] += contest.referendumSubtitle;
+                data['title'].push(contest.referendumSubtitle);
             }
             else
             {
-                data['title'] += contest.referendumBrief;
+                data['title'].push(contest.referendumBrief);
             }
-            data['subtext'] = contest.referendumText;
-           
+            data['subtext'] = [contest.referendumText];
+
             data['poll'] = [];
             var subPoll = {};
             subPoll['info'] = [];
-            subPoll['info'].push({"title":"Yes"});
+            subPoll['info'].push({"title":["Yes"]});
             data['poll'].push(subPoll);
 
             subPoll = {};
             subPoll['info'] = [];
-            subPoll['info'].push({"title":"No"});
+            subPoll['info'].push({"title":["No"]});
             data['poll'].push(subPoll);
 
             stateMeasureResp['cards'].push(data);
