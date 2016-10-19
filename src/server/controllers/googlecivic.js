@@ -43,11 +43,13 @@ function BuildCandidateObject(contest)
 {
     data = {};
     data['title'] = [contest.office];
-    data['subtext'] = ["Vote for " + contest.numberVotingFor];
+    if ('numberVotingFor' in contest) {
+      data['subtext'] = ["Vote for " + contest.numberVotingFor];
+    }
     data['poll'] = [];
 
     for (var candidate of contest.candidates) {
-      console.log(candidate);
+      // console.log(candidate);
       var subPoll = {};
 
       subPoll.info = candidate.name.split(/, |\//).map(function (name) {
@@ -56,10 +58,14 @@ function BuildCandidateObject(contest)
         if (1 in name) infoObj.sub = ['for ' + name[1]];
         return infoObj;
       });
-      subPoll.info.trail = [candidate.party];
-      for (var key in parties) {
-        if ('party' in candidate && candidate.party.includes(key)) {
-          subPoll.info['color'] = parties[key];
+
+      if ('party' in candidate) {
+        subPoll['trail'] = [candidate.party];
+
+        for (var key in parties) {
+          if ('party' in candidate && candidate.party.includes(key)) {
+            subPoll['color'] = parties[key];
+          }
         }
       }
 

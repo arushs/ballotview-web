@@ -15,7 +15,8 @@ class BallotView extends Component {
     this.state = {
       heading: ballots.heading,
       ballots: [],
-      tallies: []
+      tallies: [],
+      show_inspector: false
     };
 
     this.onUpdate = this.onUpdate.bind(this);
@@ -25,11 +26,9 @@ class BallotView extends Component {
     let _this = this;
 
     request.get(window.location.origin + '/ballot', function (err, res, body) {
-      console.log(body);
         if (!err) {
           let data = JSON.parse(body);
           let tallies = data.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
-          console.log(data);
           _this.setState({
             ballots: data.ballot,
             tallies: tallies
@@ -69,9 +68,13 @@ class BallotView extends Component {
         <section id="inspector_nav">
           <InspectorNav ballots={this.state.ballots} />
         </section>
-        <section id="inspector">
-          <Inspector />
-        </section>
+        {(()=>{ if (this.state.show_inspector) {
+          return (
+            <section id="inspector">
+              <Inspector />
+            </section>
+          );
+        }})()}
       </main>
     );
   }

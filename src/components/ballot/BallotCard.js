@@ -20,7 +20,7 @@ const BallotPoll = ({ pollData, pollTally, pollSelectOption, click }) => (
         ><span /></div>
 
         <div className="info">
-          {(() => { if (data.trail) {
+          {(() => { if ('trail' in data) {
             return (<div className="trail">
               <BallotClickableText
                 text={data.trail}
@@ -31,14 +31,12 @@ const BallotPoll = ({ pollData, pollTally, pollSelectOption, click }) => (
           }})()}
           {data.info.map((option, j) => (
             <div className="ballot_option" key={j}>
-              {(() => { if (option.title) {
+              {(() => { if ('title' in option) {
                 return (<BallotClickableText className="option_title" text={option.title} click={click} />);
               }})()}
-
-              {(() => { if (option.sub) {
+              {(() => { if ('sub' in option) {
                 return (<BallotClickableText className="option_sub" text={option.sub} click={click} />);
               }})()}
-
             </div>
           ))}
         </div>
@@ -70,9 +68,11 @@ const BallotCard = ({ ballotIndex, cardIndex, title, secondary, poll, tally, onU
         <div className="title">
           <BallotClickableText text={title} click={click} />
         </div>
-        <div className="sub">
-          <BallotClickableText text={secondary} click={click} />
-        </div>
+        {(() => { if (secondary) {
+          return (<div className="sub">
+            <BallotClickableText text={secondary} click={click} />
+          </div>);
+        }})()}
       </div>
 
       <BallotPoll
