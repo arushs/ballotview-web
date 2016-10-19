@@ -80,4 +80,8 @@ class BallotView extends Component {
   }
 }
 
+BallotView.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
+
 export default BallotView;

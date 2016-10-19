@@ -7,26 +7,17 @@ import RockTheVoteSection from '../components/landing/RockTheVoteSection';
 import FooterSection from '../components/landing/FooterSection';
 import api from '../api-interface';
 
-const Landing = ({ view }) => (
+const Landing = ({ view }, { router }) => (
   <main id="landing">
     <TabsSection view={view}/>
-    {(() => {
-      if (view === 1) {
-        return (
-          <RockTheVoteSection />
-        );
-      } else {
-        return (
-          <div>
-            <MainSection />
-            <DetailSection />
-          </div>
-        );
-      }
-    })()}
+    <RockTheVoteSection />
     <FooterSection />
   </main>
 );
+
+Landing.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
 
 Landing.propTypes = {
   view: React.PropTypes.number

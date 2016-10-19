@@ -40,6 +40,8 @@ class MainSection extends Component {
     if (this.state.addressIsValid && !this.state.isCreating) {
       this.setState({ isCreating: true });
 
+      this.context.router.push('/app');
+
       // api.submitEmail(this.state.email).then((data) => {
       //   _this.setState({
       //     email: '',
@@ -94,5 +96,9 @@ class MainSection extends Component {
     );
   }
 }
+
+MainSection.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
 
 export default MainSection;
