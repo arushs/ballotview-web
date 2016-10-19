@@ -28,7 +28,7 @@ app.use('/ballot', googlecivic);
 app.use('/dist', express.static(path.join(__dirname, '..', '..', 'dist')));
 
 app.get('/', (_, res) => { res.sendFile(indexPath); });
-// app.get('*', (_, res) => { res.sendFile(indexPath); });
+app.get('*', (_, res) => { res.sendFile(indexPath); });
 
 http.listen(app.get('port'), () => {
   console.log('RUNNING.');

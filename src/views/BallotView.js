@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import request from 'request';
 
 import Ballot from '../components/ballot/Ballot';
 import Inspector from '../components/inspector/Inspector';
 import InspectorNav from '../components/inspector/InspectorNav';
 
 import ballots from '../components/ballot/examples/sample_data';
-const tallies = ballots.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
+// const tallies = ballots.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
 
 class BallotView extends Component {
   constructor(props) {
@@ -13,11 +14,28 @@ class BallotView extends Component {
 
     this.state = {
       heading: ballots.heading,
-      ballots: ballots.ballot,
-      tallies: tallies
+      ballots: [],
+      tallies: []
     };
 
     this.onUpdate = this.onUpdate.bind(this);
+  }
+
+  componentWillMount() {
+    let _this = this;
+
+    request.get(window.location.origin + '/ballot', function (err, res, body) {
+      console.log(body);
+        if (!err) {
+          let data = JSON.parse(body);
+          let tallies = data.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
+          console.log(data);
+          _this.setState({
+            ballots: data.ballot,
+            tallies: tallies
+          });
+        }
+    });
   }
 
   onUpdate(ballotIndex, cardIndex, newTally) {
@@ -49,7 +67,7 @@ class BallotView extends Component {
           />
         </section>
         <section id="inspector_nav">
-          <InspectorNav ballots={ballots.ballot} />
+          <InspectorNav ballots={this.state.ballots} />
         </section>
         <section id="inspector">
           <Inspector />

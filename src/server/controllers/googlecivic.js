@@ -54,10 +54,10 @@ function BuildCandidateObject(contest)
         subPoll.info.trail = [candidate.party];
         for (var key in parties)
         {
-            if (candidate.party.includes(key))
-            {
-                subPoll.info['color'] = parties[key];
-            }
+            // if (candidate.party.includes(key))
+            // {
+            //     subPoll.info['color'] = parties[key];
+            // }
         }
 
         data['poll'].push(subPoll);
@@ -94,7 +94,7 @@ router.get('/', function(req, res) {
         var contest = response.body.contests[i];
         if (contest.type == 'Referendum')
         {
-            var data = BuildReferendumObject(contest)    
+            var data = BuildReferendumObject(contest)
             stateMeasureResp['cards'].push(data);
         }
         else if (contest.type == "General")

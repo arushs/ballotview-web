@@ -5,7 +5,6 @@ import BallotTranslateSwitch from '../ballot/BallotTranslateSwitch';
 import Ballot from '../ballot/Ballot';
 
 import sampleData from '../ballot/examples/sample_data';
-
 const tallies = sampleData.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
 
 class DetailSection extends Component {
@@ -18,22 +17,6 @@ class DetailSection extends Component {
       es: false
     };
     this.onUpdate = this.onUpdate.bind(this);
-  }
-
-  componentWillMount() {
-    let _this = this;
-
-    request.get(window.location.href + 'ballot', function (err, res, body) {
-        if (!err) {
-          let data = JSON.parse(body);
-          let tallies = data.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
-          console.log(data);
-          _this.setState({
-            ballots: data.ballot,
-            tallies: tallies
-          });
-        }
-    });
   }
 
   onUpdate(ballotIndex, cardIndex, newTally) {
