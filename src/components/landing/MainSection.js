@@ -25,8 +25,6 @@ class MainSection extends Component {
 
   onUpdateAddress(e) {
 
-
-
     this.setState({
       address: e.target.value,
       addressIsValid: (e.target.value.length > 0)
@@ -44,7 +42,10 @@ class MainSection extends Component {
     if (this.state.addressIsValid && !this.state.isCreating) {
       this.setState({ isCreating: true });
 
-      this.context.router.push('/app');
+      this.context.router.push({
+        pathname: '/app',
+        query: { address: this.refs.address.refs.input.value }
+      });
 
       // api.submitEmail(this.state.email).then((data) => {
       //   _this.setState({
@@ -80,6 +81,7 @@ class MainSection extends Component {
         <div id="email_collect">
           {/*<div className="title"><span>Get notified when BallotView is ready for you</span></div>*/}
           <div><Autocomplete
+            ref='address'
             type="text"
             className="address"
             placeholder={content.exampleAddress}
@@ -87,9 +89,6 @@ class MainSection extends Component {
             onChange={onUpdateAddress}
             onKeyDown={onCheckSubmit}
             disabled={isCreating}
-            onPlaceSelected={(place) => {
-              console.log(place);
-            }}
             types={['geocode']}
           /></div>
           <div><button

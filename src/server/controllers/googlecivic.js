@@ -78,11 +78,14 @@ function BuildCandidateObject(contest)
 router.get('/', function(req, res) {
 	// var address = {};
 	request({
-    uri:'https://www.googleapis.com/civicinfo/v2/voterinfo?key=AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ&address=2365+Scarff+Street%2C+Los+Angeles+90007',
+    uri:'https://www.googleapis.com/civicinfo/v2/voterinfo',
+    qs: {
+      key: 'AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ',
+      address: req.query.address || '2365 Scarff Street, Los Angeles 90007'
+    },
     method: 'get',
     json: true,
   }, (error, response, body) => {
-
     var resp = {};
 
     if (error || response.statusCode !== 200) {

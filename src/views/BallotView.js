@@ -25,12 +25,18 @@ class BallotView extends Component {
   componentWillMount() {
     let _this = this;
 
-    request.get(window.location.origin + '/ballot', function (err, res, body) {
-        if (!err) {
-          let data = JSON.parse(body);
-          let tallies = data.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
+    request({
+      uri: window.location.origin + '/ballot',
+      qs: {
+        address: this.props.location.query.address,
+      },
+      method: 'get',
+      json: true,
+    }, (err, res, body) => {
+        if (!err && 'ballot' in body) {
+          let tallies = body.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
           _this.setState({
-            ballots: data.ballot,
+            ballots: body.ballot,
             tallies: tallies
           });
         }
