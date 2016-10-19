@@ -77,7 +77,7 @@ function BuildCandidateObject(contest)
 
 router.get('/', function(req, res) {
 	// var address = {};
-	var info = request({
+	request({
     uri:'https://www.googleapis.com/civicinfo/v2/voterinfo?key=AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ&address=2365+Scarff+Street%2C+Los+Angeles+90007',
     method: 'get',
     json: true,

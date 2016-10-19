@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import Autocomplete from 'react-google-autocomplete';
 import api from '../../api-interface';
+import request from 'request';
 
 const content = {
   message: 'Voting should be easy',
@@ -22,6 +24,8 @@ class MainSection extends Component {
   }
 
   onUpdateAddress(e) {
+
+
 
     this.setState({
       address: e.target.value,
@@ -75,7 +79,7 @@ class MainSection extends Component {
         </div>
         <div id="email_collect">
           {/*<div className="title"><span>Get notified when BallotView is ready for you</span></div>*/}
-          <div><input
+          <div><Autocomplete
             type="text"
             className="address"
             placeholder={content.exampleAddress}
@@ -83,6 +87,10 @@ class MainSection extends Component {
             onChange={onUpdateAddress}
             onKeyDown={onCheckSubmit}
             disabled={isCreating}
+            onPlaceSelected={(place) => {
+              console.log(place);
+            }}
+            types={['geocode']}
           /></div>
           <div><button
             disabled={!addressIsValid || isCreating}
