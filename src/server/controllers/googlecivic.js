@@ -9,9 +9,23 @@ const parties = {
   Green: '#558B2F'
 };
 
-function capitalizeEachWord(str) {
+function capitalizeEachWord(str) {	
   return str.replace(/\w\S*/g, function(txt) {
-    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  	if(txt == "II" || txt == "III" || txt == "IV" || txt == "VI"){ //These should stay fully capitalized
+		return txt;
+	}
+	else{
+		txt = txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+		if(txt.length > 2){
+			if(txt.substr(0,2) == "Mc"){ //For last names such as McAllister
+				txt = txt.substr(0,2) + txt.charAt(2).toUpperCase() + txt.substr(3);
+			}
+			else if(txt.substr(0,3) == "Mac") { //For last names like MacDonald
+				txt = txt.substr(0,3) + txt.charAt(3).toUpperCase() + txt.substr(4);
+			}
+		}
+	}
+    return txt;
   });
 }
 
