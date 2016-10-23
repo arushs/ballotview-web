@@ -17,7 +17,9 @@ function getGoogleCivicBallot(address) {
       uri:'https://www.googleapis.com/civicinfo/v2/voterinfo',
       qs: {
         key: googleKey,
-        address: address
+        address: address,
+        electionId: 5000,
+        returnAllAvailableData: true
       },
       method: 'get',
       json: true,
@@ -25,7 +27,7 @@ function getGoogleCivicBallot(address) {
       if (error || response.statusCode !== 200) {
         resolve({ error: 'could not get ballot from google' });
       } else {
-        resolve(parseGoogleCivic(response.body));
+        resolve(parseGoogleCivic(body));
       }
     });
   });

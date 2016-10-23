@@ -5,7 +5,7 @@ const parties = {
   Green: '#558B2F'
 };
 
-function capitalizeEachWord(str) {	
+function capitalizeEachWord(str) {
   return str.replace(/\w\S*/g, function(txt) {
   	if(txt == "II" || txt == "III" || txt == "IV" || txt == "VI"){ //These should stay fully capitalized
 		return txt;
@@ -75,7 +75,7 @@ function BuildCandidateObject(contest, uniqueCandidates)
     }
 
     if ('party' in candidate) {
-      subPoll['trail'] = [candidate.party];
+      subPoll['trail'] = [candidate.party.replace(' Party', '')];
 
       for (var key in parties) {
         if ('party' in candidate && candidate.party.includes(key)) {
@@ -98,6 +98,7 @@ function BuildCandidateObject(contest, uniqueCandidates)
 function parseGoogleCivic(data) {
   // console.log(data.contests.length);
   var resp = {};
+  var uniqueCandidates = {}
 
   resp['ballot'] = [];
 
@@ -115,9 +116,9 @@ function parseGoogleCivic(data) {
       stateMeasureResp['cards'].push(data);
     }
     else if (contest.type == "General") {
-      var data = BuildCandidateObject(contest);
-      candidateResp['cards'].push(data);
-      // console.log(contest);
+      var data = BuildCandidateObject(contest, uniqueCandidates);
+      if (data != null)
+        candidateResp['cards'].push(data);
     }
   }
 
