@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ballotview-144106",
+  "private_key_id": "901eb47f4aa655742bf976c42598dd572356aa0e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDAxhV4m5tYc52e\nKqoeuiw5XCk+jNV3e7XNGIILYRCQCIWkJ9IV0c3j2bMmxF5AbPR0ZlWlnbc7+GK8\nNGZCMSTjYuzeme3/DTpbMfElkCoNIDxu3TYUw4aPvv67sCcYvWZojl/bwBAcKY3/\n/Ti+cK7D4y5HmzIEduIHu9L1SFkXLbMWjgnssVYcDndKhyZ7rCdUjvTD4gVv/ytk\neX01SOm/EPecc41W27GPvDp/xypiP2ktTZ51Ohh7gVCvXLZRdTGiB4hSgGix1YAI\n5LJzOIRXbbs9RnO572FwJnsNql5QfqiJzsCu5ZJLURteCTScxlPBD9BVmK7C1bIG\n/BwllZW5AgMBAAECggEAcl6TKoUXezjM0KP7XlOSHU3iYmvn0gWhbNcXgGzMCMgl\nkajWaX+aKY5lTaC/UnXR6qU0NxgFOB07ZvGnoanKeuWcJs0oeGN+tdBBg8muSS9Q\n621uwo7mbK4iL3RpHbJw6aNel9+xLyQwTSoM2l+8MBe+w1j+KcvmejQjCscrpCW+\n25P03CiKyc0Z4Lb5VGxYMbX7JFl1N/fhcCNwQ4YljhkQjFT1sHAZi4r/QYzNtjcW\ngmyiLuZ1sD2vPFV1WFCff0tActw3CFOEBc7E4aSvew8tX7UQRWZCuWGU2ltl/i7p\nXASDAStYPsdIqQHbWVs7vmTQs9sbWrk0/BLS4a4BSQKBgQDqUCvpTYbfjs5ahRna\n8uVxD7G9IgujtolWsewuRmUmf/QsOcDK40w5pHzIW+6YlVoD+CDnJ8LKlRv3YcAk\nGWtv+PxTe0Ah9O+Ne2Ky9F4NX4Ir07awVRhwMmM2G1GSPc/tR3UuhQ4ouYts8obA\nsCrbSmpBxF5RvRpCn0EZ/x7rOwKBgQDSnazupfOLzX+BZxKARro5gFswvjypKjYF\nvDLJ3RwxnpcEGrLaA1Se2/THHB2uKFsnBKtSos3NI2GZcdG003X1pfh/DiGRszPz\n4x8JHl+7KtzteqM9K0CTWv5rLIWKNYurAPHug1eljI+NGladMrXMpjS9MODuYrVC\n44ZKWOrrmwKBgE8DggtGjXjN22BDChj/V8fslu9Ej9BBOcb2cMKaEnoNI/XV8+F3\nDLlTcpDOD4N8ucIk5lOM4O8XoTqmx/hkagp0WAJ+yX2p7y4ysXHPXff8gRTua+jC\niV8sXrBcPgGmvnsxYZ6yV7f7+bxffHl17r3MNlC/O18s+bIFqhpuIasJAoGAVaHS\nK/3BNfhJfT2BIjKfiL2NVhYi58zHxjEsnTKPQgVu9TY9vbJY93YK4eGml6bE2Opn\nFeQntN5L0m2ai+DmNwhSLqZ6M5ke6GxRtA1rctgMl2mjcT1itgbrJnwll3oJ3W82\n7njsa9zoiMBKswNpM1noW3vCGGp9tEJ52USpzz0CgYEA30YGcqFurrohzQs6EVsC\nxrGYqqGQ4SGivxA4GMEnAQof/+RdHQTjDnHcfhYEt0v098co00VXOuPLzUbmJStD\nO9YlY9s63WQw6NrbYHmLRlZ+nbyWw0TybU9u2Hj2WksGh9GC611EXae0IR6Klsrr\nlF45tmxAWbFFe0BCBfRVnx4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "ballotview@ballotview-144106.iam.gserviceaccount.com",
+  "client_id": "105745914809693572849",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ballotview%40ballotview-144106.iam.gserviceaccount.com"
+}

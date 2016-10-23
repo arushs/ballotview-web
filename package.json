@@ -47,10 +47,11 @@
   },
   "homepage": "https://github.com/arushs/ballotview-web",
   "dependencies": {
+    "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "classnames": "^2.2.5",
     "express": "^4.14.0",
-    "firebase": "^3.5.0",
+    "firebase": "^3.5.1",
     "googleapis": "^14.0.0",
     "gulp-nodemon": "^2.1.0",
     "history": "^2.0.0",
