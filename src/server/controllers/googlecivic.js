@@ -17,76 +17,72 @@ function capitalizeEachWord(str) {
 
 function BuildReferendumObject(contest)
 {
-    data = {};
-    data['title'] = [contest.referendumTitle + ": "];
+    data = {
+      'title': [contest.referendumTitle + ": "],
+      'subtext': [contest.referendumText],
+      'poll': [
+        {'info': [{'title': ['Yes']}]},
+        {'info': [{'title': ['No']}]}
+      ]
+    };
+
     if ('referendumSubtitle' in contest) {
       data['title'].push(contest.referendumSubtitle);
     } else if ('referendumBrief' in contest) {
       data['title'].push(contest.referendumBrief);
     }
-    data['subtext'] = [contest.referendumText];
-
-    data['poll'] = [];
-    var subPoll = {};
-    subPoll['info'] = [];
-    subPoll['info'].push({ title: ['Yes'] });
-    data['poll'].push(subPoll);
-
-    subPoll = {};
-    subPoll['info'] = [];
-    subPoll['info'].push({ title: ['No'] });
-    data['poll'].push(subPoll);
     return data;
 }
 
 /// Build Candidate object
 function BuildCandidateObject(contest, uniqueCandidates)
 {
-    data = {};
-    store = true;
-    data['title'] = [contest.office];
-    if ('numberVotingFor' in contest) {
-      data['subtext'] = ["Vote for " + contest.numberVotingFor];
+  store = true;
+  data = {
+    'title': [contest.office],
+    'poll': []
+  };
+
+  if ('numberVotingFor' in contest) {
+    data['subtext'] = ["Vote for " + contest.numberVotingFor];
+  }
+
+  for (var candidate of contest.candidates) {
+
+    var subPoll = {};
+
+    subPoll.info = candidate.name.split(/, |\//).map(function (name) {
+      name = name.split(' for ');
+      var infoObj = { title: [capitalizeEachWord(name[0])] };
+      if (1 in name) infoObj.sub = ['for ' + name[1]];
+      return infoObj;
+    });
+
+    if (uniqueCandidates.hasOwnProperty(subPoll.info[0].title[0]))
+    {
+      store = false;
+      continue;
     }
-    data['poll'] = [];
+    
+    if ('party' in candidate) {
+      subPoll['trail'] = [candidate.party];
 
-    for (var candidate of contest.candidates) {
-
-      var subPoll = {};
-
-      subPoll.info = candidate.name.split(/, |\//).map(function (name) {
-        name = name.split(' for ');
-        var infoObj = { title: [capitalizeEachWord(name[0])] };
-        if (1 in name) infoObj.sub = ['for ' + name[1]];
-        return infoObj;
-      });
-
-      if (uniqueCandidates.hasOwnProperty(subPoll.info[0].title[0]))
-      {
-        store = false;
-        continue;
-      }
-      
-      if ('party' in candidate) {
-        subPoll['trail'] = [candidate.party];
-
-        for (var key in parties) {
-          if ('party' in candidate && candidate.party.includes(key)) {
-            subPoll['color'] = parties[key];
-          }
+      for (var key in parties) {
+        if ('party' in candidate && candidate.party.includes(key)) {
+          subPoll['color'] = parties[key];
         }
       }
-
-      uniqueCandidates[subPoll.info[0].title[0]] = '1';
-      data['poll'].push(subPoll);
-      console.log(subPoll.info);
     }
 
-    // toRet = store ? data: null;
-    if (store)
-      return data;
-    else
-      return null;
+    uniqueCandidates[subPoll.info[0].title[0]] = '1';
+    data['poll'].push(subPoll);
+  }
+
+  // if candidate already found in candidates hash
+  if (store)
+    return data;
+  else
+    return null;
 }
 
 router.get('/', function(req, res) {
