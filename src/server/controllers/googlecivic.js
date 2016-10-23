@@ -39,9 +39,11 @@ function BuildReferendumObject(contest)
     return data;
 }
 
-function BuildCandidateObject(contest)
+/// Build Candidate object
+function BuildCandidateObject(contest, uniqueCandidates)
 {
     data = {};
+    store = true;
     data['title'] = [contest.office];
     if ('numberVotingFor' in contest) {
       data['subtext'] = ["Vote for " + contest.numberVotingFor];
@@ -49,7 +51,7 @@ function BuildCandidateObject(contest)
     data['poll'] = [];
 
     for (var candidate of contest.candidates) {
-      // console.log(candidate);
+
       var subPoll = {};
 
       subPoll.info = candidate.name.split(/, |\//).map(function (name) {
@@ -59,6 +61,12 @@ function BuildCandidateObject(contest)
         return infoObj;
       });
 
+      if (uniqueCandidates.hasOwnProperty(subPoll.info[0].title[0]))
+      {
+        store = false;
+        continue;
+      }
+      
       if ('party' in candidate) {
         subPoll['trail'] = [candidate.party];
 
@@ -69,14 +77,20 @@ function BuildCandidateObject(contest)
         }
       }
 
+      uniqueCandidates[subPoll.info[0].title[0]] = '1';
       data['poll'].push(subPoll);
+      console.log(subPoll.info);
     }
 
-    return data;
+    // toRet = store ? data: null;
+    if (store)
+      return data;
+    else
+      return null;
 }
 
 router.get('/', function(req, res) {
-	// var address = {};
+	uniqueCandidates = {}
 	request({
     uri:'https://www.googleapis.com/civicinfo/v2/voterinfo',
     qs: {
@@ -108,15 +122,14 @@ router.get('/', function(req, res) {
           stateMeasureResp['cards'].push(data);
         }
         else if (contest.type == "General") {
-          var data = BuildCandidateObject(contest);
-          candidateResp['cards'].push(data);
-          // console.log(contest);
+          var data = BuildCandidateObject(contest, uniqueCandidates);
+          if (data != null)
+            candidateResp['cards'].push(data);
         }
       }
 
       resp['ballot'].push(candidateResp);
       resp['ballot'].push(stateMeasureResp);
-      // console.log(candidateResp);
     }
 
     res.json(resp);
