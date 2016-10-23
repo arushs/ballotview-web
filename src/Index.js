@@ -13,7 +13,10 @@ render(
     <Route path="/" component={App}>
       <IndexRoute component={BallotViewLanding} />
       <Route path="rockthevote" component={RockTheVoteLanding} />
-      <Route path="app" component={BallotView} />
+      <Route path="ballot" component={BallotView}>
+        <Route path="/ballot/:bvId" component={BallotView} />
+        <Route path="/receipt/:bvId" component={BallotView} />
+      </Route>
     </Route>
   </Router>),
   document.getElementById('app')

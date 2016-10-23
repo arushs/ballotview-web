@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import request from 'request';
 
+import api from '../api-interface';
+
 import Ballot from '../components/ballot/Ballot';
 import Inspector from '../components/inspector/Inspector';
 import InspectorNav from '../components/inspector/InspectorNav';
@@ -14,33 +16,39 @@ class BallotView extends Component {
 
     this.state = {
       heading: ballots.heading,
-      ballots: [],
+      ballot: [],
       tallies: [],
+      write_id: null,
+      read_id: null,
       show_inspector: false
     };
 
     this.onUpdate = this.onUpdate.bind(this);
+    this.saveBallotToDatabase = this.saveBallotToDatabase.bind(this);
   }
 
   componentWillMount() {
     let _this = this;
 
-    request({
-      uri: window.location.origin + '/ballot',
-      qs: {
-        address: this.props.location.query.address,
-      },
-      method: 'get',
-      json: true,
-    }, (err, res, body) => {
-        if (!err && 'ballot' in body) {
-          let tallies = body.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
-          _this.setState({
-            ballots: body.ballot,
-            tallies: tallies
-          });
+    api.getWritableBallot(this.props.params.bvId)
+      .then(function (data) {
+        if ('error' in data || data.statusCode !== 200) {
+          console.log('error');
+        } else {
+          _this.setState(data.body);
         }
-    });
+      });
+  }
+
+  saveBallotToDatabase() {
+    api.updateWriteableBallot(this.state.write_id, this.state.tallies)
+      .then(function (data) {
+        if ('error' in data || data.statusCode !== 200) {
+          console.log('error');
+        } else {
+          console.log('ballot saved');
+        }
+      })
   }
 
   onUpdate(ballotIndex, cardIndex, newTally) {
@@ -59,20 +67,20 @@ class BallotView extends Component {
           </div>
           <div id="saveActions">
             <span>Edit Mode</span>
-            <button>Save Ballot</button>
+            <button onClick={this.saveBallotToDatabase}>Save Ballot</button>
             <button>Share</button>
           </div>
         </section>
         <section id="ballot">
           <Ballot
             heading={this.state.heading}
-            ballots={this.state.ballots}
+            ballots={this.state.ballot}
             tallies={this.state.tallies}
             onUpdate={this.onUpdate}
           />
         </section>
         <section id="inspector_nav">
-          <InspectorNav ballots={this.state.ballots} />
+          <InspectorNav ballots={this.state.ballot} />
         </section>
         {(()=>{ if (this.state.show_inspector) {
           return (
