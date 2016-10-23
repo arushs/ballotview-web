@@ -46,16 +46,6 @@ class MainSection extends Component {
         pathname: '/app',
         query: { address: this.refs.address.refs.input.value }
       });
-
-      // api.submitEmail(this.state.email).then((data) => {
-      //   _this.setState({
-      //     email: '',
-      //     state: '',
-      //     emailIsValid: false,
-      //     sending: false,
-      //     sent: this.state.email
-      //   });
-      // }).catch(() => {});
     }
   }
 
@@ -68,7 +58,6 @@ class MainSection extends Component {
         <div id="logo">
           <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
           <div className="title">BallotView</div>
-          <div className="sub"><span>Voting made easy</span></div>
         </div>
         <div id="right_feature">
           <div><span>a <a href="http://futurethon.org/">Futurethon</a> project.</span></div>
