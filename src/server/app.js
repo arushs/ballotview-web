@@ -9,7 +9,7 @@ const email = require('./controllers/email');
 const request = require('request');
 const config = require('./config');
 
-const googlecivic = require('./controllers/googlecivic');
+const router = require('./controllers/api-router');
 
 // set port
 app.set('port', (process.env.PORT || 5000));
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 
 app.use('/api/email', email);
-app.use('/ballot', googlecivic);
+app.use('/ballot', router);
 
 app.use('/dist', express.static(path.join(__dirname, '..', '..', 'dist')));
 

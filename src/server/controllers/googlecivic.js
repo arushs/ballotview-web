@@ -1,7 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const request = require('request');
-
 const parties = {
   Democratic: '#0D47A1',
   Republican: '#B71C1C',
@@ -63,7 +59,7 @@ function BuildCandidateObject(contest, uniqueCandidates)
       store = false;
       continue;
     }
-    
+
     if ('party' in candidate) {
       subPoll['trail'] = [candidate.party];
 
@@ -85,51 +81,36 @@ function BuildCandidateObject(contest, uniqueCandidates)
     return null;
 }
 
-router.get('/', function(req, res) {
-	uniqueCandidates = {}
-	request({
-    uri:'https://www.googleapis.com/civicinfo/v2/voterinfo',
-    qs: {
-      key: 'AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ',
-      address: req.query.address || '2365 Scarff Street, Los Angeles 90007'
-    },
-    method: 'get',
-    json: true,
-  }, (error, response, body) => {
-    var resp = {};
+function parseGoogleCivic(data) {
+  // console.log(data.contests.length);
+  var resp = {};
 
-    if (error || response.statusCode !== 200) {
-      console.log(error);
-    } else {
-      resp['ballot'] = [];
+  resp['ballot'] = [];
 
-      var stateMeasureResp = {};
-      stateMeasureResp['title'] = "State Measures";
-      stateMeasureResp['cards'] = [];
+  var stateMeasureResp = {};
+  stateMeasureResp['title'] = "State Measures";
+  stateMeasureResp['cards'] = [];
 
-      var candidateResp = {};
-      candidateResp.title = "Candidates";
-      candidateResp.cards = [];
+  var candidateResp = {};
+  candidateResp.title = "Candidates";
+  candidateResp.cards = [];
 
-      for(var i in response.body.contests){
-        var contest = response.body.contests[i];
-        if (contest.type == 'Referendum') {
-          var data = BuildReferendumObject(contest)
-          stateMeasureResp['cards'].push(data);
-        }
-        else if (contest.type == "General") {
-          var data = BuildCandidateObject(contest, uniqueCandidates);
-          if (data != null)
-            candidateResp['cards'].push(data);
-        }
-      }
-
-      resp['ballot'].push(candidateResp);
-      resp['ballot'].push(stateMeasureResp);
+  for(var contest of data.contests){
+    if (contest.type == 'Referendum') {
+      var data = BuildReferendumObject(contest)
+      stateMeasureResp['cards'].push(data);
     }
+    else if (contest.type == "General") {
+      var data = BuildCandidateObject(contest);
+      candidateResp['cards'].push(data);
+      // console.log(contest);
+    }
+  }
 
-    res.json(resp);
-  });
-});
+  resp['ballot'].push(candidateResp);
+  resp['ballot'].push(stateMeasureResp);
 
-module.exports = router;
+  return resp;
+}
+
+module.exports = parseGoogleCivic;

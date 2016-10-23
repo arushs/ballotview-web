@@ -27,7 +27,7 @@ class MainSection extends Component {
 
     this.setState({
       address: e.target.value,
-      addressIsValid: (e.target.value.length > 0)
+      addressIsValid: false
     });
   }
 
@@ -41,11 +41,16 @@ class MainSection extends Component {
     let _this = this;
     if (this.state.addressIsValid && !this.state.isCreating) {
       this.setState({ isCreating: true });
-
-      this.context.router.push({
-        pathname: '/app',
-        query: { address: this.refs.address.refs.input.value }
-      });
+      api.createBallot(this.refs.address.refs.input.value)
+        .then(function (res) {
+          if ('error' in res.body) {
+          } else {
+            _this.context.router.push({
+              pathname: '/ballot/' + res.body.write_id,
+              state: res.body,
+            });
+          }
+        })
     }
   }
 
@@ -74,6 +79,12 @@ class MainSection extends Component {
             type="text"
             className="address"
             placeholder={content.exampleAddress}
+            onPlaceSelected={(place) => {
+              this.setState({
+                address: place.formatted_address,
+                addressIsValid: true
+              });
+            }}
             value={address}
             onChange={onUpdateAddress}
             onKeyDown={onCheckSubmit}
