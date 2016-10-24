@@ -71,7 +71,6 @@ main#landing {
     background-color: #FFF;
     padding: 120px 50px;
     text-align: center;
-    overflow: auto;
 
     #logo {
       position: absolute;
@@ -92,39 +91,31 @@ main#landing {
       font-weight: 300;
       margin: 0 auto $pad-lg auto;
       font-size: 24px;
-      .large {
-        font-size: 44px;
-        font-weight: bold;
-        margin-bottom: $unit * 2;
-        span {
-          // background-color: $highlight;
-        }
+    }
+
+    .large {
+      font-size: 44px;
+      font-weight: bold;
+      margin-bottom: $unit * 2;
+      span {
+        // background-color: $highlight;
       }
     }
 
-    #email_collect {
+    #access_ballot {
 
       margin: $pad-lg;
 
       .title {
         font-size: $font-lg;
-        font-weight: bold;
         display: block;
         margin-bottom: $pad;
-      }
-
-      div {
-        margin: 8px 0;
-        a {
-          cursor: pointer;
-          text-decoration: underline;
-          color: $faded;
+        .sub {
+          font-size: $font-sm;
+          color: rgba(0, 0, 0, 0.5);
         }
       }
 
-      .address {
-        width: 500px;
-      }
     }
 
     // #example {
@@ -193,10 +184,72 @@ main#landing {
   }
 
   footer {
-    padding: $pad-lg $pad;
+    position: relative;
+    background-color: #FFF;
+    padding: 120px 50px;
     text-align: center;
-    font-size: $font-sm;
-    opacity: 0.5;
+
+    .heading {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: $unit * 2;
+      span {
+        // background-color: $highlight;
+      }
+    }
+
+    .blurb {
+      max-width: 700px;
+      font-weight: 300;
+      margin: 0 auto $pad-lg auto;
+      font-size: 24px;
+    }
+
+    .enter_address {
+      margin: $pad-lg 0;
+    }
+
+    .logo_img {
+      text-align: center;
+      margin: $pad-lg auto;
+
+      img {
+        width: 64px;
+      }
+    }
+
+    .credits_left {
+      position: absolute;
+      left: $pad;
+      bottom: $pad;
+      opacity: 0.5;
+    }
+
+    .credits_right {
+      position: absolute;
+      right: $pad;
+      bottom: $pad;
+      opacity: 0.5;
+    }
+  }
+
+  .enter_address {
+    max-width: 100%;
+
+    input {
+      width: 500px;
+      max-width: 100%;
+    }
+
+    div {
+      margin: 8px;
+    }
+
+    .error {
+      color: red;
+      font-size: $font-sm;
+      font-style: italic;
+    }
   }
 
 }
@@ -204,13 +257,13 @@ main#landing {
 .coming_soon {
   margin: $pad-lg auto;
   span {
-      text-transform: uppercase;
-      font-size: $font-sm;
-      line-height: $font-sm;
-      border: 1px solid #CCC;
-      color: #AAA;
-      padding: 6px;
-      border-radius: 3px;
-      display: inline-block;
+    text-transform: uppercase;
+    font-size: $font-sm;
+    line-height: $font-sm;
+    border: 1px solid #CCC;
+    color: #AAA;
+    padding: 6px;
+    border-radius: 3px;
+    display: inline-block;
   }
 }

@@ -1,111 +1,36 @@
 import React, { Component } from 'react';
-import Autocomplete from 'react-google-autocomplete';
-import api from '../../api-interface';
-import request from 'request';
+
+import EnterAddress from './EnterAddress';
 
 const content = {
   message: 'Voting should be easy',
-  blurb: 'Access detailed, non-partisan ballot content before the election so that you can get informed and vote for what you believe in.',
-  exampleAddress: 'University of Southern California, Los Angeles 90007'
+  blurb: 'Access detailed, nonpartisan ballot content about each candidate and issue so that you know what you\'re voting for',
+  prompt: 'Enter your full address below to get started:',
+  prompt2: '(We\'ll match you to the right ballot.)'
 };
 
-
-class MainSection extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      address: '',
-      addressIsValid: false,
-      isCreating: false,
-    };
-    this.onUpdateAddress = this.onUpdateAddress.bind(this);
-    this.onCheckSubmit = this.onCheckSubmit.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onUpdateAddress(e) {
-
-    this.setState({
-      address: e.target.value,
-      addressIsValid: false
-    });
-  }
-
-  onCheckSubmit(e) {
-    if (e.keyCode === 13) {
-      this.onSubmit();
-    }
-  }
-
-  onSubmit() {
-    let _this = this;
-    if (this.state.addressIsValid && !this.state.isCreating) {
-      this.setState({ isCreating: true });
-      api.createBallot(this.refs.address.refs.input.value)
-        .then(function (res) {
-          if ('error' in res.body) {
-          } else {
-            _this.context.router.push({
-              pathname: '/ballot/' + res.body.write_id,
-              state: res.body,
-            });
-          }
-        })
-    }
-  }
-
-  render() {
-    let { address, addressIsValid, isCreating } = this.state;
-    let { onUpdateAddress, onCheckSubmit, onSubmit } = this;
-
-    return (
-      <section id="main">
-        <div id="logo">
-          <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
-          <div className="title">BallotView</div>
-        </div>
-        <div id="right_feature">
-          <div><span>a <a href="http://futurethon.org/">Futurethon</a> project.</span></div>
-        </div>
-        <div id="blurb">
-          <div className="large"><span>{content.message}</span></div>
-          <div><span>{content.blurb}</span></div>
-          {/*<div className="coming_soon"><span>Coming in October</span></div>*/}
-        </div>
-        <div id="email_collect">
-          {/*<div className="title"><span>Get notified when BallotView is ready for you</span></div>*/}
-          <div><Autocomplete
-            ref='address'
-            type="text"
-            className="address"
-            placeholder={content.exampleAddress}
-            onPlaceSelected={(place) => {
-              this.setState({
-                address: place.formatted_address,
-                addressIsValid: true
-              });
-            }}
-            value={address}
-            onChange={onUpdateAddress}
-            onKeyDown={onCheckSubmit}
-            disabled={isCreating}
-            types={['geocode']}
-          /></div>
-          <div><button
-            disabled={!addressIsValid || isCreating}
-            onClick={onSubmit}
-          >{(!isCreating) ? 'Access Ballot' : 'Accessing...'}</button></div>
-        </div>
-        <div id="down_arrow">
-          <img src="/dist/images/noun_149006_cc.png" />
-        </div>
-      </section>
-    );
-  }
-}
-
-MainSection.contextTypes = {
-  router: React.PropTypes.object.isRequired
-};
+const MainSection = (props) => (
+  <section id="main">
+    <div id="logo">
+      <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
+      <div className="title">BallotView</div>
+    </div>
+    <div id="right_feature">
+      <div><span>a <a href="http://futurethon.org/">Futurethon</a> project.</span></div>
+    </div>
+    <div id="blurb">
+      <div className="large"><span>{content.message}</span></div>
+      <div><span>{content.blurb}</span></div>
+    </div>
+    <div id="access_ballot">
+      <div className="title"><span><b>{content.prompt}</b></span></div>
+      <EnterAddress />
+      {/*<div className="sub"><span>{content.prompt2}</span></div>*/}
+    </div>
+    <div id="down_arrow">
+      <img src="/dist/images/noun_149006_cc.png" />
+    </div>
+  </section>
+);
 
 export default MainSection;

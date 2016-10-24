@@ -96,7 +96,10 @@ function BuildCandidateObject(contest, uniqueCandidates)
 }
 
 function parseGoogleCivic(data) {
-  // console.log(data.contests.length);
+
+  if (!('contests' in data))
+    return { error: 'data from google civic api is invalid.'};
+
   var resp = {};
   var uniqueCandidates = {}
 

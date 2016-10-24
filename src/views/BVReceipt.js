@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import request from 'request';
+import Cookies from 'js-cookie';
 
 import api from '../api-interface';
 
@@ -20,6 +21,8 @@ class BVReceipt extends Component {
       tallies: [],
       read_id: null
     };
+
+    this.createNewBallot = this.createNewBallot.bind(this);
   }
 
   componentWillMount() {
@@ -36,6 +39,11 @@ class BVReceipt extends Component {
       });
   }
 
+  createNewBallot() {
+    Cookies.remove('write_id');
+    this.context.router.push({ pathname: '/' });
+  }
+
   render() {
     return (
       <main id="ballotview">
@@ -46,9 +54,7 @@ class BVReceipt extends Component {
           </div>
           <div id="saveActions">
             <span>Read-Only Mode</span>
-            <button onClick={() => {
-              this.context.router.push({ pathname: '/' });
-            }}>Create New Ballot</button>
+            <button onClick={this.createNewBallot}>Create New Ballot</button>
           </div>
         </section>
         <section id="ballot_receipt">

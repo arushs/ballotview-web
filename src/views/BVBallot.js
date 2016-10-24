@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import request from 'request';
+import Cookies from 'js-cookie';
 
 import api from '../api-interface';
 
@@ -36,14 +37,21 @@ class BVBallot extends Component {
   componentWillMount() {
     let _this = this;
 
-    api.getWritableBallot(this.props.params.bvId)
-      .then(function (data) {
-        if ('error' in data || data.statusCode !== 200) {
-          console.log('error');
-        } else {
-          _this.setState(data.body);
-        }
-      });
+    if (!this.state.write_id) {
+
+      api.getWritableBallot(this.props.params.bvId)
+        .then(function (data) {
+          if ('error' in data || data.statusCode !== 200) {
+            console.log('error');
+          } else {
+            _this.setState(data.body);
+            Cookies.set('write_id', _this.props.params.bvId);
+          }
+        });
+
+    } else {
+      Cookies.set('write_id', this.state.write_id);
+    }
   }
 
   componentWillUpdate(newProps, newState) {
