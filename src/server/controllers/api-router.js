@@ -116,10 +116,11 @@ router.route('/read/:bv_id')
   .get(function (req, res) {
     var bvId = req.params.bv_id;
     var ballots = bvRef.child('ballots');
-    ballot.orderByChild('read_id').equalTo(bvId)
+    ballots.orderByChild('read_id').equalTo(bvId)
       .once('value').then(function (snap) {
         if (snap.exists()) {
           var ballotData = snap.val();
+          ballotData = ballotData[Object.keys(ballotData)[0]];
           delete ballotData.address;
           delete ballotData.write_id;
           res.json(ballotData);

@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import BallotClickableText from './BallotClickableText';
 
-const BallotPoll = ({ pollData, pollTally, pollSelectOption, click }) => (
-  <ul className="ballot_poll">
+const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, ...other }) => (
+  <ul className={classNames('ballot_poll')}>
     {pollData.map((data, i) => {
 
       let selectOption = (e) => {
@@ -53,7 +53,7 @@ BallotPoll.propTypes = {
   click: React.PropTypes.func
 };
 
-const BallotCard = ({ ballotIndex, cardIndex, title, secondary, poll, tally, onUpdate, click, children, ...other }) => {
+const BallotCard = ({ ballotIndex, cardIndex, title, secondary, poll, tally, onUpdate, click, children, className, ...other }) => {
 
   function pollSelectOption(index) {
     let newTally = tally.map((bool, i) => {
@@ -63,7 +63,7 @@ const BallotCard = ({ ballotIndex, cardIndex, title, secondary, poll, tally, onU
   }
 
   return (
-    <div className="ballot_card" {...other}>
+    <div className={classNames('ballot_card', className)} {...other}>
       <div className="heading">
         <div className="title">
           <BallotClickableText text={title} click={click} />

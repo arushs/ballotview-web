@@ -14,7 +14,7 @@
 
     #logo {
       .title {
-        padding: 10px 0;
+        line-height: 48px;
         font-size: 28px;
       }
     }
@@ -48,6 +48,71 @@
       margin: 20px auto;
     }
     padding-bottom: 100px;
+  }
+
+  #ballot_receipt {
+    width: 400px;
+    margin: 0 auto;
+    padding-top: 56px;
+    padding-bottom: 100px;
+    text-align: center;
+  }
+
+  #modal {
+    position: fixed;
+    top: 56px;
+    right: 0;
+    margin: 16px;
+    padding: 16px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    min-width: 300px;
+    z-index: 4;
+
+    & > div {
+      margin-bottom: 8px;
+    }
+
+    .copiable {
+      display: inline-block;
+      font-size: $font-xl;
+      font-weight: 300;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .copied {
+      display: block;
+      font-size: $font-sm;
+      color: rgba(0, 0, 0, 0.4);
+      margin-top: 8px;
+    }
+
+    .close {
+      transition: all .15s cubic-bezier(.215,.61,.355,1);
+      animation-fill-mode:both;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+      padding: 8px;
+      line-height: 1;
+      font-size: 16px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    button {
+      margin: 4px 0;
+      padding: 0px 12px;
+      font-size: $font-sm;
+      height: 32px;
+      margin-right: 8px;
+    }
   }
 
   #inspector_nav {

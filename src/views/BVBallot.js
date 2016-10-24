@@ -6,11 +6,13 @@ import api from '../api-interface';
 import Ballot from '../components/ballot/Ballot';
 import Inspector from '../components/inspector/Inspector';
 import InspectorNav from '../components/inspector/InspectorNav';
+import ModalSave from '../components/inspector/ModalSave';
+import ModalShare from '../components/inspector/ModalShare';
 
 import ballots from '../components/ballot/examples/sample_data';
 // const tallies = ballots.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
 
-class BallotView extends Component {
+class BVBallot extends Component {
   constructor(props) {
     super(props);
 
@@ -20,11 +22,15 @@ class BallotView extends Component {
       tallies: [],
       write_id: null,
       read_id: null,
-      show_inspector: false
+      show_inspector: false,
+      saving: false,
+      selectedBallot: {},
+      modal: null
     };
 
     this.onUpdate = this.onUpdate.bind(this);
     this.saveBallotToDatabase = this.saveBallotToDatabase.bind(this);
+    this.onSelectBallot = this.onSelectBallot.bind(this);
   }
 
   componentWillMount() {
@@ -40,13 +46,27 @@ class BallotView extends Component {
       });
   }
 
+  componentWillUpdate(newProps, newState) {
+    if (newState.saving) {
+      window.onbeforeunload = () => ('Your ballot has not been saved. Are you sure you want to leave?');
+    } else {
+      window.onbeforeunload = () => {};
+    }
+  }
+
   saveBallotToDatabase() {
+    let _this = this;
+    this.setState({
+      saving: true
+    });
     api.updateWriteableBallot(this.state.write_id, this.state.tallies)
       .then(function (data) {
         if ('error' in data || data.statusCode !== 200) {
           console.log('error');
         } else {
-          console.log('ballot saved');
+          _this.setState({
+            saving: false
+          });
         }
       })
   }
@@ -54,7 +74,11 @@ class BallotView extends Component {
   onUpdate(ballotIndex, cardIndex, newTally) {
     let tallies = this.state.tallies;
     tallies[ballotIndex] = tallies[ballotIndex].map((tally, i) => ((i === cardIndex) ? newTally : tally));
-    this.setState({ tallies });
+    this.setState({ tallies }, this.saveBallotToDatabase);
+  }
+
+  onSelectBallot(ballotIndex, cardIndex) {
+    this.setState({ selectedBallot: { ballotIndex, cardIndex } });
   }
 
   render() {
@@ -66,9 +90,14 @@ class BallotView extends Component {
             <div className="title">BallotView</div>
           </div>
           <div id="saveActions">
-            <span>Edit Mode</span>
-            <button onClick={this.saveBallotToDatabase}>Save Ballot</button>
-            <button>Share</button>
+            <span>{this.state.saving ? 'Saving...' : 'Edit Mode'}</span>
+            <button onClick={() => {
+              this.saveBallotToDatabase();
+              this.setState({ modal: 'SAVE' });
+            }}>Save Ballot</button>
+            <button onClick={() => {
+              this.setState({ modal: 'SHARE' });
+            }}>Share Receipt</button>
           </div>
         </section>
         <section id="ballot">
@@ -77,25 +106,53 @@ class BallotView extends Component {
             ballots={this.state.ballot}
             tallies={this.state.tallies}
             onUpdate={this.onUpdate}
+            selectedBallot={this.state.selectedBallot}
+            onSelectBallot={this.onSelectBallot}
           />
         </section>
         <section id="inspector_nav">
           <InspectorNav ballots={this.state.ballot} />
         </section>
-        {(()=>{ if (this.state.show_inspector) {
+        {(() => { if (this.state.show_inspector) {
           return (
             <section id="inspector">
               <Inspector />
             </section>
           );
         }})()}
+        {(() => {
+          switch (this.state.modal) {
+            case 'SAVE':
+              return (
+                <ModalSave
+                  id={this.state.write_id}
+                  onClose={() => {
+                    this.setState({ modal: null });
+                  }}
+                />
+              );
+              break;
+            case 'SHARE':
+              return (
+                <ModalShare
+                  id={this.state.read_id}
+                  onClose={() => {
+                    this.setState({ modal: null });
+                  }}
+                />
+              );
+              break;
+            default:
+              break;
+          }
+        })()}
       </main>
     );
   }
 }
 
-BallotView.contextTypes = {
+BVBallot.contextTypes = {
   router: React.PropTypes.object.isRequired
 };
 
-export default BallotView;
+export default BVBallot;

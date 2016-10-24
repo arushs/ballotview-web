@@ -9,8 +9,11 @@ import api from '../api-interface';
 
 const Landing = ({ view }, { router }) => (
   <main id="landing">
-    <TabsSection view={view}/>
-    <RockTheVoteSection />
+    <TabsSection view={2}/>
+    <div>
+      <MainSection />
+      <DetailSection />
+    </div>
     <FooterSection />
   </main>
 );
