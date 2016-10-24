@@ -37,7 +37,7 @@ class CopyableLink extends Component {
             _this.setState({ copied: false });
           }, 3000);
         })
-        return this.props.children.join('');
+        return this.props.toCopy || this.props.children.join('');
       }
     });
   }
