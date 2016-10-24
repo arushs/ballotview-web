@@ -46,8 +46,9 @@ class BVReceipt extends Component {
           </div>
           <div id="saveActions">
             <span>Read-Only Mode</span>
-            <button>Create New Ballot</button>
-            <button>Share</button>
+            <button onClick={() => {
+              this.context.router.push({ pathname: '/' });
+            }}>Create New Ballot</button>
           </div>
         </section>
         <section id="ballot_receipt">
