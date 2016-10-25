@@ -1,5 +1,4 @@
 import React from 'react';
-// import { version } from '../../package.json';
 
 const App = ({ children }) => (
   <div>
