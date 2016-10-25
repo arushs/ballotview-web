@@ -10,7 +10,7 @@ function convertToUri(data) {
 
 export default ({ id, onClose }) => {
 
-  let receiptUrl = 'ballotview.org' + '/receipt/' + id;
+  let receiptUrl = 'www.ballotview.org' + '/receipt/' + id;
 
   let shareOnFacebook = () => {
     let params = {

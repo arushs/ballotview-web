@@ -4,7 +4,7 @@ import Copy from './CopyableLink';
 
 export default ({ id, onClose }) => {
 
-  let receiptUrl = 'ballotview.org' + '/ballot/' + id;
+  let receiptUrl = 'www.ballotview.org' + '/ballot/' + id;
 
   return (
     <section id="modal">
