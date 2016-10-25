@@ -32,6 +32,7 @@ class BVBallot extends Component {
     this.onUpdate = this.onUpdate.bind(this);
     this.saveBallotToDatabase = this.saveBallotToDatabase.bind(this);
     this.onSelectBallot = this.onSelectBallot.bind(this);
+    this.createNewBallot = this.createNewBallot.bind(this);
   }
 
   componentWillMount() {
@@ -89,12 +90,19 @@ class BVBallot extends Component {
     this.setState({ selectedBallot: { ballotIndex, cardIndex } });
   }
 
+  createNewBallot() {
+    Cookies.remove('write_id');
+    this.context.router.push({ pathname: '/' });
+  }
+
   render() {
     return (
       <main id="ballotview">
         <section id="toolbar">
           <div id="logo">
-            <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
+            <div className="logo_img" onClick={this.createNewBallot}>
+              <img src="/dist/images/ballotview-black.png" />
+            </div>
             <div className="title">BallotView</div>
           </div>
           <div id="saveActions">
