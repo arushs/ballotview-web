@@ -49,7 +49,9 @@ class BVReceipt extends Component {
       <main id="ballotview">
         <section id="toolbar">
           <div id="logo">
-            <div className="logo_img"><img src="/dist/images/ballotview-black.png" /></div>
+            <div className="logo_img" onClick={this.createNewBallot}>
+              <img src="/dist/images/ballotview-black.png" />
+            </div>
             <div className="title">BallotView</div>
           </div>
           <div id="saveActions">
