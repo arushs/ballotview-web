@@ -6,6 +6,7 @@ var shortid = require('shortid');
 
 const db = require('./firebase');
 const parseGoogleCivic = require('./googlecivic');
+const data = require('./data');
 
 var bvRef = db.ref('ballotview');
 
@@ -44,12 +45,12 @@ router.route('/create')
   .post(function (req, res) {
     var ballots = bvRef.child('ballots');
     var address = req.body.address;
-    console.log(address);
+    // console.log(address);
     var bvWriteId = shortid.generate();
     var bvReadId = shortid.generate();
     getGoogleCivicBallot(address)
       .then(function (data) {
-        console.log(data);
+        // console.log(data);
         if ('error' in data) {
           res.json({ error: 'could not grab ballot info.' });
         } else {
@@ -128,6 +129,24 @@ router.route('/read/:bv_id')
           res.json({ error: 'ballot does not exist'});
         }
       });
+  });
+
+router.route('/content/candidate')
+  .get(function (req, res) {
+    res.json({});
+  });
+
+router.route('/content/referendum')
+  .get(function (req, res) {
+
+    var query = req.query.query;
+
+    var filtered_data = data.filter(function (obj) {
+      // console.log(obj.keywords, query)
+      return obj.keywords.indexOf(query) > -1;
+    });
+
+    res.json({ data: filtered_data });
   });
 
 module.exports = router;

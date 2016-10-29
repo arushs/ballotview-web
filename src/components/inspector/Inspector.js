@@ -1,14 +1,21 @@
 import React from 'react';
+import classNames from 'classnames';
 
-const Inspector = (props) => (
-  <section className="inspector_widget">
-    <section className="heading">
-      <h2>Hilary Clinton</h2>
-    </section>
-    <section className="content">
-        something
-    </section>
-  </section>
+import Video from './Video';
+
+const Inspector = ({ modules }) => (
+  <ul>
+    {modules.map((module, i) => {
+      if (module.type == 'video') {
+        return (
+          <li key={i}
+            className={classNames('inspector_widget', 'video')}>
+            <Video data={module} />
+          </li>
+        );
+      }
+    })}
+  </ul>
 );
 
 export default Inspector;
