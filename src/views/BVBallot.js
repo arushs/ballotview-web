@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import request from 'request';
 import Cookies from 'js-cookie';
 
@@ -23,9 +24,9 @@ class BVBallot extends Component {
       tallies: [],
       write_id: null,
       read_id: null,
-      show_inspector: false,
       saving: false,
       selectedBallot: {},
+      inspector: [],
       modal: null
     };
 
@@ -87,7 +88,28 @@ class BVBallot extends Component {
   }
 
   onSelectBallot(ballotIndex, cardIndex) {
-    this.setState({ selectedBallot: { ballotIndex, cardIndex } });
+
+    let updateInspector = () => {
+      if (this.state.ballot[ballotIndex].title == 'Candidates') {
+        api.searchCandidate(this.state.ballot[ballotIndex].cards[cardIndex].toc[0])
+          .then(({ body }) => {
+            this.setState({ inspector: body.data || [] });
+          });
+      } else {
+        console.log(this.state.ballot[ballotIndex].cards[cardIndex].toc[0]);
+        api.searchReferendum(this.state.ballot[ballotIndex].cards[cardIndex].toc[0])
+          .then(({ body }) => {
+            this.setState({ inspector: body.data || [] });
+          });
+      }
+    }
+    updateInspector = updateInspector.bind(this);
+
+    if (this.state.selectedBallot.ballotIndex === ballotIndex && this.state.selectedBallot.cardIndex === cardIndex) {
+      this.setState({ selectedBallot: {}, inspector: [] });
+    } else {
+      this.setState({ selectedBallot: { ballotIndex, cardIndex }, inspector: [] }, updateInspector);
+    }
   }
 
   createNewBallot() {
@@ -116,7 +138,7 @@ class BVBallot extends Component {
             }}>Share Receipt</button>
           </div>
         </section>
-        <section id="ballot">
+        <section id="ballot" className={classNames({ isolate: 'cardIndex' in this.state.selectedBallot })}>
           <Ballot
             heading={this.state.heading}
             ballots={this.state.ballot}
@@ -129,10 +151,11 @@ class BVBallot extends Component {
         <section id="inspector_nav">
           <InspectorNav ballots={this.state.ballot} />
         </section>
-        {(() => { if (this.state.show_inspector) {
+        {(() => { if (true) {
           return (
             <section id="inspector">
-              <Inspector />
+              <Inspector
+                modules={this.state.inspector}/>
             </section>
           );
         }})()}

@@ -22,15 +22,15 @@ export default ({ id, onClose }) => {
     window.open('https://www.facebook.com/dialog/share?' + convertToUri(params));
   };
 
-  let shareOnTwitter = () => {
-    let params = {
-      url: receiptUrl,
-      via: 'ballotview',
-      hashtags: 'voting,election2016',
-      text: 'This is who I\'m voting for: '
-    };
-    window.open('https://twitter.com/share?' + convertToUri(params));
-  };
+  // let shareOnTwitter = () => {
+  //   let params = {
+  //     url: receiptUrl,
+  //     via: 'ballotview',
+  //     hashtags: 'voting,election2016',
+  //     text: 'This is who I\'m voting for: '
+  //   };
+  //   window.open('https://twitter.com/share?' + convertToUri(params));
+  // };
 
   return (
     <section id="modal">
@@ -42,7 +42,7 @@ export default ({ id, onClose }) => {
       <div>Share it on social media:</div>
       <div>
         <button onClick={shareOnFacebook}>Facebook</button>
-        <button onClick={shareOnTwitter}>Twitter</button>
+        {/*<button onClick={shareOnTwitter}>Twitter</button>*/}
       </div>
     </section>
   );

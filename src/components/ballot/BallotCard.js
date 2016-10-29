@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import BallotClickableText from './BallotClickableText';
 
-const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, ...other }) => (
-  <ul className={classNames('ballot_poll')}>
+const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, className, ...other }) => (
+  <ul className={classNames('ballot_poll', className)}>
     {pollData.map((data, i) => {
 
       let selectOption = (e) => {

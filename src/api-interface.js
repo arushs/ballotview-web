@@ -19,7 +19,8 @@ function interfacer(reqUrl, verb, data) {
         uri: requestUrl,
         method: verb,
         json: true,
-        body: data
+        body: data,
+        qs: data
       }, (error, response, body) => {
         if (!error && response.statusCode === 200) {
           resolve(response);
@@ -71,5 +72,21 @@ methods.getReadOnlyBallot = function(bvId) {
       .then(resolve).error(reject);
   });
 };
+
+methods.searchCandidate = function(query) {
+  return new Promise((resolve, reject) => {
+    let data = { query: query };
+    interfacer('/ballot/content/candidate', 'get', data)
+      .then(resolve).error(reject);
+  });
+}
+
+methods.searchReferendum = function(query) {
+  return new Promise((resolve, reject) => {
+    let data = { query: query };
+    interfacer('/ballot/content/referendum', 'get', data)
+      .then(resolve).error(reject);
+  });
+}
 
 export default methods;

@@ -43,11 +43,19 @@
     position: absolute;
     top: 56px;
     left: 240px;
+    padding-bottom: 100px;
+
     & > .ballot {
       width: 400px;
       margin: 20px auto;
     }
-    padding-bottom: 100px;
+
+    &.isolate {
+      .ballot_card:not(.selected),
+      h2 {
+        opacity: 0.5;
+      }
+    }
   }
 
   #ballot_receipt {
@@ -169,15 +177,11 @@
     position: fixed;
     top: 56px;
     bottom: 0;
-    right: 0;
-    width: 400px;
+    left: 660px;
+    padding: 40px 0;
 
     .inspector_widget {
       position: absolute;
-      left: 20px;
-      right: 20px;
-      top: 20px;
-      bottom: 20px;
     }
 
   }
@@ -187,10 +191,22 @@
 
 .inspector_widget {
   overflow: auto;
-  background-color: #FFF;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
+  margin: 20px;
+  min-width: 400px;
+
+  &.card, iframe {
+    background-color: #FFF;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+  }
+
+  &.video {
+    &, a {
+      font-size: $font-sm;
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
 
   .heading {
     background-color: rgb(13, 71, 161);
