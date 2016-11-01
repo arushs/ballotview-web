@@ -151,14 +151,10 @@ class BVBallot extends Component {
         <section id="inspector_nav">
           <InspectorNav ballots={this.state.ballot} />
         </section>
-        {(() => { if (true) {
-          return (
-            <section id="inspector">
-              <Inspector
-                modules={this.state.inspector}/>
-            </section>
-          );
-        }})()}
+        <section id="inspector">
+          <Inspector
+            modules={this.state.inspector}/>
+        </section>
         {(() => {
           switch (this.state.modal) {
             case 'SAVE':

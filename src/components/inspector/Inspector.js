@@ -14,6 +14,7 @@ const Inspector = ({ modules }) => (
           </li>
         );
       }
+      // TODO: Add if (module.type == 'candidate')
     })}
   </ul>
 );

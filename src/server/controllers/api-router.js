@@ -133,6 +133,7 @@ router.route('/read/:bv_id')
 
 router.route('/content/candidate')
   .get(function (req, res) {
+    // Send back downballot data
     res.json({});
   });
 
