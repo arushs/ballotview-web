@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require('express');
 const Promise = require('bluebird');
 const router = express.Router();
@@ -210,6 +212,7 @@ router.route('/read/:bv_id')
 
 router.route('/content/candidate')
   .get(function (req, res) {
+    // Send back downballot data
     return res.json({});
   });
 
