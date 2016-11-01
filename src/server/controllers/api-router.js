@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require('express');
 const Promise = require('bluebird');
 const router = express.Router();
