@@ -25,6 +25,8 @@ function capitalizeEachWord(str) {
   });
 }
 
+module.exports.capitalizeEachWord = capitalizeEachWord;
+
 function BuildReferendumObject(contest)
 {
     data = {

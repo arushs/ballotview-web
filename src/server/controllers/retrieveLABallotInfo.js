@@ -4,13 +4,6 @@ const Promise = require('bluebird');
 // get firebase ref
 var laRef = db.ref('la_county');
 
-const test_address = {
-  number: '3131',
-  city: 'Los Angeles',
-  street_name: 'McClintock',
-  zip: '90007'
-};
-
 function precinct(address) {
   return new Promise(function (resolve, reject) {
 
@@ -18,7 +11,6 @@ function precinct(address) {
       return new Promise(function (resolve, reject) {
         resolve({
           number: address.number,
-          city: address.city.toUpperCase(),
           street_name: address.street_name.toUpperCase(),
           zip: address.zip
         });
@@ -28,7 +20,6 @@ function precinct(address) {
     function findPrecinctFromAddress(address) {
       // grab info
       var zip = address.zip,
-          city = address.city,
           street_name = address.street_name,
           number = address.number;
 
@@ -44,14 +35,22 @@ function precinct(address) {
               // console.log(Date.now() - time);
               var results = snap.val();
               for (var key in results) {
-                if (number >= results[key].start_house_number && number <= results[key].end_house_number) {
+                var odd_even = results[key].odd_even_both;
+                var odd_bool = (odd_even == 'Odd' && parseInt(number) % 2 == 1);
+                var even_bool = (odd_even == 'Even' && parseInt(number) % 2 == 0);
+                var both_bool = (odd_even == 'Both');
+                if (number >= results[key].start_house_number
+                  && number <= results[key].end_house_number
+                  && (odd_bool || even_bool || both_bool)) {
+
                   // console.log(Date.now() - time);
                   resolve(results[key].precinct_id);
                   break;
                 }
               }
+              reject({ error: 'no precinct found from address' });
             } else {
-              reject();
+              reject({ error: 'no precinct found from address' });
             }
           }).catch(reject);
       });
@@ -74,11 +73,11 @@ function precinct(address) {
 
     normalizeAddress(address)
       .then(findPrecinctFromAddress)
-      .error(reject)
+      .catch(reject)
       .then(getPrecinctData)
-      .error(reject)
+      .catch(reject)
       .then(resolve)
-      .error(reject);
+      .catch(reject);
   });
 }
 

@@ -11,6 +11,7 @@ class EnterAddress extends Component {
     super(props);
     this.state = {
       address: '',
+      address_components: {},
       addressIsValid: false,
       isCreating: false,
       error: false
@@ -71,6 +72,7 @@ class EnterAddress extends Component {
   onUpdateAddress(e) {
     this.setState({
       address: e.target.value,
+      address_components: {},
       addressIsValid: false,
       error: false
     });
@@ -78,8 +80,15 @@ class EnterAddress extends Component {
 
   onPlaceSelected(place) {
     if ('formatted_address' in place) {
+      var address_components = {};
+
+      for (var comp of place.address_components) {
+        address_components[comp.types[0]] = comp.short_name;
+      }
+
       this.setState({
         address: place.formatted_address,
+        address_components: address_components,
         addressIsValid: true
       });
     }
@@ -93,25 +102,30 @@ class EnterAddress extends Component {
 
   onSubmit() {
     let _this = this;
-    let { addressIsValid, isCreating, address } = this.state;
+    let { addressIsValid, isCreating, address, address_components } = this.state;
 
     if (addressIsValid && !isCreating) {
       this.setState({ isCreating: true });
-      api.createBallot(address)
+      api.createBallot(address, address_components)
         .then(function (res) {
           if ('error' in res.body) {
-            _this.setState({
-              error: true,
-              isCreating: false,
-              addressIsValid: false
-            });
+            submitError();
           } else {
             _this.context.router.push({
               pathname: '/ballot/' + res.body.write_id,
               state: res.body,
             });
           }
-        });
+        }).catch(submitError);
+    }
+
+    function submitError() {
+      _this.setState({
+        error: true,
+        isCreating: false,
+        address_components: {},
+        addressIsValid: false
+      });
     }
   }
 
