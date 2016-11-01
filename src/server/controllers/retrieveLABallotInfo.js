@@ -4,13 +4,6 @@ const Promise = require('bluebird');
 // get firebase ref
 var laRef = db.ref('la_county');
 
-const test_address = {
-  number: '3131',
-  city: 'Los Angeles',
-  street_name: 'McClintock',
-  zip: '90007'
-};
-
 function precinct(address) {
   return new Promise(function (resolve, reject) {
 
