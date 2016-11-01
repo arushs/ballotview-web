@@ -2,9 +2,10 @@ const losAngelesCounty = require('./../src/server/controllers/losAngelesCounty')
 
 const test_address = {
   number: '3131',
-  city: 'Los Angeles',
-  street_name: 'McClintock',
-  zip: '90007'
+  street_name: 'Figueroa',
+  zip: '90089'
 };
 
-losAngelesCounty(test_address).then(console.log);
+losAngelesCounty(test_address)
+  .then(console.log)
+  .catch(console.error);

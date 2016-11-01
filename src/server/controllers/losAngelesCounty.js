@@ -94,14 +94,14 @@ function losAngelesCounty(address) {
           });
 
           checkDone();
-        });
+        }).catch(reject);
       }
 
       retrieve.polling_location(data.polling_location_id).then(function (data) {
         polling_location = data;
         checkDone();
-      });
-    });
+      }).catch(reject);
+    }).catch(reject);
 
     function checkDone() {
       if (ballot.length === lengthElectoral && !_.isEmpty(polling_location)) {
