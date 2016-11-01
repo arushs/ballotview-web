@@ -52,14 +52,14 @@ function BuildCards(contests) {
       return {
         title: [capitalizeEachWord(contest.office)],
         toc: [capitalizeEachWord(contest.office)],
-        subtext: [],
+        subtext: ['Vote for 1'],
         poll: BuildCandidateObject(contest.candidates)
       };
     } else if (contest.type == 'referendum') {
       return {
         title: [contest.office],
         toc: [contest.office],
-        subtext: [contest.text],
+        subtext: [contest.text, contest.passage_threshold],
         poll: [
           { info: [{ title: [ "Yes" ]}]},
           { info: [{ title: [ "No" ]}]}
@@ -81,7 +81,8 @@ function losAngelesCounty(address) {
       lengthElectoral = data.electoral_district_id.length;
       heading = {
         name: data.name,
-        locality_id: data.locality_id,
+        locality: 'Los Angeles',
+        date: 'November 8th, 2016',
         mail_only: data.mail_only != 'No'
       };
 

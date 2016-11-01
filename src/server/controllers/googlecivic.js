@@ -107,6 +107,33 @@ function parseGoogleCivic(data) {
   var resp = {};
   var uniqueCandidates = {}
 
+  // HEADING
+  // console.log(data.state);
+  resp['heading'] = {
+    date: 'November 8th, 2016',
+    mail_only: data.mailOnly === true
+  };
+  if ('local_jurisdiction' in data.state[0]) {
+    resp['heading']['locality'] = data.state[0].local_jurisdiction.name;
+  }
+
+  // POLLING LOCATION
+  if ('pollingLocations' in data) {
+    var pollObj = data.pollingLocations[0];
+    resp['polling_location'] = {
+      address: {
+        city: pollObj.address.city,
+        line1: pollObj.address.line1,
+        location_name: pollObj.address.locationName,
+        state: pollObj.address.state,
+        zip: pollObj.address.zip
+      },
+      directions: pollObj.notes,
+      polling_hours: pollObj.pollingHours
+    };
+  }
+
+  // GENERATE BALLOTS
   resp['ballot'] = [];
 
   var stateMeasureResp = {};
@@ -119,19 +146,20 @@ function parseGoogleCivic(data) {
 
   for(var contest of data.contests){
     if (contest.type == 'Referendum') {
-      var data = BuildReferendumObject(contest)
-      stateMeasureResp['cards'].push(data);
+      var referendum_data = BuildReferendumObject(contest);
+      stateMeasureResp['cards'].push(referendum_data);
     }
     else if (contest.type == "General") {
-      var data = BuildCandidateObject(contest, uniqueCandidates);
-      if (data != null)
-        candidateResp['cards'].push(data);
+      var candidate_data = BuildCandidateObject(contest, uniqueCandidates);
+      if (candidate_data != null)
+        candidateResp['cards'].push(candidate_data);
     }
   }
 
   resp['ballot'].push(candidateResp);
   resp['ballot'].push(stateMeasureResp);
 
+  // RETURN ALL GENERATED
   return resp;
 }
 

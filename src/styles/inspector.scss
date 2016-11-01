@@ -80,7 +80,7 @@
     min-width: 300px;
     z-index: 4;
 
-    & > div {
+    & > div:not(:last-of-type) {
       margin-bottom: 8px;
     }
 
@@ -114,12 +114,29 @@
       }
     }
 
+    .address {
+      font-size: $font-xl;
+      font-weight: 300;
+    }
+
+    .notes {
+      font-size: $font-sm;
+    }
+
     button {
-      margin: 4px 0;
+      margin: 0;
       padding: 0px 12px;
       font-size: $font-sm;
       height: 32px;
       margin-right: 8px;
+    }
+
+    hr {
+      display: block;
+      height: 0;
+      border: 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      margin: $pad 0;
     }
   }
 

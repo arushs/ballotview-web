@@ -126,6 +126,7 @@ router.route('/create')
       } else {
         var heading = data.heading;
         var ballot = data.ballot;
+        var polling_location = data.polling_location;
         var tallies = ballot.map(function (election) {
           return election.cards.map(function (contest) {
             return contest.poll.map(function (option) {
@@ -137,6 +138,7 @@ router.route('/create')
           address: address || null,
           heading: heading || null,
           ballot: ballot || null,
+          polling_location: polling_location || null,
           tallies: tallies || null,
           write_id: bvWriteId || null,
           read_id: bvReadId || null
@@ -177,10 +179,11 @@ router.route('/write/:bv_id')
     ballots.child(bvId).update({
       tallies: tallies
     }, function (error) {
-      if (error) {
+      if (!error) {
         return res.json({ success: 'user updated' });
       } else {
-        return res.status(400).send({ error: 'could not update ballot' });
+        console.log(error);
+        return res.status(400).send({ error: error.message });
       }
     });
   });

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import request from 'request';
 import Cookies from 'js-cookie';
+import _ from 'lodash';
 
 import api from '../api-interface';
 
@@ -9,7 +10,7 @@ import Ballot from '../components/ballot/Ballot';
 import Inspector from '../components/inspector/Inspector';
 import InspectorNav from '../components/inspector/InspectorNav';
 import ModalSave from '../components/inspector/ModalSave';
-import ModalShare from '../components/inspector/ModalShare';
+import ModalPolling from '../components/inspector/ModalPolling';
 
 import ballots from '../components/ballot/examples/sample_data';
 // const tallies = ballots.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
@@ -19,7 +20,8 @@ class BVBallot extends Component {
     super(props);
 
     this.state = {
-      heading: ballots.heading,
+      heading: {},
+      polling_location: {},
       ballot: [],
       tallies: [],
       write_id: null,
@@ -43,10 +45,10 @@ class BVBallot extends Component {
 
       api.getWritableBallot(this.props.params.bvId)
         .then(function (data) {
+          console.log(data.body);
           _this.setState(data.body);
           Cookies.set('write_id', _this.props.params.bvId);
-        })
-        .catch(function (error) {
+        }).catch(function (error) {
           Cookies.remove('write_id');
           _this.context.router.push({ pathname: '/' });
         });
@@ -133,9 +135,15 @@ class BVBallot extends Component {
               this.saveBallotToDatabase();
               this.setState({ modal: 'SAVE' });
             }}>Save Ballot</button>
-            <button onClick={() => {
-              this.setState({ modal: 'SHARE' });
-            }}>Share Receipt</button>
+            {(() => {
+              if (!_.isEmpty(this.state.polling_location)) {
+                return (
+                  <button onClick={() => {
+                    this.setState({ modal: 'POLL' });
+                  }}>Voting Location</button>
+                );
+              }
+            })()}
           </div>
         </section>
         <section id="ballot" className={classNames({ isolate: 'cardIndex' in this.state.selectedBallot })}>
@@ -164,17 +172,18 @@ class BVBallot extends Component {
             case 'SAVE':
               return (
                 <ModalSave
-                  id={this.state.write_id}
+                  write_id={this.state.write_id}
+                  read_id={this.state.read_id}
                   onClose={() => {
                     this.setState({ modal: null });
                   }}
                 />
               );
               break;
-            case 'SHARE':
+            case 'POLL':
               return (
-                <ModalShare
-                  id={this.state.read_id}
+                <ModalPolling
+                  polling_location={this.state.polling_location}
                   onClose={() => {
                     this.setState({ modal: null });
                   }}
