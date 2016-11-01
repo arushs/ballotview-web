@@ -86,21 +86,27 @@ function losAngelesCounty(address) {
       };
 
       for (id of data.electoral_district_id) {
-        retrieve.electoral(id).then(function (electoral) {
+        retrieve.electoral(id)
+          .then(function (electoral) {
 
-          ballot.push({
-            title: capitalizeEachWord(electoral.type),
-            cards: BuildCards(electoral.contests)
-          });
+            ballot.push({
+              title: capitalizeEachWord(electoral.type),
+              cards: BuildCards(electoral.contests)
+            });
 
-          checkDone();
-        }).catch(reject);
+            checkDone();
+            return null;
+          }).catch(reject);
       }
 
       retrieve.polling_location(data.polling_location_id).then(function (data) {
         polling_location = data;
         checkDone();
+        return null;
       }).catch(reject);
+
+
+      return null;
     }).catch(reject);
 
     function checkDone() {

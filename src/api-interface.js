@@ -22,10 +22,12 @@ function interfacer(reqUrl, verb, data) {
         body: data,
         qs: data
       }, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-          resolve(response);
+        if (error) {
+          return reject(error);
+        } else if(response.statusCode !== 200) {
+          return reject(new Error(body.error));
         } else {
-          reject(error);
+          return resolve(response);
         }
       });
     }

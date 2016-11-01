@@ -45,12 +45,11 @@ function precinct(address) {
 
                   // console.log(Date.now() - time);
                   resolve(results[key].precinct_id);
-                  break;
                 }
               }
-              reject({ error: 'no precinct found from address' });
+              reject(new Error('no precinct found from address'));
             } else {
-              reject({ error: 'no precinct found from address' });
+              reject(new Error('no precinct found from address'));
             }
           }).catch(reject);
       });
@@ -65,7 +64,7 @@ function precinct(address) {
             if (snap.exists()) {
               resolve(snap.val());
             } else {
-              reject();
+              reject(new Error('precinct does not exist'));
             }
           }).catch(reject);
       });
@@ -92,7 +91,7 @@ function electoral(elec_id) {
         if (snap.exists()) {
           resolve(snap.val());
         } else {
-          reject();
+          reject(new Error('electoral does not exist'));
         }
       }).catch(reject);
   });
@@ -109,7 +108,7 @@ function polling_location(poll_loc_id) {
         if (snap.exists()) {
           resolve(snap.val());
         } else {
-          reject();
+          reject(new Error('polling_location does not exist'));
         }
       }).catch(reject);
   });

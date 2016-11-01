@@ -43,12 +43,12 @@ class BVBallot extends Component {
 
       api.getWritableBallot(this.props.params.bvId)
         .then(function (data) {
-          if ('error' in data || data.statusCode !== 200) {
-            console.log('error');
-          } else {
-            _this.setState(data.body);
-            Cookies.set('write_id', _this.props.params.bvId);
-          }
+          _this.setState(data.body);
+          Cookies.set('write_id', _this.props.params.bvId);
+        })
+        .catch(function (error) {
+          Cookies.remove('write_id');
+          _this.context.router.push({ pathname: '/' });
         });
 
     } else {

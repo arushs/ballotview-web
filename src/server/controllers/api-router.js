@@ -28,9 +28,9 @@ function getGoogleCivicBallot(address) {
       json: true,
     }, function (error, response, body) {
       if (error || response.statusCode !== 200) {
-        resolve({ error: 'could not get ballot from google' });
+        return reject(new Error('could not get ballot from google'))
       } else {
-        resolve(parseGoogleCivic(body));
+        return resolve(parseGoogleCivic(body));
       }
     });
   });
@@ -48,15 +48,17 @@ router.get('/', function (req, res) {
 
     losAngelesCounty(address)
       .then(function(data) { res.json(data); })
-      .catch(function(error) { res.json(error); });
+      .catch(function(error) {
+        return res.status(400).send({ error: error.message });
+      });
   } else if ('address' in req.query){
     getGoogleCivicBallot(req.query.address)
       .then(function(data) { res.json(data); })
-      .catch(function(error) { res.json(error); });
+      .catch(function(error) {
+        return res.status(400).send({ error: error.message });
+      });
   } else {
-    res.json({
-      error: 'parameters incorrect'
-    });
+    return res.status(400).send({ error: 'parameters incorrect' });
   }
 });
 
@@ -70,16 +72,22 @@ router.route('/create')
     var bvWriteId = shortid.generate();
     var bvReadId = shortid.generate();
 
-    zip_la.orderByKey()
-      .equalTo(address_components.postal_code)
-      .once('value')
-      .then(function (snap) {
-        if (snap.exists()) {
-          useLosAngelesCounty();
-        } else {
-          useGoogleCivic();
-        }
-      });
+    if ('postal_code' in address_components) {
+      zip_la.orderByKey()
+        .equalTo(address_components.postal_code)
+        .once('value')
+        .then(function (snap) {
+          if (snap.exists()) {
+            useLosAngelesCounty();
+          } else {
+            useGoogleCivic();
+          }
+        }).catch(function (error) {
+          return res.status(400).send({ error: error.message });
+        });
+    } else {
+      return res.status(400).send({ error: 'no postal code received' });
+    }
 
     function useLosAngelesCounty() {
       var laAddress = {
@@ -98,19 +106,23 @@ router.route('/create')
       }
       losAngelesCounty(laAddress)
         .then(processData)
-        .catch(function(error) { res.json(error); });
+        .catch(function(error) {
+          return res.status(400).send({ error: error.message });
+        });
     }
 
     function useGoogleCivic() {
       getGoogleCivicBallot(address)
         .then(processData)
-        .catch(function(error) { res.json(error); });
+        .catch(function(error) {
+          return res.status(400).send({ error: error.message });
+        });
     }
 
     function processData(data) {
-      console.log(data);
+      // console.log(data);
       if ('error' in data) {
-        res.json({ error: 'could not grab ballot info.' });
+        return res.status(400).send({ error: 'could not grab ballot info.' });
       } else {
         var heading = data.heading;
         var ballot = data.ballot;
@@ -131,9 +143,9 @@ router.route('/create')
         };
         ballots.child(bvWriteId).set(bvData, function (error) {
           if (error) {
-            res.json({ error: 'could not create user.' });
+            return res.status(400).send({ error: 'could not create user' });
           } else {
-            res.json(bvData);
+            return res.json(bvData);
           }
         });
       }
@@ -150,10 +162,12 @@ router.route('/write/:bv_id')
         if (snap.exists()) {
           var ballotData = snap.val();
           delete ballotData.address;
-          res.json(ballotData);
+          return res.json(ballotData);
         } else {
-          res.json({ error: 'ballot does not exist' });
+          return res.status(400).send({ error: 'ballot does not exist' });
         }
+      }).catch(function (error) {
+        return res.status(400).send({ error: error.message });
       });
   })
   .put(function (req, res) {
@@ -164,9 +178,9 @@ router.route('/write/:bv_id')
       tallies: tallies
     }, function (error) {
       if (error) {
-        res.json({ success: 'user updated' });
+        return res.json({ success: 'user updated' });
       } else {
-        res.json({ error: 'could not update ballot' });
+        return res.status(400).send({ error: 'could not update ballot' });
       }
     });
   });
@@ -182,16 +196,18 @@ router.route('/read/:bv_id')
           ballotData = ballotData[Object.keys(ballotData)[0]];
           delete ballotData.address;
           delete ballotData.write_id;
-          res.json(ballotData);
+          return res.json(ballotData);
         } else {
-          res.json({ error: 'ballot does not exist'});
+          return res.status(400).send({ error: 'ballot does not exist' });
         }
+      }).catch(function (error) {
+        return res.status(400).send({ error: error.message });
       });
   });
 
 router.route('/content/candidate')
   .get(function (req, res) {
-    res.json({});
+    return res.json({});
   });
 
 router.route('/content/referendum')
@@ -204,7 +220,7 @@ router.route('/content/referendum')
       return obj.keywords.indexOf(query) > -1;
     });
 
-    res.json({ data: filtered_data });
+    return res.json({ data: filtered_data });
   });
 
 module.exports = router;
