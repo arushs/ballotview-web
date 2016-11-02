@@ -83,14 +83,21 @@ class BallotCard extends Component {
     this.setState({ collapsed: !this.state.collapsed });
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.selected === true) {
+      this.setState({ collapsed: false });
+    }
+  }
+
   render() {
     let {
       ballotIndex, cardIndex, title, secondary,
       poll, tally, onUpdate, click, children, className,
+      deselect, selected,
       ...other } = this.props;
 
     return (
-      <div className={classNames('ballot_card', className)} {...other}>
+      <div className={classNames('ballot_card', { selected }, className)} {...other}>
         <div className="heading">
           <div className="title">
             <BallotClickableText text={title} click={click} />
@@ -130,13 +137,8 @@ class BallotCard extends Component {
         <div className={classNames('button_wrap', {
           visible: this.state.collapsed || this.checkRadioSelected() && !this.state.collapsed
         })}>
-          {(() => {
-            if (this.checkRadioSelected() && !this.state.collapsed) {
-              return (<button onClick={this.collapseToggle}>Done</button>);
-            } else if (this.state.collapsed) {
-              return (<button onClick={this.collapseToggle}>Edit</button>);
-            }
-          })()}
+          <button onClick={this.collapseToggle}>Collapse</button>
+          <button onClick={this.props.deselect}>Done</button>
         </div>
       </div>
     );
@@ -152,6 +154,8 @@ BallotCard.propTypes = {
   poll: React.PropTypes.array,
   tally: React.PropTypes.array,
   onUpdate: React.PropTypes.func,
+  selected: React.PropTypes.bool,
+  deselect: React.PropTypes.func,
   children: React.PropTypes.element
 };
 

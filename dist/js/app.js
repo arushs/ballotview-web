@@ -116860,9 +116860,10 @@ var Ballot = function Ballot(_ref) {
         ),
         ballot.cards.map(function (card, cardIndex) {
           return _react2.default.createElement(_BallotCard2.default, {
-            className: (0, _classnames2.default)({
-              selected: selectedBallot && selectedBallot.ballotIndex === ballotIndex && selectedBallot.cardIndex === cardIndex
-            }),
+            selected: selectedBallot && selectedBallot.ballotIndex === ballotIndex && selectedBallot.cardIndex === cardIndex,
+            deselect: function deselect() {
+              onSelectBallot(ballotIndex, cardIndex);
+            },
             onClick: function onClick() {
               onSelectBallot(ballotIndex, cardIndex);
             },
@@ -117056,6 +117057,13 @@ var BallotCard = function (_Component) {
       this.setState({ collapsed: !this.state.collapsed });
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(newProps) {
+      if (newProps.selected === true) {
+        this.setState({ collapsed: false });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this2 = this;
@@ -117071,12 +117079,14 @@ var BallotCard = function (_Component) {
       var click = _props2.click;
       var children = _props2.children;
       var className = _props2.className;
+      var deselect = _props2.deselect;
+      var selected = _props2.selected;
 
-      var other = _objectWithoutProperties(_props2, ['ballotIndex', 'cardIndex', 'title', 'secondary', 'poll', 'tally', 'onUpdate', 'click', 'children', 'className']);
+      var other = _objectWithoutProperties(_props2, ['ballotIndex', 'cardIndex', 'title', 'secondary', 'poll', 'tally', 'onUpdate', 'click', 'children', 'className', 'deselect', 'selected']);
 
       return _react2.default.createElement(
         'div',
-        _extends({ className: (0, _classnames2.default)('ballot_card', className) }, other),
+        _extends({ className: (0, _classnames2.default)('ballot_card', { selected: selected }, className) }, other),
         _react2.default.createElement(
           'div',
           { className: 'heading' },
@@ -117118,21 +117128,16 @@ var BallotCard = function (_Component) {
           { className: (0, _classnames2.default)('button_wrap', {
               visible: this.state.collapsed || this.checkRadioSelected() && !this.state.collapsed
             }) },
-          function () {
-            if (_this2.checkRadioSelected() && !_this2.state.collapsed) {
-              return _react2.default.createElement(
-                'button',
-                { onClick: _this2.collapseToggle },
-                'Done'
-              );
-            } else if (_this2.state.collapsed) {
-              return _react2.default.createElement(
-                'button',
-                { onClick: _this2.collapseToggle },
-                'Edit'
-              );
-            }
-          }()
+          _react2.default.createElement(
+            'button',
+            { onClick: this.collapseToggle },
+            'Collapse'
+          ),
+          _react2.default.createElement(
+            'button',
+            { onClick: this.props.deselect },
+            'Done'
+          )
         )
       );
     }
@@ -117150,6 +117155,8 @@ BallotCard.propTypes = {
   poll: _react2.default.PropTypes.array,
   tally: _react2.default.PropTypes.array,
   onUpdate: _react2.default.PropTypes.func,
+  selected: _react2.default.PropTypes.bool,
+  deselect: _react2.default.PropTypes.func,
   children: _react2.default.PropTypes.element
 };
 

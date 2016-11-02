@@ -41,12 +41,18 @@
     @include respond(phone) {
       transform: scale(1, 1);
       border-radius: 0;
-      border-left: 0;
-      border-right: 0;
-      position: absolute;
+      border: 0;
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
+      bottom: 0;
+      margin: 0;
+      z-index: 10;
+      
+      overflow-y: scroll;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
     }
   }
 
@@ -186,13 +192,29 @@
 
   &.selected .button_wrap {
     display: none;
-    margin: -8px;
+    margin: -$pad;
+    padding: $pad / 2;
     margin-top: 4px;
     text-align: right;
 
     &.visible {
       display: block;
     }
+
+    @include respond(phone) {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: 0;
+      // background-color: rgba(0, 0, 0, 0.05);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      display: block;
+    }
+  }
+
+  button {
+    margin-left: $unit * 2;
   }
 }
 
