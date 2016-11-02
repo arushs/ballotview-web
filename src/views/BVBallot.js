@@ -92,13 +92,20 @@ class BVBallot extends Component {
   onSelectBallot(ballotIndex, cardIndex) {
 
     let updateInspector = () => {
-      if (this.state.ballot[ballotIndex].title == 'Candidates') {
-        api.searchCandidate(this.state.ballot[ballotIndex].cards[cardIndex].toc[0])
+      console.log(this.state.ballot[ballotIndex].cards[cardIndex].title[0]);
+      if (this.state.ballot[ballotIndex].cards[cardIndex].title[0].includes('President And Vice President')) {
+        // Append names together
+        let query = this.state.ballot[ballotIndex].cards[cardIndex].poll.map(function(poll) {
+          return (poll.info[0].title[0] + "_" + poll.info[1].title[0]);
+        });
+
+        console.log(query);
+        
+        api.searchCandidate(query)
           .then(({ body }) => {
             this.setState({ inspector: body.data || [] });
           });
       } else {
-        console.log(this.state.ballot[ballotIndex].cards[cardIndex].toc[0]);
         api.searchReferendum(this.state.ballot[ballotIndex].cards[cardIndex].toc[0])
           .then(({ body }) => {
             this.setState({ inspector: body.data || [] });

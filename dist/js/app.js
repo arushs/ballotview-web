@@ -118635,8 +118635,14 @@ var Inspector = function Inspector(_ref) {
             className: (0, _classnames2.default)('inspector_widget', 'video') },
           _react2.default.createElement(_Video2.default, { data: module })
         );
+      } else if (module.type == 'candidate') {
+        return _react2.default.createElement(
+          'li',
+          { key: i,
+            className: (0, _classnames2.default)('inspector_widget', 'video') },
+          _react2.default.createElement(_Video2.default, { data: module })
+        );
       }
-      // TODO: Add if (module.type == 'candidate')
     })
   );
 };
@@ -119997,14 +120003,21 @@ var BVBallot = function (_Component) {
       var _this3 = this;
 
       var updateInspector = function updateInspector() {
-        if (_this3.state.ballot[ballotIndex].title == 'Candidates') {
-          _apiInterface2.default.searchCandidate(_this3.state.ballot[ballotIndex].cards[cardIndex].toc[0]).then(function (_ref) {
+        console.log(_this3.state.ballot[ballotIndex].cards[cardIndex].title[0]);
+        if (_this3.state.ballot[ballotIndex].cards[cardIndex].title[0].includes('President And Vice President')) {
+          // Append names together
+          var query = _this3.state.ballot[ballotIndex].cards[cardIndex].poll.map(function (poll) {
+            return poll.info[0].title[0] + "_" + poll.info[1].title[0];
+          });
+
+          console.log(query);
+
+          _apiInterface2.default.searchCandidate(query).then(function (_ref) {
             var body = _ref.body;
 
             _this3.setState({ inspector: body.data || [] });
           });
         } else {
-          console.log(_this3.state.ballot[ballotIndex].cards[cardIndex].toc[0]);
           _apiInterface2.default.searchReferendum(_this3.state.ballot[ballotIndex].cards[cardIndex].toc[0]).then(function (_ref2) {
             var body = _ref2.body;
 

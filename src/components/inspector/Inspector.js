@@ -14,7 +14,14 @@ const Inspector = ({ modules }) => (
           </li>
         );
       }
-      // TODO: Add if (module.type == 'candidate')
+      else if (module.type == 'candidate') {
+        return (
+          <li key={i}
+            className={classNames('inspector_widget', 'video')}>
+            <Video data={module} />
+          </li>
+        );
+      }
     })}
   </ul>
 );

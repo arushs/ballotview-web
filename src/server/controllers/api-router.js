@@ -38,6 +38,10 @@ function getGoogleCivicBallot(address) {
   });
 }
 
+function GetCandidateData(query) {
+  console.log(query);
+}
+
 
 router.get('/', function (req, res) {
 
@@ -212,15 +216,21 @@ router.route('/read/:bv_id')
 
 router.route('/content/candidate')
   .get(function (req, res) {
-    // Send back downballot data
-    return res.json({});
+    var query = req.query.query;
+
+    var filtered_data = GetCandidateData(query);
+    // var filtered_data = data.filter(function (obj) {
+    //   return obj.keywords.indexOf(query) > -1;
+    // });
+
+    return res.json({ data: filtered_data });
   });
 
 router.route('/content/referendum')
   .get(function (req, res) {
 
     var query = req.query.query;
-
+    console.log(query);
     var filtered_data = data.filter(function (obj) {
       // console.log(obj.keywords, query)
       return obj.keywords.indexOf(query) > -1;
