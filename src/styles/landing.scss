@@ -72,10 +72,31 @@ main#landing {
     padding: 120px 50px;
     text-align: center;
 
+    @include respond(phone) {
+      padding: $pad;
+      padding-bottom: $pad * 2;
+    }
+
     #logo {
       position: absolute;
       left: $pad;
       top: $pad;
+      @include respond(phone) {
+        position: static;
+        div {
+          float: none;
+          text-align: center;
+          margin: 0 auto;
+        }
+
+        .logo_img {
+          margin-bottom: $unit;
+        }
+
+        .title {
+          line-height: 32px;
+        }
+      }
     }
 
     #right_feature {
@@ -84,17 +105,29 @@ main#landing {
       right: $pad;
       top: $pad;
       opacity: 0.5;
+
+      @include respond(phone) {
+        position: static;
+        text-align: center;
+      }
     }
 
     #blurb {
       max-width: 700px;
       font-weight: 300;
-      margin: 0 auto $pad-lg auto;
+      margin: $pad-lg auto $pad-lg auto;
       font-size: 24px;
+
+      @include respond(phone) {
+        font-size: $font-lg;
+      }
     }
 
     .large {
       font-size: 44px;
+      @include respond(phone) {
+        font-size: $font-lg * 1.5;
+      }
       font-weight: bold;
       margin-bottom: $unit * 2;
       span {
@@ -116,6 +149,10 @@ main#landing {
         }
       }
 
+      @include respond(phone) {
+        margin: $pad 0;
+      }
+
     }
 
     // #example {
@@ -128,6 +165,10 @@ main#landing {
       left: 0;
       right: 0;
       text-align: center;
+
+      @include respond(phone) {
+        bottom: $pad / 2;
+      }
 
       img {
         width: 540px * (30 / 540);
@@ -151,14 +192,24 @@ main#landing {
   section#detail {
     padding: $pad-lg $pad;
 
+    @include respond(phone) {
+      padding: $pad / 2;
+    }
+
     #left, #right {
       width: 50%;
       float: left;
       overflow: hidden;
+      @include respond(phone) {
+        width: 100%;
+      }
     }
 
     #left {
       text-align: center;
+      @include respond(phone) {
+          display: none;
+      }
     }
 
     #right {
@@ -166,10 +217,18 @@ main#landing {
         margin: $pad * 4 0;
         max-width: 450px;
 
+        @include respond(phone) {
+          margin: $pad-lg 0;
+        }
+
         .title {
           font-size: 24px;
           font-weight: 300;
           margin-bottom: $pad;
+          @include respond(phone) {
+            font-size: $font-lg;
+            font-weight: 400;
+          }
         }
 
       }
@@ -189,12 +248,19 @@ main#landing {
     padding: 120px 50px;
     text-align: center;
 
+    @include respond(phone) {
+      padding: $pad * 2 $pad;
+    }
+
     .heading {
       font-size: 32px;
       font-weight: bold;
       margin-bottom: $unit * 2;
       span {
         // background-color: $highlight;
+      }
+      @include respond(phone) {
+        font-size: $font-lg * 1.5;
       }
     }
 
@@ -223,6 +289,9 @@ main#landing {
       left: $pad;
       bottom: $pad;
       opacity: 0.5;
+      @include respond(phone) {
+        position: static;
+      }
     }
 
     .credits_right {
@@ -230,6 +299,10 @@ main#landing {
       right: $pad;
       bottom: $pad;
       opacity: 0.5;
+      @include respond(phone) {
+        position: static;
+        margin-top: $pad;
+      }
     }
   }
 
@@ -239,10 +312,11 @@ main#landing {
     input {
       width: 500px;
       max-width: 100%;
+      margin: 0;
     }
 
     div {
-      margin: 8px;
+      margin: 8px 0;
     }
 
     .error {

@@ -12,17 +12,30 @@
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
     z-index: 10;
 
+    @include respond(phone) {
+      height: 40px;
+    }
+
     #logo {
       .title {
         line-height: 48px;
         font-size: 28px;
+        @include respond(phone) {
+          display: none;
+        }
+      }
+
+      @include respond(phone) {
+        .logo_img {
+          width: 32px + $unit * 2;
+        }
       }
     }
 
     #saveActions {
       position: absolute;
-      right: 4px;
-      top: 4px;
+      right: $unit;
+      top: $unit;
       color: rgba(0, 0, 0, 0.4);
       text-align: right;
 
@@ -34,7 +47,24 @@
 
       span {
         display: inline-block;
-        margin: 0 16px;
+        margin: 0 $pad;
+      }
+
+      @include respond(phone) {
+        top: 0;
+        button {
+          height: 32px;
+          line-height: 32px;
+          padding: 0 14px;
+          font-size: $font-sm;
+          margin-right: 0;
+        }
+
+        span {
+          margin: 0 $pad / 2;
+          font-size: $font-sm;
+          display: none;
+        }
       }
     }
   }
@@ -42,17 +72,25 @@
   #ballot {
     position: absolute;
     top: 56px;
-    left: 240px;
+    left: 220px;
     padding-bottom: 100px;
 
+    @include respond(phone) {
+      top: 40px;
+      left: 0;
+      right: 0;
+      padding: $unit * 2;
+    }
+
     & > .ballot {
-      width: 400px;
+      // width: 400px;
       margin: 20px auto;
     }
 
-    &.isolate {
-      .ballot_card:not(.selected), h2 {
-        opacity: 0.5;
+    &.isolate .ballot_card:not(.selected), &.isolate h2 {
+      opacity: 0.5;
+      @include respond(phone) {
+        opacity: 0.2;
       }
     }
 
@@ -149,8 +187,8 @@
   }
 
   #inspector_nav {
-    width: 220px;
-    padding: 20px;
+    width: 200px;
+    padding: $pad / 2;
     position: fixed;
     top: 56px;
     bottom: 0;
@@ -196,13 +234,17 @@
       }
     }
 
+    @include respond(phone) {
+      display: none;
+    }
+
   }
 
   #inspector {
     position: fixed;
     top: 56px;
     bottom: 0;
-    left: 660px;
+    left: 600px;
     padding: 40px 0;
 
     .inspector_widget {

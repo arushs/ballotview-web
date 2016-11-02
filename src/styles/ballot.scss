@@ -37,6 +37,17 @@
     border-color: rgba(0, 0, 0, 0.2);
     box-shadow: 0 8px 14px rgba(0, 0, 0, 0.2);
     z-index: 3;
+
+    @include respond(phone) {
+      transform: scale(1, 1);
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
   }
 
   .heading {

@@ -6,7 +6,7 @@ $font-md: 15px;
 $font-lg: 17px;
 $font-xl: 20px;
 
-$unit: 5px;
+$unit: 4px;
 $pad: $unit * 4;
 $pad-lg: $pad * 2;
 
@@ -20,6 +20,7 @@ $highlight: #FFFBCC;
   text-rendering:optimizeLegibility !important;
   -webkit-text-size-adjust:100% !important;
   backface-visibility: hidden;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 body {
@@ -33,6 +34,7 @@ body {
   font-weight: 400;
 }
 
+@import 'responsive-mixin';
 @import 'components';
 @import 'ballot';
 @import 'landing';

@@ -32,3 +32,6 @@ render(
   </Router>),
   document.getElementById('app')
 );
+
+// enable :active
+document.addEventListener("touchstart", function(){}, true);
