@@ -25,7 +25,7 @@
   .title {
     font-family: 'Questrial', sans-serif;
     font-size: 32px;
-    margin: 4px 0;
+    padding: 2px 0;
     overflow: hidden;
   }
 
@@ -79,7 +79,7 @@ button {
   color: #FFF;
   text-transform: uppercase;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+  border-radius: 3px;
   height: $pad + (2 * 12px) + (2 * 1px);
   margin: 0 4px;
   cursor: pointer;

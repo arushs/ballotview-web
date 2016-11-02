@@ -42,15 +42,22 @@ class BVBallot extends Component {
     let _this = this;
 
     if (!this.state.write_id) {
+      let bvId = this.props.params.bvId;
 
-      api.getWritableBallot(this.props.params.bvId)
+      api.getWritableBallot(bvId)
         .then(function (data) {
           console.log(data.body);
-          _this.setState(data.body);
-          Cookies.set('write_id', _this.props.params.bvId);
+          _this.setState(data.body, () => {
+            Cookies.set('write_id', bvId);
+          });
         }).catch(function (error) {
-          Cookies.remove('write_id');
-          _this.context.router.push({ pathname: '/' });
+          if (error.message.indexOf('exist') > -1) {
+            // ballot does not exist
+            Cookies.remove('write_id');
+            _this.context.router.push({ pathname: '/' });
+          } else {
+            console.error(error);
+          }
         });
 
     } else {
@@ -74,7 +81,7 @@ class BVBallot extends Component {
     api.updateWriteableBallot(this.state.write_id, this.state.tallies)
       .then(function (data) {
         if ('error' in data || data.statusCode !== 200) {
-          console.log('error');
+          // console.log('error');
         } else {
           _this.setState({
             saving: false
@@ -92,6 +99,7 @@ class BVBallot extends Component {
   onSelectBallot(ballotIndex, cardIndex) {
 
     let updateInspector = () => {
+      console.log(this.state.ballot[ballotIndex].title);
       console.log(this.state.ballot[ballotIndex].cards[cardIndex].title[0]);
       if (this.state.ballot[ballotIndex].cards[cardIndex].title[0].includes('President And Vice President')) {
         // Append names together
@@ -100,7 +108,7 @@ class BVBallot extends Component {
         });
 
         console.log(query);
-        
+
         api.searchCandidate(query)
           .then(({ body }) => {
             this.setState({ inspector: body.data || [] });

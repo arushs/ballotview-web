@@ -2,12 +2,12 @@
 .ballot_card, .ballot_heading {
   text-align: left;
   background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   max-width: 400px;
   border-radius: 3px;
   padding: 16px;
   margin: 0px auto 16px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   font-size: $font-md;
   position: relative;
 }
@@ -15,7 +15,7 @@
 .ballot_heading {
   text-align: center;
   .title, .secondary {
-    font-weight: bold;
+    font-weight: 600;
   }
 }
 
@@ -23,28 +23,29 @@
   transition: all .15s cubic-bezier(.215,.61,.355,1);
   animation-fill-mode:both;
   z-index: 1;
+  transform: translateZ(0);
 
   &:hover {
-    border-color: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-    transform: scale(1, 1);
+    border-color: rgba(0, 0, 0, 0.25);
+    // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    transform: scale(1, 1) translateZ(0);
     z-index: 2;
   }
 
   &.selected {
-    transform: scale(1.05, 1.05);
+    transform: scale(1.005, 1.005) translateY(-8px) translateZ(0);
     border-color: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 14px rgba(0, 0, 0, 0.2);
     z-index: 3;
   }
 
   .heading {
     .title {
-      font-weight: bold;
+      font-weight: 600;
     }
 
     .sub {
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(0, 0, 0, 0.7);
       font-size: $font-sm;
     }
   }
@@ -68,7 +69,7 @@
       .radio {
         width: 28px;
         height: 28px;
-        background-color: #888;
+        background-color: rgba(0, 0, 0, 0.5);
         padding: 2px;
         border-radius: 14px;
         float: left;
@@ -113,17 +114,17 @@
         .trail {
           float: right;
           font-size: $font-sm;
-          color: $faded;
+          color: rgba(0, 0, 0, 0.7);
         }
 
         .option_title {
-          font-weight: bold;
+          font-weight: 600;
           margin-right: 4px;
         }
 
         .option_sub {
           font-size: $font-sm;
-          color: $faded;
+          color: rgba(0, 0, 0, 0.7);
           margin-right: 4px;
         }
 
@@ -146,16 +147,40 @@
     border-radius: 0;
     box-shadow: none;
     margin-bottom: -1px;
-    ul.ballot_poll {
-      li {
-        .info {
-          font-size: $font-xl;
+  }
 
-          .empty {
-            color: rgba(0, 0, 0, 0.3);
-          }
+  ul.ballot_choice {
+    li {
+      .info {
+        font-size: $font-xl;
+
+        .empty {
+          color: rgba(0, 0, 0, 0.3);
         }
       }
+    }
+  }
+
+  button {
+    margin: 0;
+    line-height: 28px;
+    padding: 0 14px;
+    height: 28px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 3px;
+  }
+
+  .button_wrap { display: none; }
+
+  &.selected .button_wrap {
+    display: none;
+    margin: -8px;
+    margin-top: 4px;
+    text-align: right;
+
+    &.visible {
+      display: block;
     }
   }
 }

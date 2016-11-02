@@ -51,10 +51,18 @@
     }
 
     &.isolate {
-      .ballot_card:not(.selected),
-      h2 {
+      .ballot_card:not(.selected), h2 {
         opacity: 0.5;
       }
+    }
+
+    h2 {
+      font-size: $font-md;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    & .ballot > section {
+      margin-bottom: $pad-lg;
     }
   }
 

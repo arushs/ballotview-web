@@ -1,4 +1,4 @@
-// @import 'https://fonts.googleapis.com/css?family=Questrial|Roboto:300,400,700';
+@import 'https://fonts.googleapis.com/css?family=Questrial|Roboto:300,400,600';
 @import 'normalize';
 
 $font-sm: 13px;
@@ -16,6 +16,10 @@ $highlight: #FFFBCC;
 
 *, *:before, *:after {
   box-sizing: border-box;
+  -webkit-font-smoothing:antialiased !important;
+  text-rendering:optimizeLegibility !important;
+  -webkit-text-size-adjust:100% !important;
+  backface-visibility: hidden;
 }
 
 body {
@@ -26,9 +30,7 @@ body {
   padding: 0;
   font-size: $font-md;
   line-height: 1.4;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-  -webkit-text-size-adjust:100%;
+  font-weight: 400;
 }
 
 @import 'components';
