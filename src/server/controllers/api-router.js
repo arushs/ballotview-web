@@ -121,6 +121,7 @@ router.route('/create')
       getGoogleCivicBallot(address)
         .then(processData)
         .catch(function(error) {
+          console.error(error.message);
           return res.status(400).send({ error: error.message });
         });
     }

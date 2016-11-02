@@ -1,6 +1,10 @@
 main#landing {
   padding: $pad;
 
+  @include respond(phone) {
+    padding: $pad / 2;
+  }
+
   a {
     color: inherit;
   }
@@ -115,11 +119,12 @@ main#landing {
     #blurb {
       max-width: 700px;
       font-weight: 300;
-      margin: $pad-lg auto $pad-lg auto;
+      margin: 0 auto $pad-lg auto;
       font-size: 24px;
 
       @include respond(phone) {
         font-size: $font-lg;
+        margin-top: $pad-lg;
       }
     }
 

@@ -122,14 +122,14 @@ function parseGoogleCivic(data) {
     var pollObj = data.pollingLocations[0];
     resp['polling_location'] = {
       address: {
-        city: pollObj.address.city,
-        line1: pollObj.address.line1,
-        location_name: pollObj.address.locationName,
-        state: pollObj.address.state,
-        zip: pollObj.address.zip
+        city: pollObj.address.city || null,
+        line1: pollObj.address.line1 || null,
+        location_name: pollObj.address.locationName || null,
+        state: pollObj.address.state || null,
+        zip: pollObj.address.zip || null
       },
-      directions: pollObj.notes,
-      polling_hours: pollObj.pollingHours
+      directions: pollObj.notes || null,
+      polling_hours: pollObj.pollingHours || null
     };
   }
 
