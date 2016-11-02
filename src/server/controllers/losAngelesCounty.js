@@ -53,6 +53,7 @@ function BuildCards(contests) {
         title: [capitalizeEachWord(contest.office)],
         toc: [capitalizeEachWord(contest.office)],
         subtext: ['Vote for 1'],
+        type: 'Candidate',
         poll: BuildCandidateObject(contest.candidates)
       };
     } else if (contest.type == 'referendum') {
@@ -60,6 +61,7 @@ function BuildCards(contests) {
         title: [contest.office],
         toc: [contest.office],
         subtext: [contest.text, contest.passage_threshold],
+        type: 'Referendum',
         poll: [
           { info: [{ title: [ "Yes" ]}]},
           { info: [{ title: [ "No" ]}]}

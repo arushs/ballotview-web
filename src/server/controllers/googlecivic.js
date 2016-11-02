@@ -33,6 +33,7 @@ function BuildReferendumObject(contest)
       'title': [contest.referendumTitle + ": "],
       'subtext': [contest.referendumText],
       'toc': [contest.referendumTitle],
+      'type': 'Referendum',
       'poll': [
         {'info': [{'title': ['Yes']}]},
         {'info': [{'title': ['No']}]}
@@ -54,6 +55,7 @@ function BuildCandidateObject(contest, uniqueCandidates)
   data = {
     'title': [contest.office],
     'toc': [contest.office],
+    'type': 'Candidate',
     'poll': []
   };
 
