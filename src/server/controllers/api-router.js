@@ -56,30 +56,27 @@ function getIndividualCandidateData(value, j) {
           console.log("Exists");
           exists = true;
           return resolve(snap.val());
-        } 
-      });
-
-    if (!exists) {
-      console.log("Requesting");
-      
-      request({
-        uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
-        method: 'get',
-        json: true,
-      }, function (error, response, body) {
-        if (error || response.statusCode !== 200) {
-          return reject(new Error('could not get candidate from Ballotpedia'))
-        } else {
-          var data = parseBallotpediaCandidate(body);
-          data.sortOrder = i;
-          // firebase
-          console.log("Requested");
-          candidatRef.child(firstName + " " + lastName).set(data);
-          return resolve(data);
+        }  else {
+          console.log("Requesting");
+          request({
+            uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+            method: 'get',
+            json: true,
+          }, function (error, response, body) {
+            if (error || response.statusCode !== 200) {
+              return reject(new Error('could not get candidate from Ballotpedia'))
+            } else {
+              var data = parseBallotpediaCandidate(body);
+              data.sortOrder = i;
+              // firebase
+              console.log("Requested");
+              candidatRef.child(firstName + " " + lastName).set(data);
+              return resolve(data);
+            }
+          });
         }
       });
-    }
-  }
+    } 
 
   return new Promise(function (resolve, reject) {
     // If [Hillary Clinton, Tim Kaine]
