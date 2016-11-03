@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Autocomplete from 'react-google-autocomplete';
 import api from '../../api-interface';
+import _ from 'lodash';
 
 const exampleAddress = 'e.g., 200 N Spring St, Los Angeles, CA 90012';
 const error_message = 'Sorry, could not retrieve ballot for specified address. Please try again';
@@ -14,7 +15,8 @@ class EnterAddress extends Component {
       address_components: {},
       addressIsValid: false,
       isCreating: false,
-      error: false
+      error: false,
+      redirect: {}
     };
     this.setConstants(props.preSubmit, props.postSubmit);
     this.onUpdateAddress = this.onUpdateAddress.bind(this);
@@ -111,10 +113,10 @@ class EnterAddress extends Component {
           if ('error' in res.body) {
             submitError();
           } else {
-            _this.context.router.push({
+            return _this.setState({ redirect: {
               pathname: '/ballot/' + res.body.write_id,
               state: res.body,
-            });
+            } });
           }
         }).catch(submitError);
     }
@@ -126,6 +128,12 @@ class EnterAddress extends Component {
         address_components: {},
         addressIsValid: false
       });
+    }
+  }
+
+  componentWillUpdate(newProps, newState) {
+    if (!_.isEmpty(newState.redirect)) {
+      this.context.router.push(newState.redirect);
     }
   }
 

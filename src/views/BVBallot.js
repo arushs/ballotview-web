@@ -29,7 +29,9 @@ class BVBallot extends Component {
       saving: false,
       selectedBallot: {},
       inspector: [],
-      modal: null
+      inspectorCache: {},
+      modal: null,
+      redirect: {}
     };
 
     this.onUpdate = this.onUpdate.bind(this);
@@ -47,14 +49,14 @@ class BVBallot extends Component {
       api.getWritableBallot(bvId)
         .then(function (data) {
           console.log(data.body);
-          _this.setState(data.body, () => {
+          return _this.setState(data.body, () => {
             Cookies.set('write_id', bvId);
           });
         }).catch(function (error) {
           if (error.message.indexOf('exist') > -1) {
             // ballot does not exist
             Cookies.remove('write_id');
-            _this.context.router.push({ pathname: '/' });
+            _this.setState({ redirect: { pathname: '/' } });
           } else {
             console.error(error);
           }
@@ -70,6 +72,10 @@ class BVBallot extends Component {
       window.onbeforeunload = () => ('Your ballot has not been saved. Are you sure you want to leave?');
     } else {
       window.onbeforeunload = () => {};
+    }
+
+    if (!_.isEmpty(newState.redirect)) {
+      this.context.router.push(newState.redirect);
     }
   }
 
@@ -102,29 +108,52 @@ class BVBallot extends Component {
 
       let card = this.state.ballot[ballotIndex].cards[cardIndex];
 
-      let isCandidateType = ('type' in card) && (card.type == 'Candidate');
+      let isReferenendum = card.poll.length == 2 && card.poll[0].info[0].title[0] == "Yes" && card.poll[1].info[0].title[0] == "No";
 
-      if (isCandidateType || card.title[0].includes('President And Vice President')) {
+      if (!isReferenendum ) {
         // Append names together
         let query = card.poll.map(poll => {
           if (poll.info.length > 1) {
-            return poll.info.reduce((a, b) => (a.title[0] + '_' + b.title[0]));
+            return poll.info.map((info) => (info.title[0]));
           } else {
             return poll.info[0].title[0];
           }
         });
 
-        console.log(query);
+        if (!this.state.inspectorCache[query]) {
 
-        api.searchCandidate(query)
-          .then(({ body }) => {
-            this.setState({ inspector: body.data || [] });
-          });
+          api.searchCandidate(query)
+            .then(({ body }) => {
+              let inspectorCache = this.state.inspectorCache;
+              inspectorCache[query] = body.data;
+              this.setState({
+                inspector: body.data || [],
+                inspectorCache: inspectorCache
+              });
+            });
+
+        } else {
+          this.setState({ inspector: this.state.inspectorCache[query] });
+        }
+
+
       } else {
-        api.searchReferendum(card.toc[0])
-          .then(({ body }) => {
-            this.setState({ inspector: body.data || [] });
-          });
+
+        let query = card.toc[0];
+
+        if (!this.state.inspectorCache[query]) {
+          api.searchReferendum(query)
+            .then(({ body }) => {
+              let inspectorCache = this.state.inspectorCache;
+              inspectorCache[query] = body.data;
+              this.setState({
+                inspector: body.data || [],
+                inspectorCache: inspectorCache
+              });
+            });
+        } else {
+          this.setState({ inspector: this.state.inspectorCache[query] });
+        }
       }
     }
     updateInspector = updateInspector.bind(this);
@@ -181,10 +210,15 @@ class BVBallot extends Component {
         <section id="inspector_nav">
           <InspectorNav ballots={this.state.ballot} />
         </section>
-        <section id="inspector">
-          <Inspector
-            modules={this.state.inspector}/>
-        </section>
+        {(() => {
+          if (!_.isEmpty(this.state.inspector)) {
+            return (<section id="inspector">
+              <Inspector
+                modules={this.state.inspector}
+                cardInfo={this.state.ballot[this.state.selectedBallot.ballotIndex].cards[this.state.selectedBallot.cardIndex]}/>
+            </section>);
+          }
+        })()}
         {(() => {
           switch (this.state.modal) {
             case 'SAVE':

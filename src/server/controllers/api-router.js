@@ -4,17 +4,21 @@ const express = require('express');
 const Promise = require('bluebird');
 const router = express.Router();
 const request = require('request');
-var shortid = require('shortid');
+const shortid = require('shortid');
+const _ = require('lodash');
 
 const db = require('./firebase');
 const parseGoogleCivic = require('./googlecivic');
+const parseBallotpediaCandidate = require('./ballotpedia')
 const losAngelesCounty = require('./losAngelesCounty');
 const data = require('./data');
 
 var bvRef = db.ref('ballotview');
 var laRef = db.ref('la_county');
+var candidatRef = db.ref('candidates');
 
 const googleKey = 'AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ';
+const ballotpedia_url = "http://api.ballotpedia.org/v1/api.php?Key=1a9895801d0409ace45990a746d5d94b&DataSet=People";
 
 function getGoogleCivicBallot(address) {
   return new Promise(function (resolve) {
@@ -38,8 +42,88 @@ function getGoogleCivicBallot(address) {
   });
 }
 
-function GetCandidateData(query) {
-  console.log(query);
+function getIndividualCandidateData(value, j) {
+
+  function parseCandidateFromBP(name, i, resolve, reject) {
+    var nameArray = name.split(" ");
+    var firstName = nameArray[0];
+    var lastName = nameArray[nameArray.length - 1];
+    var exists = false;
+    candidatRef.child(firstName + " " + lastName)
+      .once('value')
+      .then(function (snap) {
+        if (snap.exists()) {
+          console.log("Exists");
+          exists = true;
+          return resolve(snap.val());
+        } 
+      });
+
+    if (!exists) {
+      console.log("Requesting");
+      
+      request({
+        uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+        method: 'get',
+        json: true,
+      }, function (error, response, body) {
+        if (error || response.statusCode !== 200) {
+          return reject(new Error('could not get candidate from Ballotpedia'))
+        } else {
+          var data = parseBallotpediaCandidate(body);
+          data.sortOrder = i;
+          // firebase
+          console.log("Requested");
+          candidatRef.child(firstName + " " + lastName).set(data);
+          return resolve(data);
+        }
+      });
+    }
+  }
+
+  return new Promise(function (resolve, reject) {
+    // If [Hillary Clinton, Tim Kaine]
+    if (value.constructor === Array) {
+      var toRet = [];
+      for (var i in value) {
+        var name = value[i];
+        parseCandidateFromBP(name, i, function (data) {
+          toRet.push(data);
+          if (toRet.length === value.length) {
+            resolve({ sortOrder: j, data: _.sortBy(toRet, ['sortOrder']) });
+          }
+        }, reject);
+      }
+      // Else, value = Kamala Harris
+    } else {
+      parseCandidateFromBP(value, 0, function (data) {
+        resolve({ sortOrder: j, data: data });
+      }, reject);
+    }
+  })
+}
+
+function getCandidateData(query) {
+  // Check if in firebase and get data if so
+
+
+  // If not in firebase
+  return new Promise(function (resolve, reject) {
+    var ret = [];
+    var promiseFinished = 0;
+    for (var i in query) {
+      console.log("Query is: " + query[i]);
+      getIndividualCandidateData(query[i], i)
+        .then(function (data) {
+          ret.push(data);
+          if (ret.length === query.length) {
+            resolve(_.sortBy(ret, ['sortOrder']).map(function (obj) {
+              return obj.data; 
+            }));
+          }
+        }).catch (reject);
+    }
+  });
 }
 
 
@@ -219,19 +303,20 @@ router.route('/content/candidate')
   .get(function (req, res) {
     var query = req.query.query;
 
-    var filtered_data = GetCandidateData(query);
-    // var filtered_data = data.filter(function (obj) {
-    //   return obj.keywords.indexOf(query) > -1;
-    // });
-
-    return res.json({ data: filtered_data });
+    getCandidateData(query)
+      .then(function(data) {
+        // console.log(data);
+        return res.json({ data: data });
+      })
+      .catch(function(error) {
+        return res.status(400).send({ error: error.message });
+      });
   });
 
 router.route('/content/referendum')
   .get(function (req, res) {
 
     var query = req.query.query;
-    console.log(query);
     var filtered_data = data.filter(function (obj) {
       // console.log(obj.keywords, query)
       return obj.keywords.indexOf(query) > -1;
