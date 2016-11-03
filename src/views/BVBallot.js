@@ -102,13 +102,13 @@ class BVBallot extends Component {
 
       let card = this.state.ballot[ballotIndex].cards[cardIndex];
 
-      let isCandidateType = ('type' in card) && (card.type == 'Candidate');
+      let isReferenendum = card.poll.length == 2 && card.poll[0].info[0].title[0] == "Yes" && card.poll[1].info[0].title[0] == "No";
 
-      if (isCandidateType || card.title[0].includes('President And Vice President')) {
+      if (!isReferenendum ) {
         // Append names together
         let query = card.poll.map(poll => {
           if (poll.info.length > 1) {
-            return poll.info.reduce((a, b) => (a.title[0] + '_' + b.title[0]));
+            return poll.info.map((info) => (info.title[0]));
           } else {
             return poll.info[0].title[0];
           }

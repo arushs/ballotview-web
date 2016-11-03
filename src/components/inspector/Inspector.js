@@ -15,6 +15,7 @@ const Inspector = ({ modules }) => (
         );
       }
       else if (module.type == 'candidate') {
+        console.log(module.Name);
         return (
           <li key={i}
             className={classNames('inspector_widget', 'video')}>
