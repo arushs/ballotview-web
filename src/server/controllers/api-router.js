@@ -46,16 +46,24 @@ function getIndividualCandidateData(value) {
   return new Promise(function (resolve, reject) {
     // If [Hillary Clinton, Tim Kaine]
     if (value.constructor === Array) {
+      var toRet = [];
       for (var i = 0; i < value.length; i++) {
+        var nameArray = value[i].split(" ");
+        var firstName = nameArray[0];
+        var lastName = nameArray[nameArray.length - 1];
         request({
-          uri: ballotpedia_url + value[0],
+          uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
           method: 'get',
           json: true,
         }, function (error, response, body) {
           if (error || response.statusCode !== 200) {
             return reject(new Error('could not get candidate from Ballotpedia'))
           } else {
-            // return resolve(parseBallotpedia(body));
+            var data = parseBallotpediaCandidate(body);
+            toRet.push(data);
+            if (i == value.length) {
+              resolve(toRet);
+            }
           }
         });
       }
@@ -84,16 +92,14 @@ function getCandidateData(query) {
 
 
   // If not in firebase
-  console.log(query);
   return new Promise(function (resolve, reject) {
     var ret = [];
     var promiseFinished = 0;
     for (var i = 0; i < query.length; i++) {
+      console.log("Query is: " + query[i]);
       getIndividualCandidateData(query[i]).then(function (data) {
         ret.push(data);
         if (i == query.length) {
-          console.log("Resolving");
-          console.log(ret);
           resolve(ret);
         }
       })
@@ -281,7 +287,6 @@ router.route('/content/candidate')
 
     getCandidateData(query)
       .then(function(data) { 
-        console.log("Return data is: ");
         console.log(data);
         return res.json({ data: data });
       })

@@ -1,7 +1,6 @@
 
 function parseBallotpediaCandidate(data) {
   var ret = {};
-
   if (data.NumResults == 0) {
     return ret;
   } 
