@@ -12,12 +12,15 @@ function parseBallotpediaCandidate(data) {
     num_results: '1',
     Name: candidate.Name,
     Image: candidate.Image,
-    PageUrl: candidate.PageUrl,
     Summary: candidate.Summary,
     Party: candidate.PartyAffiliation,
     Websites: {},
     source: "ballotpedia" 
   };
+
+  if ("PageUrl" in candidate) {
+    ret.PageUrl = candidate.PageUrl;
+  }
 
   if ("Office" in candidate.Websites) {
     ret.Websites.Office = candidate.Websites.Office;

@@ -15,6 +15,7 @@ const data = require('./data');
 
 var bvRef = db.ref('ballotview');
 var laRef = db.ref('la_county');
+var candidatRef = db.ref('candidates');
 
 const googleKey = 'AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ';
 const ballotpedia_url = "http://api.ballotpedia.org/v1/api.php?Key=1a9895801d0409ace45990a746d5d94b&DataSet=People";
@@ -47,19 +48,37 @@ function getIndividualCandidateData(value, j) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
     var lastName = nameArray[nameArray.length - 1];
-    request({
-      uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
-      method: 'get',
-      json: true,
-    }, function (error, response, body) {
-      if (error || response.statusCode !== 200) {
-        return reject(new Error('could not get candidate from Ballotpedia'))
-      } else {
-        var data = parseBallotpediaCandidate(body);
-        data.sortOrder = i;
-        return resolve(data);
-      }
-    });
+    var exists = false;
+    candidatRef.child(firstName + " " + lastName)
+      .once('value')
+      .then(function (snap) {
+        if (snap.exists()) {
+          console.log("Exists");
+          exists = true;
+          return resolve(snap.val());
+        } 
+      });
+
+    if (!exists) {
+      console.log("Requesting");
+      
+      request({
+        uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+        method: 'get',
+        json: true,
+      }, function (error, response, body) {
+        if (error || response.statusCode !== 200) {
+          return reject(new Error('could not get candidate from Ballotpedia'))
+        } else {
+          var data = parseBallotpediaCandidate(body);
+          data.sortOrder = i;
+          // firebase
+          console.log("Requested");
+          candidatRef.child(firstName + " " + lastName).set(data);
+          return resolve(data);
+        }
+      });
+    }
   }
 
   return new Promise(function (resolve, reject) {
