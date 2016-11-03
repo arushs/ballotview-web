@@ -40,27 +40,25 @@ function getGoogleCivicBallot(address) {
   });
 }
 
-function parseCandidateFromBP(name, resolve, reject) {
-
-  var nameArray = name.split(" ");
-  var firstName = nameArray[0];
-  var lastName = nameArray[nameArray.length - 1];
-  request({
-    uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
-    method: 'get',
-    json: true,
-  }, function (error, response, body) {
-    if (error || response.statusCode !== 200) {
-      return reject(new Error('could not get candidate from Ballotpedia'))
-    } else {
-      return resolve(parseBallotpediaCandidate(body));
-    }
-  });
-
-}
-
 function getIndividualCandidateData(value) {
-  console.log(value);
+
+  function parseCandidateFromBP(name, resolve, reject) {
+    var nameArray = name.split(" ");
+    var firstName = nameArray[0];
+    var lastName = nameArray[nameArray.length - 1];
+    request({
+      uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+      method: 'get',
+      json: true,
+    }, function (error, response, body) {
+      if (error || response.statusCode !== 200) {
+        return reject(new Error('could not get candidate from Ballotpedia'))
+      } else {
+        return resolve(parseBallotpediaCandidate(body));
+      }
+    });
+  }
+
   return new Promise(function (resolve, reject) {
     // If [Hillary Clinton, Tim Kaine]
     if (value.constructor === Array) {
