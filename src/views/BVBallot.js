@@ -29,6 +29,7 @@ class BVBallot extends Component {
       saving: false,
       selectedBallot: {},
       inspector: [],
+      inspectorCache: {},
       modal: null,
       redirect: {}
     };
@@ -119,17 +120,40 @@ class BVBallot extends Component {
           }
         });
 
-        console.log(query);
+        if (!this.state.inspectorCache[query]) {
 
-        api.searchCandidate(query)
-          .then(({ body }) => {
-            this.setState({ inspector: body.data || [] });
-          });
+          api.searchCandidate(query)
+            .then(({ body }) => {
+              let inspectorCache = this.state.inspectorCache;
+              inspectorCache[query] = body.data;
+              this.setState({
+                inspector: body.data || [],
+                inspectorCache: inspectorCache
+              });
+            });
+
+        } else {
+          this.setState({ inspector: this.state.inspectorCache[query] });
+        }
+
+
       } else {
-        api.searchReferendum(card.toc[0])
-          .then(({ body }) => {
-            this.setState({ inspector: body.data || [] });
-          });
+
+        let query = card.toc[0];
+
+        if (!this.state.inspectorCache[query]) {
+          api.searchReferendum(query)
+            .then(({ body }) => {
+              let inspectorCache = this.state.inspectorCache;
+              inspectorCache[query] = body.data;
+              this.setState({
+                inspector: body.data || [],
+                inspectorCache: inspectorCache
+              });
+            });
+        } else {
+          this.setState({ inspector: this.state.inspectorCache[query] });
+        }
       }
     }
     updateInspector = updateInspector.bind(this);

@@ -5,13 +5,19 @@ import Video from './Video';
 
 const Candidate = ({ data }) => {
 
-  delete data.type;
-  delete data.num_results;
-  delete data.sortOrder;
-
   return (
     <div>
       {Object.keys(data).map(item => {
+        if (['type', 'num_results', 'sortOrder'].indexOf(item) > -1) return;
+
+        if (!data[item]) return;
+
+        if (item === 'Image') {
+          return (<div key={item} className="image">
+            <img src={data[item]} />
+          </div>);
+        }
+
         if (typeof data[item] !== 'object') {
           return (<div key={item} className="item">
             <div className="heading">{item}</div>

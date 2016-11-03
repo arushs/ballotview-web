@@ -284,6 +284,7 @@
   padding: $pad;
   margin-bottom: $pad;
   word-wrap: break-word;
+  position: relative;
 
   &.card, iframe {
     background-color: #FFF;
@@ -324,9 +325,31 @@
     }
   }
 
+  & > div {
+    position: relative;
+  }
+
   & > div:not(:last-of-type) {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     padding-bottom: $pad;
     margin-bottom: $pad-lg;
+  }
+
+  .image {
+    $img-size: 54px;
+
+    width: $img-size;
+    height: $img-size;
+    border-radius: $img-size / 2;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+    img {
+      max-width: 100%;
+    }
   }
 }
