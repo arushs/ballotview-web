@@ -29,7 +29,8 @@ class BVBallot extends Component {
       saving: false,
       selectedBallot: {},
       inspector: [],
-      modal: null
+      modal: null,
+      redirect: {}
     };
 
     this.onUpdate = this.onUpdate.bind(this);
@@ -47,14 +48,14 @@ class BVBallot extends Component {
       api.getWritableBallot(bvId)
         .then(function (data) {
           console.log(data.body);
-          _this.setState(data.body, () => {
+          return _this.setState(data.body, () => {
             Cookies.set('write_id', bvId);
           });
         }).catch(function (error) {
           if (error.message.indexOf('exist') > -1) {
             // ballot does not exist
             Cookies.remove('write_id');
-            _this.context.router.push({ pathname: '/' });
+            _this.setState({ redirect: { pathname: '/' } });
           } else {
             console.error(error);
           }
@@ -70,6 +71,10 @@ class BVBallot extends Component {
       window.onbeforeunload = () => ('Your ballot has not been saved. Are you sure you want to leave?');
     } else {
       window.onbeforeunload = () => {};
+    }
+
+    if (!_.isEmpty(newState.redirect)) {
+      this.context.router.push(newState.redirect);
     }
   }
 

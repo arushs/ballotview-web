@@ -40,6 +40,24 @@ function getGoogleCivicBallot(address) {
   });
 }
 
+function parseCandidateFromBP(name, resolve, reject) {
+
+  var nameArray = name.split(" ");
+  var firstName = nameArray[0];
+  var lastName = nameArray[nameArray.length - 1];
+  request({
+    uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+    method: 'get',
+    json: true,
+  }, function (error, response, body) {
+    if (error || response.statusCode !== 200) {
+      return reject(new Error('could not get candidate from Ballotpedia'))
+    } else {
+      return resolve(parseBallotpediaCandidate(body));
+    }
+  });
+
+}
 
 function getIndividualCandidateData(value) {
   console.log(value);
@@ -47,43 +65,18 @@ function getIndividualCandidateData(value) {
     // If [Hillary Clinton, Tim Kaine]
     if (value.constructor === Array) {
       var toRet = [];
-      for (var i = 0; i < value.length; i++) {
-        var nameArray = value[i].split(" ");
-        var firstName = nameArray[0];
-        var lastName = nameArray[nameArray.length - 1];
-        request({
-          uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
-          method: 'get',
-          json: true,
-        }, function (error, response, body) {
-          if (error || response.statusCode !== 200) {
-            return reject(new Error('could not get candidate from Ballotpedia'))
-          } else {
-            var data = parseBallotpediaCandidate(body);
-            toRet.push(data);
-            if (i == value.length) {
-              resolve(toRet);
-            }
+      for (var name of value) {
+        parseCandidateFromBP(name, function (data) {
+          toRet.push(data);
+          if (toRet.length === value.length) {
+            resolve(toRet);
           }
-        });
+        }, reject);
       }
       // Else, value = Kamala Harris
     } else {
-      var nameArray = value.split(" ");
-      var firstName = nameArray[0];
-      var lastName = nameArray[nameArray.length - 1];
-      request({
-          uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
-          method: 'get',
-          json: true,
-        }, function (error, response, body) {
-          if (error || response.statusCode !== 200) {
-            return reject(new Error('could not get candidate from Ballotpedia'))
-          } else {
-            return resolve(parseBallotpediaCandidate(body));
-          }
-        });
-      }
+      parseCandidateFromBP(value, resolve, reject);
+    }
   })
 }
 
@@ -286,7 +279,7 @@ router.route('/content/candidate')
     var query = req.query.query;
 
     getCandidateData(query)
-      .then(function(data) { 
+      .then(function(data) {
         console.log(data);
         return res.json({ data: data });
       })

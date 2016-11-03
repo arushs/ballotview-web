@@ -41,23 +41,30 @@
 }
 
 input {
+  position: relative;
   outline: none;
   padding: 12px;
   font-size: $font-lg;
   line-height: $pad;
   box-shadow: none;
   background-color: #FFF;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  // border: 1px solid rgba(0, 0, 0, 0.2);
+  border: none;
   border-radius: 5px;
   height: $pad + (2 * 12px) + (2 * 1px);
   margin: 0 4px;
   max-width: 100%;
   transition:all .15s cubic-bezier(.215,.61,.355,1);
   animation-fill-mode:both;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.15),
+              0 1px 1px rgba(0,0,0,.1);
 
   &:not([disabled]):focus {
-    box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.1);
-    transform:scale(1.02, 1.02);
+    box-shadow: 0 0 0 1px rgba(0,0,0,.15),
+                0 1px 1px rgba(0,0,0,.1),
+                0 4px 10px -1px rgba(0, 0, 0, 0.25);
+    // transform:scale(1.02, 1.02);
+    transform: translateY(-2px);
   }
 
   &.email {
