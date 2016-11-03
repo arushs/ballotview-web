@@ -18,9 +18,19 @@ const Candidate = ({ data }) => {
           </div>);
         }
 
+        if (item === 'Name') {
+          return (<div key={item} className="heading1">
+            {data[item]}
+          </div>);
+        }
+
+        if (item === 'source') {
+          return (<div key={item} className="source">source: {data[item]}</div>);
+        }
+
         if (typeof data[item] !== 'object') {
           return (<div key={item} className="item">
-            <div className="heading">{item}</div>
+            <div className="heading2">{item}</div>
             <div className="info">{data[item]}</div>
           </div>);
         }
