@@ -283,6 +283,7 @@
   overflow: hidden;
   padding: $pad;
   margin-bottom: $pad;
+  word-wrap: break-word;
 
   &.card, iframe {
     background-color: #FFF;
@@ -299,13 +300,33 @@
     }
   }
 
-  .heading {
-    background-color: rgb(13, 71, 161);
-    color: #FFF;
-    padding: 16px;
+  // .heading {
+  //   background-color: rgb(13, 71, 161);
+  //   color: #FFF;
+  //   padding: 16px;
+  // }
+
+  // .content {
+  //   padding: 16px;
+  // }
+
+  .item {
+    margin-bottom: $pad;
+
+    .heading {
+      font-size: $font-sm;
+      font-weight: 600;
+      opacity: 0.4;
+    }
+
+    .info {
+      font-size: $font-md;
+    }
   }
 
-  .content {
-    padding: 16px;
+  & > div:not(:last-of-type) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: $pad;
+    margin-bottom: $pad-lg;
   }
 }

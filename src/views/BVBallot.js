@@ -186,10 +186,15 @@ class BVBallot extends Component {
         <section id="inspector_nav">
           <InspectorNav ballots={this.state.ballot} />
         </section>
-        <section id="inspector">
-          <Inspector
-            modules={this.state.inspector}/>
-        </section>
+        {(() => {
+          if (!_.isEmpty(this.state.inspector)) {
+            return (<section id="inspector">
+              <Inspector
+                modules={this.state.inspector}
+                cardInfo={this.state.ballot[this.state.selectedBallot.ballotIndex].cards[this.state.selectedBallot.cardIndex]}/>
+            </section>);
+          }
+        })()}
         {(() => {
           switch (this.state.modal) {
             case 'SAVE':

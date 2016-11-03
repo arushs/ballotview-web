@@ -3,26 +3,45 @@ import classNames from 'classnames';
 
 import Video from './Video';
 
-const Inspector = ({ modules }) => (
+const Candidate = ({ data }) => {
+
+  delete data.type;
+  delete data.num_results;
+  delete data.sortOrder;
+
+  return (
+    <div>
+      {Object.keys(data).map(item => {
+        if (typeof data[item] !== 'object') {
+          return (<div key={item} className="item">
+            <div className="heading">{item}</div>
+            <div className="info">{data[item]}</div>
+          </div>);
+        }
+      })}
+    </div>
+  );
+}
+
+const Inspector = ({ modules, cardInfo }) => (
   <ul>
     {modules.map((module, i) => {
 
+      let style = {};
+
+      if ('color' in cardInfo.poll[i]) {
+        style['borderColor'] = cardInfo.poll[i].color;
+      }
+
       if (module.constructor === Array) {
-        return (<li key={i} className={classNames('inspector_widget', 'card')}>
-          {module.map((mod, j) => (
-            <div key={j}>{console.log(mod)}{Object.keys(mod).map(item => (
-              <div key={item}>{item}: {JSON.stringify(mod[item])}</div>
-            ))}</div>
-          ))}
+        return (<li key={i} className={classNames('inspector_widget', 'card')} style={style}>
+          {module.map((mod, j) => (<Candidate key={j} data={mod} />))}
         </li>);
       }
       else if (module.type == 'candidate') {
         return (
-          <li key={i}
-            className={classNames('inspector_widget', 'card')}>
-            {Object.keys(module).map(item => (
-              <div key={item}>{item}: {JSON.stringify(module[item])}</div>
-            ))}
+          <li key={i} className={classNames('inspector_widget', 'card')} style={style}>
+            <Candidate data={module} />
           </li>
         );
       }

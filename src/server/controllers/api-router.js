@@ -4,7 +4,8 @@ const express = require('express');
 const Promise = require('bluebird');
 const router = express.Router();
 const request = require('request');
-var shortid = require('shortid');
+const shortid = require('shortid');
+const _ = require('lodash');
 
 const db = require('./firebase');
 const parseGoogleCivic = require('./googlecivic');
@@ -40,9 +41,9 @@ function getGoogleCivicBallot(address) {
   });
 }
 
-function getIndividualCandidateData(value) {
+function getIndividualCandidateData(value, j) {
 
-  function parseCandidateFromBP(name, resolve, reject) {
+  function parseCandidateFromBP(name, i, resolve, reject) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
     var lastName = nameArray[nameArray.length - 1];
@@ -54,7 +55,9 @@ function getIndividualCandidateData(value) {
       if (error || response.statusCode !== 200) {
         return reject(new Error('could not get candidate from Ballotpedia'))
       } else {
-        return resolve(parseBallotpediaCandidate(body));
+        var data = parseBallotpediaCandidate(body);
+        data.sortOrder = i;
+        return resolve(data);
       }
     });
   }
@@ -63,17 +66,20 @@ function getIndividualCandidateData(value) {
     // If [Hillary Clinton, Tim Kaine]
     if (value.constructor === Array) {
       var toRet = [];
-      for (var name of value) {
-        parseCandidateFromBP(name, function (data) {
+      for (var i in value) {
+        var name = value[i];
+        parseCandidateFromBP(name, i, function (data) {
           toRet.push(data);
           if (toRet.length === value.length) {
-            resolve(toRet);
+            resolve({ sortOrder: j, data: _.sortBy(toRet, ['sortOrder']) });
           }
         }, reject);
       }
       // Else, value = Kamala Harris
     } else {
-      parseCandidateFromBP(value, resolve, reject);
+      parseCandidateFromBP(value, 0, function (data) {
+        resolve({ sortOrder: j, data: data });
+      }, reject);
     }
   })
 }
@@ -86,13 +92,15 @@ function getCandidateData(query) {
   return new Promise(function (resolve, reject) {
     var ret = [];
     var promiseFinished = 0;
-    for (var q of query) {
-      console.log("Query is: " + q);
-      getIndividualCandidateData(q)
+    for (var i in query) {
+      console.log("Query is: " + query[i]);
+      getIndividualCandidateData(query[i], i)
         .then(function (data) {
           ret.push(data);
           if (ret.length === query.length) {
-            resolve(ret);
+            resolve(_.sortBy(ret, ['sortOrder']).map(function (obj) {
+              return obj.data; 
+            }));
           }
         }).catch (reject);
     }
