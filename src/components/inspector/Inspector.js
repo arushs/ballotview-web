@@ -6,6 +6,7 @@ import Video from './Video';
 const Inspector = ({ modules }) => (
   <ul>
     {modules.map((module, i) => {
+      console.log(module.type);
       if (module.type == 'video') {
         return (
           <li key={i}

@@ -16,7 +16,7 @@ var bvRef = db.ref('ballotview');
 var laRef = db.ref('la_county');
 
 const googleKey = 'AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ';
-const ballotpedia_url = "http://api.ballotpedia.org/v1/api.php?Key=1a9895801d0409ace45990a746d5d94b&DataSet=People&Name=Hillary%20Clinton&Name=";
+const ballotpedia_url = "http://api.ballotpedia.org/v1/api.php?Key=1a9895801d0409ace45990a746d5d94b&DataSet=People";
 
 function getGoogleCivicBallot(address) {
   return new Promise(function (resolve) {
@@ -42,9 +42,8 @@ function getGoogleCivicBallot(address) {
 
 
 function getIndividualCandidateData(value) {
+  console.log(value);
   return new Promise(function (resolve, reject) {
-
-
     // If [Hillary Clinton, Tim Kaine]
     if (value.constructor === Array) {
       for (var i = 0; i < value.length; i++) {
@@ -56,15 +55,17 @@ function getIndividualCandidateData(value) {
           if (error || response.statusCode !== 200) {
             return reject(new Error('could not get candidate from Ballotpedia'))
           } else {
-            return resolve(parseBallotpedia(body));
+            // return resolve(parseBallotpedia(body));
           }
         });
       }
       // Else, value = Kamala Harris
     } else {
-
+      var nameArray = value.split(" ");
+      var firstName = nameArray[0];
+      var lastName = nameArray[nameArray.length - 1];
       request({
-          uri: ballotpedia_url + value,
+          uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
           method: 'get',
           json: true,
         }, function (error, response, body) {
@@ -83,18 +84,21 @@ function getCandidateData(query) {
 
 
   // If not in firebase
-
+  console.log(query);
   return new Promise(function (resolve, reject) {
     var ret = [];
+    var promiseFinished = 0;
     for (var i = 0; i < query.length; i++) {
       getIndividualCandidateData(query[i]).then(function (data) {
-        console.log(data);
         ret.push(data);
+        if (i == query.length) {
+          console.log("Resolving");
+          console.log(ret);
+          resolve(ret);
+        }
       })
       .catch (function(error) {});
     }
-    console.log(ret);
-    resolve(ret);
   });
 }
 
@@ -275,18 +279,15 @@ router.route('/content/candidate')
   .get(function (req, res) {
     var query = req.query.query;
 
-    var filtered_data = getCandidateData(query)
+    getCandidateData(query)
       .then(function(data) { 
         console.log("Return data is: ");
         console.log(data);
-        return res.json(data); 
+        return res.json({ data: data });
       })
       .catch(function(error) {
         return res.status(400).send({ error: error.message });
       });
-    // var filtered_data = data.filter(function (obj) {
-    //   return obj.keywords.indexOf(query) > -1;
-    // });
   });
 
 router.route('/content/referendum')

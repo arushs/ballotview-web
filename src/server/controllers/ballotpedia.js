@@ -16,7 +16,8 @@ function parseBallotpediaCandidate(data) {
     PageUrl: candidate.PageUrl,
     Summary: candidate.Summary,
     Party: candidate.PartyAffiliation,
-    Websites: {}
+    Websites: {},
+    source: "ballotpedia" 
   };
 
   if ("Office" in candidate.Websites) {
@@ -30,7 +31,7 @@ function parseBallotpediaCandidate(data) {
   if ("Personal" in candidate.Websites) {
     ret.Websites.Personal = candidate.Websites.Personal;
   }
-  
+
   return ret;
 }
 
