@@ -263,30 +263,33 @@
 
   #inspector {
     position: fixed;
-    top: 56px;
+    top: $toolbar-h-lg;
     bottom: 0;
-    left: 600px;
-    padding: 40px 0;
-
-    .inspector_widget {
-      position: absolute;
-    }
-
+    right: 0;
+    left: 660px;
+    padding: $pad-lg 0;
+    padding-bottom: 100px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
 }
 
 
 .inspector_widget {
-  overflow: auto;
   margin: 20px;
   min-width: 400px;
+  max-width: 500px;
+  overflow: hidden;
+  padding: $pad;
+  margin-bottom: $pad;
 
   &.card, iframe {
     background-color: #FFF;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 3px;
+    font-size: $font-sm;
   }
 
   &.video {

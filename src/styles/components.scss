@@ -109,3 +109,10 @@ button {
     background-color: #CCC;
   }
 }
+
+ul, li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: block;
+}

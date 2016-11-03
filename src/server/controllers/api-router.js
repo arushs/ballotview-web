@@ -86,15 +86,15 @@ function getCandidateData(query) {
   return new Promise(function (resolve, reject) {
     var ret = [];
     var promiseFinished = 0;
-    for (var i = 0; i < query.length; i++) {
-      console.log("Query is: " + query[i]);
-      getIndividualCandidateData(query[i]).then(function (data) {
-        ret.push(data);
-        if (i == query.length) {
-          resolve(ret);
-        }
-      })
-      .catch (function(error) {});
+    for (var q of query) {
+      console.log("Query is: " + q);
+      getIndividualCandidateData(q)
+        .then(function (data) {
+          ret.push(data);
+          if (ret.length === query.length) {
+            resolve(ret);
+          }
+        }).catch (reject);
     }
   });
 }
@@ -278,7 +278,7 @@ router.route('/content/candidate')
 
     getCandidateData(query)
       .then(function(data) {
-        console.log(data);
+        // console.log(data);
         return res.json({ data: data });
       })
       .catch(function(error) {
