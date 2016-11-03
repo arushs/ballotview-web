@@ -5,14 +5,20 @@
     <title>BallotView</title>
 
     <!-- build:css -->
-    <link rel="stylesheet" href="dist/styles/main.css">
+    <link rel="stylesheet" href="/dist/styles/main.css">
     <!-- endbuild -->
+    <meta name="viewport"           content="width=device-width initial-scale=1" />
+    <meta property="og:title"       content="View Your 2016 Ballot" />
+    <meta property="og:description" content="Election day can be confusing, but this website makes voting easy. Not only see your ballot online, but also access non-partisan content to help you make your decisions as an informed voter." />
+    <meta property="og:image" content="/dist/images/ballotview-black.png" />
   </head>
   <body>
+
     <div id="app"></div>
 
     <!-- build:js -->
-    <script src="dist/js/app.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2tXT5LfheFBUIMpaX-VXsdaKIK3UX6GY&libraries=places"></script>
+    <script src="/dist/js/app.js"></script>
     <!-- endbuild -->
   </body>
 </html>

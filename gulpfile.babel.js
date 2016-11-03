@@ -140,7 +140,7 @@ gulp.task('deploy', () => {
 });
 
 gulp.task('watch', cb => {
-  runSequence('clean', ['watchTask', 'watchify', 'styles', 'lint', 'images', 'browserSync'], cb);
+  runSequence('clean', ['watchify', 'watchTask', 'styles', 'lint', 'images', 'browserSync'], cb);
 });
 
 gulp.task('build', cb => {

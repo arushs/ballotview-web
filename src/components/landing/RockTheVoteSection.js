@@ -7,8 +7,8 @@ const RockTheVoteSection = () => (
       src="https://register2.rockthevote.com/registrants/map/?source=iframe&partner=35840"
       width="100%"
       height="1200"
-      marginheight="0"
-      frameborder="0"
+      marginHeight="0"
+      frameBorder="0"
     />
   </section>
 );

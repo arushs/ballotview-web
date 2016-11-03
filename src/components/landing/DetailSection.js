@@ -1,67 +1,43 @@
 import React, { Component } from 'react';
+import request from 'request';
 
 import BallotTranslateSwitch from '../ballot/BallotTranslateSwitch';
-import BallotHeading from '../ballot/BallotHeading';
-import BallotCard from '../ballot/BallotCard';
+import Ballot from '../ballot/Ballot';
 
 import sampleData from '../ballot/examples/sample_data';
-import sampleDataEs from '../ballot/examples/sample_data_es';
-
-const tallies = sampleData.map((ballot) => {
-  return ballot.poll.map((option) => {
-    return false;
-  });
-});
+const tallies = sampleData.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
 
 class DetailSection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ballots: sampleData,
-      ballotsEs: sampleDataEs,
+      heading: sampleData.heading,
+      ballots: sampleData.ballot,
       tallies: tallies,
       es: false
     };
     this.onUpdate = this.onUpdate.bind(this);
-    this.onSwitchTranslate = this.onSwitchTranslate.bind(this);
   }
 
-  onUpdate(index, newTally) {
-    this.setState({
-      tallies: this.state.tallies.map((tally, i) => ((i === index) ? newTally : tally))
-    });
-  }
-
-  onSwitchTranslate(es) {
-    this.setState({ es });
+  onUpdate(ballotIndex, cardIndex, newTally) {
+    let tallies = this.state.tallies;
+    tallies[ballotIndex] = tallies[ballotIndex].map((tally, i) => ((i === cardIndex) ? newTally : tally));
+    this.setState({ tallies });
   }
 
   render() {
 
-    let { es } = this.state;
-    let ballots = (!es) ? this.state.ballots : this.state.ballotsEs;
+    let { es, tallies, heading, ballots } = this.state;
 
     return (
       <section id="detail">
         <section id="left">
-          <BallotTranslateSwitch es={es} translate={this.onSwitchTranslate} />
-          <BallotHeading
-            title={!es ? 'Consolidated General Election' : 'Consolidada elección general'}
-            secondary={!es ? 'LOS ANGELES, CALIFORNIA' : 'LOS ANGELES, CALIFORNIA'}
-            sub={!es ? 'Nov 8, 2016' : '8 Nov, 2016'}
-          />
-          {ballots.map((ballot, i) => (
-            <BallotCard
-              key={i}
-              id={i}
-              title={ballot.title}
-              secondary={ballot.secondary}
-              poll={ballot.poll}
-              tally={this.state.tallies[i]}
-              onUpdate={this.onUpdate}
-              click={() => {}}
+          <Ballot
+            heading={heading}
+            ballots={ballots}
+            tallies={tallies}
+            onUpdate={this.onUpdate}
             />
-          ))}
         </section>
         <section id="right">
           <section className="detail_module">
