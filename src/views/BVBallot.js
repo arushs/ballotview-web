@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import request from 'request';
 import Cookies from 'js-cookie';
+import _ from 'lodash';
 
 import api from '../api-interface';
 
@@ -9,7 +10,7 @@ import Ballot from '../components/ballot/Ballot';
 import Inspector from '../components/inspector/Inspector';
 import InspectorNav from '../components/inspector/InspectorNav';
 import ModalSave from '../components/inspector/ModalSave';
-import ModalShare from '../components/inspector/ModalShare';
+import ModalPolling from '../components/inspector/ModalPolling';
 
 import ballots from '../components/ballot/examples/sample_data';
 // const tallies = ballots.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
@@ -19,7 +20,8 @@ class BVBallot extends Component {
     super(props);
 
     this.state = {
-      heading: ballots.heading,
+      heading: {},
+      polling_location: {},
       ballot: [],
       tallies: [],
       write_id: null,
@@ -27,7 +29,9 @@ class BVBallot extends Component {
       saving: false,
       selectedBallot: {},
       inspector: [],
-      modal: null
+      inspectorCache: {},
+      modal: null,
+      redirect: {}
     };
 
     this.onUpdate = this.onUpdate.bind(this);
@@ -40,14 +44,21 @@ class BVBallot extends Component {
     let _this = this;
 
     if (!this.state.write_id) {
+      let bvId = this.props.params.bvId;
 
-      api.getWritableBallot(this.props.params.bvId)
+      api.getWritableBallot(bvId)
         .then(function (data) {
-          if ('error' in data || data.statusCode !== 200) {
-            console.log('error');
+          console.log(data.body);
+          return _this.setState(data.body, () => {
+            Cookies.set('write_id', bvId);
+          });
+        }).catch(function (error) {
+          if (error.message.indexOf('exist') > -1) {
+            // ballot does not exist
+            Cookies.remove('write_id');
+            _this.setState({ redirect: { pathname: '/' } });
           } else {
-            _this.setState(data.body);
-            Cookies.set('write_id', _this.props.params.bvId);
+            console.error(error);
           }
         });
 
@@ -62,6 +73,10 @@ class BVBallot extends Component {
     } else {
       window.onbeforeunload = () => {};
     }
+
+    if (!_.isEmpty(newState.redirect)) {
+      this.context.router.push(newState.redirect);
+    }
   }
 
   saveBallotToDatabase() {
@@ -72,7 +87,7 @@ class BVBallot extends Component {
     api.updateWriteableBallot(this.state.write_id, this.state.tallies)
       .then(function (data) {
         if ('error' in data || data.statusCode !== 200) {
-          console.log('error');
+          // console.log('error');
         } else {
           _this.setState({
             saving: false
@@ -90,17 +105,55 @@ class BVBallot extends Component {
   onSelectBallot(ballotIndex, cardIndex) {
 
     let updateInspector = () => {
-      if (this.state.ballot[ballotIndex].title == 'Candidates') {
-        api.searchCandidate(this.state.ballot[ballotIndex].cards[cardIndex].toc[0])
-          .then(({ body }) => {
-            this.setState({ inspector: body.data || [] });
-          });
+
+      let card = this.state.ballot[ballotIndex].cards[cardIndex];
+
+      let isReferenendum = card.poll.length == 2 && card.poll[0].info[0].title[0] == "Yes" && card.poll[1].info[0].title[0] == "No";
+
+      if (!isReferenendum ) {
+        // Append names together
+        let query = card.poll.map(poll => {
+          if (poll.info.length > 1) {
+            return poll.info.map((info) => (info.title[0]));
+          } else {
+            return poll.info[0].title[0];
+          }
+        });
+
+        if (!this.state.inspectorCache[query]) {
+
+          api.searchCandidate(query)
+            .then(({ body }) => {
+              let inspectorCache = this.state.inspectorCache;
+              inspectorCache[query] = body.data;
+              this.setState({
+                inspector: body.data || [],
+                inspectorCache: inspectorCache
+              });
+            });
+
+        } else {
+          this.setState({ inspector: this.state.inspectorCache[query] });
+        }
+
+
       } else {
-        console.log(this.state.ballot[ballotIndex].cards[cardIndex].toc[0]);
-        api.searchReferendum(this.state.ballot[ballotIndex].cards[cardIndex].toc[0])
-          .then(({ body }) => {
-            this.setState({ inspector: body.data || [] });
-          });
+
+        let query = card.toc[0];
+
+        if (!this.state.inspectorCache[query]) {
+          api.searchReferendum(query)
+            .then(({ body }) => {
+              let inspectorCache = this.state.inspectorCache;
+              inspectorCache[query] = body.data;
+              this.setState({
+                inspector: body.data || [],
+                inspectorCache: inspectorCache
+              });
+            });
+        } else {
+          this.setState({ inspector: this.state.inspectorCache[query] });
+        }
       }
     }
     updateInspector = updateInspector.bind(this);
@@ -133,9 +186,15 @@ class BVBallot extends Component {
               this.saveBallotToDatabase();
               this.setState({ modal: 'SAVE' });
             }}>Save Ballot</button>
-            <button onClick={() => {
-              this.setState({ modal: 'SHARE' });
-            }}>Share Receipt</button>
+            {(() => {
+              if (!_.isEmpty(this.state.polling_location)) {
+                return (
+                  <button onClick={() => {
+                    this.setState({ modal: 'POLL' });
+                  }}>Voting Location</button>
+                );
+              }
+            })()}
           </div>
         </section>
         <section id="ballot" className={classNames({ isolate: 'cardIndex' in this.state.selectedBallot })}>
@@ -151,30 +210,32 @@ class BVBallot extends Component {
         <section id="inspector_nav">
           <InspectorNav ballots={this.state.ballot} />
         </section>
-        {(() => { if (true) {
-          return (
-            <section id="inspector">
+        {(() => {
+          if (!_.isEmpty(this.state.inspector)) {
+            return (<section id="inspector">
               <Inspector
-                modules={this.state.inspector}/>
-            </section>
-          );
-        }})()}
+                modules={this.state.inspector}
+                cardInfo={this.state.ballot[this.state.selectedBallot.ballotIndex].cards[this.state.selectedBallot.cardIndex]}/>
+            </section>);
+          }
+        })()}
         {(() => {
           switch (this.state.modal) {
             case 'SAVE':
               return (
                 <ModalSave
-                  id={this.state.write_id}
+                  write_id={this.state.write_id}
+                  read_id={this.state.read_id}
                   onClose={() => {
                     this.setState({ modal: null });
                   }}
                 />
               );
               break;
-            case 'SHARE':
+            case 'POLL':
               return (
-                <ModalShare
-                  id={this.state.read_id}
+                <ModalPolling
+                  polling_location={this.state.polling_location}
                   onClose={() => {
                     this.setState({ modal: null });
                   }}

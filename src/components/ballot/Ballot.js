@@ -15,11 +15,10 @@ const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectB
         <h2 id={ballot.title}>{ballot.title}</h2>
         {ballot.cards.map((card, cardIndex) => (
           <BallotCard
-            className={classNames({
-              selected: (selectedBallot)
-                && (selectedBallot.ballotIndex === ballotIndex
-                && selectedBallot.cardIndex === cardIndex)
-            })}
+            selected={(selectedBallot)
+              && (selectedBallot.ballotIndex === ballotIndex
+              && selectedBallot.cardIndex === cardIndex)}
+            deselect={() => { onSelectBallot(ballotIndex, cardIndex) }}
             onClick={() => { onSelectBallot(ballotIndex, cardIndex) }}
             key={"card-" + cardIndex}
             ballotIndex={ballotIndex}

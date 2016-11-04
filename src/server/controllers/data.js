@@ -6,7 +6,7 @@ var data = [
     embed_id: 'oa6lqhhyZ9I',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 51'
+    keywords: 'Proposition 51, STATE MEASURE 51'
   },
   {
     type: 'video',
@@ -14,7 +14,7 @@ var data = [
     embed_id: 'ndbI7U2Hpfo',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 52'
+    keywords: 'Proposition 52, STATE MEASURE 52'
   },
   {
     type: 'video',
@@ -22,7 +22,7 @@ var data = [
     embed_id: 'rPxqnJrEvTg',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 53'
+    keywords: 'Proposition 53, STATE MEASURE 53'
   },
   {
     type: 'video',
@@ -30,7 +30,7 @@ var data = [
     embed_id: 'Kx2TqZWhOAQ',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 54'
+    keywords: 'Proposition 54, STATE MEASURE 54'
   },
   {
     type: 'video',
@@ -38,7 +38,7 @@ var data = [
     embed_id: 'mN_F5oTeggM',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 55'
+    keywords: 'Proposition 55, STATE MEASURE 55'
   },
   {
     type: 'video',
@@ -46,7 +46,7 @@ var data = [
     embed_id: 'sfZCElWrQEg',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 56'
+    keywords: 'Proposition 56, STATE MEASURE 56'
   },
   {
     type: 'video',
@@ -54,7 +54,7 @@ var data = [
     embed_id: 'QC5gMcLR7b8',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 58'
+    keywords: 'Proposition 58, STATE MEASURE 58'
   },
   {
     type: 'video',
@@ -62,7 +62,7 @@ var data = [
     embed_id: 'nDje-Pm1hYg',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 59'
+    keywords: 'Proposition 59, STATE MEASURE 59'
   },
   {
     type: 'video',
@@ -70,7 +70,7 @@ var data = [
     embed_id: 'amuUptq5Puc',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 60'
+    keywords: 'Proposition 60, STATE MEASURE 60'
   },
   {
     type: 'video',
@@ -78,7 +78,7 @@ var data = [
     embed_id: 'tDX22NHp8Z4',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 61'
+    keywords: 'Proposition 61, STATE MEASURE 61'
   },
   {
     type: 'video',
@@ -86,7 +86,7 @@ var data = [
     embed_id: 'A2CqaE7lHqQ',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 62'
+    keywords: 'Proposition 62, STATE MEASURE 62'
   },
   {
     type: 'video',
@@ -94,7 +94,7 @@ var data = [
     embed_id: 'GCerH_fdg44',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 63'
+    keywords: 'Proposition 63, STATE MEASURE 63'
   },
   {
     type: 'video',
@@ -102,7 +102,7 @@ var data = [
     embed_id: 'M69nEVBWRh0',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 64'
+    keywords: 'Proposition 64, STATE MEASURE 64'
   },
   {
     type: 'video',
@@ -110,7 +110,7 @@ var data = [
     embed_id: 'fT7RknFm3mk',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 65'
+    keywords: 'Proposition 65, STATE MEASURE 65'
   },
   {
     type: 'video',
@@ -118,7 +118,7 @@ var data = [
     embed_id: 'MOwOxBEokHI',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 66'
+    keywords: 'Proposition 66, STATE MEASURE 66'
   },
   {
     type: 'video',
@@ -126,7 +126,7 @@ var data = [
     embed_id: 'GVW8PbR821c',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 67'
+    keywords: 'Proposition 67, STATE MEASURE 67'
   }
 ];
 
