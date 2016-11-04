@@ -52,7 +52,8 @@ function getIndividualCandidateData(value, j) {
     candidatRef.child(firstName + " " + lastName)
       .once('value')
       .then(function (snap) {
-        if (snap.exists()) {
+        if(0){ // Line change
+        //if (snap.exists()) { //FIX THIS BACK ONCE DATABASE HAS BEEN UPDATED FOR GARY
           console.log("Exists");
           exists = true;
           return resolve(snap.val());
@@ -66,12 +67,36 @@ function getIndividualCandidateData(value, j) {
             if (error || response.statusCode !== 200) {
               return reject(new Error('could not get candidate from Ballotpedia'))
             } else {
-              var data = parseBallotpediaCandidate(body);
-              data.sortOrder = i;
-              // firebase
-              console.log("Requested");
-              candidatRef.child(firstName + " " + lastName).set(data);
-              return resolve(data);
+              if(body.NumResults == 0){ //Didn't get anything from Ballotpedia
+                if(firstName == "Bill" || firstName == "Michael"){ //Get info on Bill Weld/Mike Pence, or some other Bill for that matter
+                  if(firstName == "Bill") firstName = "William";
+                  if(firstName == "Michael") firstName = "Mike";
+
+                  request({
+                    uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+                    method: 'get',
+                    json: true,
+                  }, function(error, response, body) {
+                    if (error || response.statusCode !== 200) {
+                      return reject(new Error('could not get candidate from Ballotpedia'))
+                    } else {
+                      var data = parseBallotpediaCandidate(body);
+                      data.sortOrder = i;
+                      // firebase
+                      console.log("Requested");
+                      candidatRef.child(firstName + " " + lastName).set(data);
+                      return resolve(data);
+                    }
+                  });
+                }
+              } else{
+                var data = parseBallotpediaCandidate(body);
+                data.sortOrder = i;
+                // firebase
+                console.log("Requested");
+                candidatRef.child(firstName + " " + lastName).set(data);
+                return resolve(data);
+              }
             }
           });
         }
@@ -125,7 +150,6 @@ function getCandidateData(query) {
 
 
 router.get('/', function (req, res) {
-
   if ('zip' in req.query && 'street_name' in req.query && 'number' in req.query) {
     let address = {
       number: req.query.number,
