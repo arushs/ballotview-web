@@ -49,11 +49,12 @@ function getIndividualCandidateData(value, j) {
     var firstName = nameArray[0];
     var lastName = nameArray[nameArray.length - 1];
     var exists = false;
+    if(firstName == "Bill" && lastName == "Weld") firstName = "William";
+    if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
     candidatRef.child(firstName + " " + lastName)
       .once('value')
       .then(function (snap) {
-        if(0){ // Line change
-        //if (snap.exists()) { //FIX THIS BACK ONCE DATABASE HAS BEEN UPDATED FOR GARY
+        if (snap.exists()) {
           console.log("Exists");
           exists = true;
           return resolve(snap.val());
