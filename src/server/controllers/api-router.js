@@ -136,7 +136,6 @@ function getCandidateData(query) {
     var ret = [];
     var promiseFinished = 0;
     for (var i in query.candidate_query) {
-      console.log("Query is: " + query.candidate_query[i]);
       getIndividualCandidateData(query.candidate_query[i], i, query.level[0])
         .then(function (data) {
           ret.push(data);
@@ -280,7 +279,7 @@ router.route('/write/:bv_id')
       .then(function (snap) {
         if (snap.exists()) {
           var ballotData = snap.val();
-          delete ballotData.address;
+          // delete ballotData.address;
           return res.json(ballotData);
         } else {
           return res.status(400).send({ error: 'ballot does not exist' });
