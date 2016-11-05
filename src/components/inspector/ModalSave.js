@@ -5,7 +5,11 @@ import Copy from './CopyableLink';
 function printExternal(url) {
     var printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
     printWindow.addEventListener('load', function(){
+      setTimeout(function() {
+      // wait 1 second before announcing the result
         printWindow.print();
+      }, 2000);
+
         // printWindow.close();
     }, true);
 }
