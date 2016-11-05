@@ -79,6 +79,7 @@ class BVCreate extends Component {
         message: 'Voting for ' + prefill[this.state.pf].name + '?',
         color: prefill[this.state.pf].color,
         keyword: this.state.pf,
+        blurb: 'But wait, there\'s more: ' + content.blurb,
       });
     } else {
       content = content_default;

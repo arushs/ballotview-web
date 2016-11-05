@@ -20,3 +20,7 @@
 {"v":0,"level":30,"name":"newrelic","hostname":"GATTACA","pid":78785,"time":"2016-11-05T12:23:56.804Z","msg":"Starting New Relic for Node.js connection process."}
 {"v":0,"level":30,"name":"newrelic","hostname":"GATTACA","pid":78785,"time":"2016-11-05T12:23:59.009Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1469187/applications/27168197","component":"new_relic_response"}
 {"v":0,"level":30,"name":"newrelic","hostname":"GATTACA","pid":78785,"time":"2016-11-05T12:23:59.009Z","msg":"Connected to collector-200.newrelic.com:443 with agent run ID 116695649709203809.","component":"collector_api"}
+{"v":0,"level":30,"name":"newrelic","hostname":"GATTACA","pid":78969,"time":"2016-11-05T12:30:51.631Z","msg":"Using New Relic for Node.js. Agent version: 1.33.0; Node version: v7.0.0."}
+{"v":0,"level":30,"name":"newrelic","hostname":"GATTACA","pid":78969,"time":"2016-11-05T12:30:52.241Z","msg":"Starting New Relic for Node.js connection process."}
+{"v":0,"level":30,"name":"newrelic","hostname":"GATTACA","pid":78969,"time":"2016-11-05T12:30:54.618Z","msg":"Reporting to: https://rpm.newrelic.com/accounts/1469187/applications/27168197","component":"new_relic_response"}
+{"v":0,"level":30,"name":"newrelic","hostname":"GATTACA","pid":78969,"time":"2016-11-05T12:30:54.618Z","msg":"Connected to collector-200.newrelic.com:443 with agent run ID 116695649709227608.","component":"collector_api"}
