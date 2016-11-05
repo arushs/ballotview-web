@@ -1,4 +1,4 @@
-require('newrelic')
+require('newrelic');
 const express = require('express');
 const app = express();
 const http = require('http').Server(app);
@@ -28,8 +28,9 @@ app.use('/ballot', router);
 
 app.use('/dist', express.static(path.join(__dirname, '..', '..', 'dist')));
 
-app.get('/', (_, res) => { res.sendFile(indexPath); });
-app.get('*', (_, res) => { res.sendFile(indexPath); });
+// require("babel-register");
+// app.get('/', require('./server-render-index'));
+app.get('*', function(req, res) { res.sendFile(indexPath); });
 
 http.listen(app.get('port'), () => {
   console.log('RUNNING.');
