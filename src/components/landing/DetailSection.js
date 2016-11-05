@@ -38,6 +38,7 @@ class DetailSection extends Component {
             ballots={ballots}
             tallies={tallies}
             onUpdate={this.onUpdate}
+            forcePoll={true}
             />
         </section>
         <section id="right">

@@ -9,9 +9,9 @@ const content = {
 };
 
 const links = {
-  gsf: (<a href="https://www.globalshapers.org/">Global Shapers Community</a>),
-  usc: (<a href="http://usc.edu">University of Southern California</a>),
-  cla: (<a href="https://lacounty.gov">County of Los Angeles</a>)
+  gsf: (<a href="https://www.globalshapers.org/" target="_blank">Global Shapers Community</a>),
+  usc: (<a href="http://usc.edu" target="_blank">University of Southern California</a>),
+  cla: (<a href="https://lacounty.gov" target="_blank">County of Los Angeles</a>)
 };
 function openFB(to) {
   window.open("https://www.facebook.com/ballotview");
@@ -55,7 +55,7 @@ const FooterSection = () => (
         I love BallotView, how can I help?
       </div>
       <div className="small left ">
-        Like us on Facebook, Follow us on Twitter, and Share BallotView with your friends and family! Our main goal is to put this tool in the hands of as many voters as possible. We also have a GoFundMe to help us pay for upkeep and advertise. Every donation helps : https://www.gofundme.com/7t49nu3k
+        Like us on Facebook, Follow us on Twitter, and Share BallotView with your friends and family! Our main goal is to put this tool in the hands of as many voters as possible. We also have a GoFundMe to help us pay for upkeep and advertise. Every donation helps: <a href="https://www.gofundme.com/7t49nu3k" target="_blank">https://www.gofundme.com/7t49nu3k</a>
       </div>
     </li>
     <br />

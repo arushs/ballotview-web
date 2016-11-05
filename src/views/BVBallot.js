@@ -33,7 +33,8 @@ class BVBallot extends Component {
       modal: null,
       redirect: {},
       address: null,
-      level: null
+      level: null,
+      prefill: null
     };
 
     this.onUpdate = this.onUpdate.bind(this);
@@ -41,43 +42,66 @@ class BVBallot extends Component {
     this.onSelectBallot = this.onSelectBallot.bind(this);
     this.createNewBallot = this.createNewBallot.bind(this);
     this.updateInspector = this.updateInspector.bind(this);
+    this.initializeBallotComponent = this.initializeBallotComponent.bind(this);
   }
 
   componentWillMount() {
     let _this = this;
 
-    if (!this.state.write_id) {
-      let bvId = this.props.params.bvId;
+    this.setState(this.props.location.state || {}, () => {
 
-      api.getWritableBallot(bvId)
-        .then(function (data) {
-          // console.log(data.body);
-          _this.setState(data.body, () => {
+      if (!this.state.write_id) {
+        let bvId = this.props.params.bvId;
 
-            // console.log(_this.state.ballot);
-            for (var i in _this.state.ballot) {
-              // console.log(_this.state.ballot[i]);
-              for (var j in _this.state.ballot[i].cards) {
-                _this.updateInspector(i, j, _this.state.ballot[i].cards[j].level, false);
-              }
+        api.getWritableBallot(bvId)
+          .then(function (data) {
+            // console.log(data.body);
+            _this.setState(data.body, () => {
+
+              _this.initializeBallotComponent();
+
+              Cookies.set('write_id', bvId);
+            });
+
+            return null;
+          }).catch(function (error) {
+            if (error.message.indexOf('exist') > -1) {
+              // ballot does not exist
+              Cookies.remove('write_id');
+              _this.setState({ redirect: { pathname: '/' } });
+            } else {
+              console.error(error);
             }
-
-            Cookies.set('write_id', bvId);
           });
 
-          return null;
-        }).catch(function (error) {
-          if (error.message.indexOf('exist') > -1) {
-            // ballot does not exist
-            Cookies.remove('write_id');
-            _this.setState({ redirect: { pathname: '/' } });
-          } else {
-            console.error(error);
-          }
-        });
+      } else {
 
-    } else {
-      Cookies.set('write_id', this.state.write_id);
+        this.initializeBallotComponent();
+        Cookies.set('write_id', this.state.write_id);
+      }
+
+    });
+  }
+
+  initializeBallotComponent() {
+    // console.log(_this.state.ballot);
+    for (var i in this.state.ballot) {
+      // console.log(_this.state.ballot[i]);
+      for (var j in this.state.ballot[i].cards) {
+        this.updateInspector(i, j, this.state.ballot[i].cards[j].level, false);
+
+        if (this.state.prefill && this.state.ballot[i].cards[j].title.join(' ').toUpperCase().indexOf('VICE PRES') > -1) {
+          let tallies = this.state.tallies;
+          console.log(this.state.prefill.toUpperCase(), tallies);
+          if (this.state.prefill.toUpperCase().indexOf('TRUM') > -1) {
+            tallies[i][j][1] = true;
+          } else if (this.state.prefill.toUpperCase().indexOf('CLINT') > -1) {
+            tallies[i][j][0] = true;
+          }
+          this.setState({ tallies }, this.saveBallotToDatabase);
+        }
+
+      }
     }
   }
 
@@ -153,21 +177,21 @@ class BVBallot extends Component {
 
       let query = {};
       query.level = level;
-      if (cardIndex != 0) {
+      if (cardIndex != 0 && address) {
         query.address = address.split(",")[2].substr(1, 2);
       } else {
         query.address = "";
       }
       query.candidate_query = candidate_query;
-      
-      console.log(query);
+
+      // console.log(query);
 
       if (!this.state.inspectorCache[candidate_query]) {
 
         api.searchCandidate(query)
           .then(({ body }) => {
             let inspectorCache = this.state.inspectorCache;
-            console.log(inspectorCache, candidate_query);
+            // console.log(inspectorCache, candidate_query);
             inspectorCache[candidate_query] = body.data;
             if (show) {
               this.setState({
@@ -228,7 +252,7 @@ class BVBallot extends Component {
 
       this.setState({ selectedBallot: { ballotIndex, cardIndex }, inspector: [] }, () => {
 
-        console.log(address);
+        // console.log(address);
         this.updateInspector(ballotIndex, cardIndex, level, address);
 
         function scrollToAnchor(anchor) {

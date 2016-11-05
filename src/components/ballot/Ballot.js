@@ -3,7 +3,7 @@ import BallotHeading from './BallotHeading';
 import BallotCard from './BallotCard';
 import classNames from 'classnames';
 
-const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectBallot, address }) => (
+const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectBallot, forcePoll, address }) => (
   <section className="ballot">
     {/*<BallotHeading
       title={heading.title}
@@ -31,6 +31,7 @@ const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectB
             level={card.level}
             click={() => {}}
             id={ballotIndex + "-" + cardIndex}
+            forcePoll={forcePoll}
           />
         ))}
       </section>
@@ -44,7 +45,8 @@ Ballot.propTypes = {
   tallies: React.PropTypes.array.isRequired,
   onUpdate: React.PropTypes.func.isRequired,
   selectedBallot: React.PropTypes.object,
-  onSelectBallot: React.PropTypes.func
+  onSelectBallot: React.PropTypes.func,
+  forcePoll: React.PropTypes.bool
 };
 
 export default Ballot;

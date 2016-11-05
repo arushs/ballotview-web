@@ -113,9 +113,11 @@ class EnterAddress extends Component {
           if ('error' in res.body) {
             submitError();
           } else {
+            let newState = res.body;
+            newState['prefill'] = _this.props.prefill || null;
             return _this.setState({ redirect: {
               pathname: '/ballot/' + res.body.write_id,
-              state: res.body,
+              state: newState,
             } });
           }
         }).catch(submitError);

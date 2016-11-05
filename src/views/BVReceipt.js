@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import request from 'request';
 import Cookies from 'js-cookie';
 import _ from 'lodash';
 

@@ -88,6 +88,8 @@ class BallotCard extends Component {
   componentWillReceiveProps(newProps) {
     if (newProps.selected === true) {
       this.setState({ collapsed: false });
+    } else {
+      this.setState({ collapsed: this.checkRadioSelected() });
     }
   }
 
@@ -95,7 +97,7 @@ class BallotCard extends Component {
     let {
       ballotIndex, cardIndex, title, secondary,
       poll, tally, onUpdate, click, children, className,
-      next, selected, level,
+      next, selected, level, forcePoll,
       ...other } = this.props;
 
     let president = title.join(' ').toUpperCase().indexOf('VICE PRE') > -1;
@@ -130,7 +132,7 @@ class BallotCard extends Component {
           <div className="title">
             <BallotClickableText text={title} click={click} />
           </div>
-          {(() => { if (secondary && !this.state.collapsed) {
+          {(() => { if (secondary && (!this.state.collapsed || this.props.forcePoll)) {
             return (<div className="sub">
               <BallotClickableText text={secondary} click={click} />
             </div>);
@@ -139,7 +141,7 @@ class BallotCard extends Component {
 
         {(() => {
 
-          if (this.state.collapsed) {
+          if (this.state.collapsed && !this.props.forcePoll) {
             return (
               <BallotChoice
                 pollData={poll}
@@ -165,11 +167,7 @@ class BallotCard extends Component {
         <div className={classNames('button_wrap', {
           visible: !this.state.collapsed
         })}>
-          {(() => {
-            if (this.checkRadioSelected()) {
-              return <button className='small' onClick={this.collapseToggle}>Collapse</button>;
-            }
-          })()}
+          <button className='small' onClick={this.click} style={{ opacity: 0.65 }}>Close</button>
           <button className='small' onClick={(e) => {
             this.props.next(e);
             if (this.checkRadioSelected()) {
@@ -185,15 +183,16 @@ class BallotCard extends Component {
 BallotCard.propTypes = {
   ballotIndex: React.PropTypes.number,
   cardIndex: React.PropTypes.number,
-  title: React.PropTypes.array,
+  title: React.PropTypes.array.isRequired,
   secondary: React.PropTypes.array,
   click: React.PropTypes.func,
-  poll: React.PropTypes.array,
-  tally: React.PropTypes.array,
+  poll: React.PropTypes.array.isRequired,
+  tally: React.PropTypes.array.isRequired,
   onUpdate: React.PropTypes.func,
   selected: React.PropTypes.bool,
   next: React.PropTypes.func,
-  children: React.PropTypes.element
+  children: React.PropTypes.element,
+  forcePoll: React.PropTypes.bool
 };
 
 export default BallotCard;
