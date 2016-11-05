@@ -51,6 +51,7 @@ function getIndividualCandidateData(value, j) {
     var exists = false;
     if(firstName == "Bill" && lastName == "Weld") firstName = "William";
     if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
+    if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
     candidatRef.child(firstName + " " + lastName)
       .once('value')
       .then(function (snap) {
@@ -164,6 +165,7 @@ router.get('/', function (req, res) {
         return res.status(400).send({ error: error.message });
       });
   } else if ('address' in req.query){
+    console.log("Getting google");
     getGoogleCivicBallot(req.query.address)
       .then(function(data) { res.json(data); })
       .catch(function(error) {
@@ -224,6 +226,7 @@ router.route('/create')
     }
 
     function useGoogleCivic() {
+      console.log("Use Google civic");
       getGoogleCivicBallot(address)
         .then(processData)
         .catch(function(error) {
@@ -260,6 +263,7 @@ router.route('/create')
           if (error) {
             return res.status(400).send({ error: 'could not create user' });
           } else {
+            console.log("bvData 265:  "+bvData);
             return res.json(bvData);
           }
         });
@@ -324,7 +328,7 @@ router.route('/read/:bv_id')
 router.route('/content/candidate')
   .get(function (req, res) {
     var query = req.query.query;
-
+    console.log("ballotpedia candidate info testing   "+req.query.query[0]); //Line added
     getCandidateData(query)
       .then(function(data) {
         // console.log(data);

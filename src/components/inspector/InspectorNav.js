@@ -4,7 +4,7 @@ import BallotClickableText from '../ballot/BallotClickableText';
 function scrollToAnchor(anchor) {
   let node = document.getElementById(anchor);
   if (node) {
-    console.log(node.offsetTop);
+    // console.log(node.offsetTop);
     let top = node.offsetTop;
     window.scrollTo(0, top - 16);
   }
