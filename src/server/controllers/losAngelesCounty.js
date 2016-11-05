@@ -69,6 +69,7 @@ function BuildCards(contests) {
       };
     }
   });
+
 }
 
 function losAngelesCounty(address) {
@@ -94,7 +95,8 @@ function losAngelesCounty(address) {
 
             ballot.push({
               title: capitalizeEachWord(electoral.type),
-              cards: BuildCards(electoral.contests)
+              cards: BuildCards(electoral.contests),
+              level: electoral.type
             });
 
             checkDone();

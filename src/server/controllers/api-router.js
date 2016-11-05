@@ -42,7 +42,7 @@ function getGoogleCivicBallot(address) {
   });
 }
 
-function getIndividualCandidateData(value, j) {
+function getIndividualCandidateData(value, j, level) {
 
   function parseCandidateFromBP(name, i, resolve, reject) {
     var nameArray = name.split(" ");
@@ -132,19 +132,15 @@ function getIndividualCandidateData(value, j) {
 }
 
 function getCandidateData(query) {
-  // Check if in firebase and get data if so
-
-
-  // If not in firebase
   return new Promise(function (resolve, reject) {
     var ret = [];
     var promiseFinished = 0;
-    for (var i in query) {
-      console.log("Query is: " + query[i]);
-      getIndividualCandidateData(query[i], i)
+    for (var i in query.candidate_query) {
+      console.log("Query is: " + query.candidate_query[i]);
+      getIndividualCandidateData(query.candidate_query[i], i, query.level[0])
         .then(function (data) {
           ret.push(data);
-          if (ret.length === query.length) {
+          if (ret.length === query.candidate_query.length) {
             resolve(_.sortBy(ret, ['sortOrder']).map(function (obj) {
               return obj.data; 
             }));
@@ -332,7 +328,8 @@ router.route('/read/:bv_id')
 router.route('/content/candidate')
   .get(function (req, res) {
     var query = req.query.query;
-    console.log("ballotpedia candidate info testing   "+req.query.query[0]); //Line added
+    // console.log("ballotpedia candidate info testing   "+req.query.query[0]); //Line added
+    console.log(query);
     getCandidateData(query)
       .then(function(data) {
         // console.log(data);

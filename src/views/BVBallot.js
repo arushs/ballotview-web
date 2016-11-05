@@ -56,7 +56,7 @@ class BVBallot extends Component {
             for (var i in _this.state.ballot) {
               // console.log(_this.state.ballot[i]);
               for (var j in _this.state.ballot[i].cards) {
-                _this.updateInspector(i, j, false);
+                _this.updateInspector(i, j, _this.state.ballot[i].cards[j].level, false);
               }
             }
 
@@ -128,7 +128,7 @@ class BVBallot extends Component {
     this.setState({ tallies }, this.saveBallotToDatabase);
   }
 
-  updateInspector(ballotIndex, cardIndex, show = true){
+  updateInspector(ballotIndex, cardIndex, level, show = true){
 
     let card = this.state.ballot[ballotIndex].cards[cardIndex];
 
@@ -136,13 +136,19 @@ class BVBallot extends Component {
 
     if (!isReferenendum ) {
       // Append names together
-      let query = card.poll.map(poll => {
+      let candidate_query = card.poll.map(poll => {
         if (poll.info.length > 1) {
           return poll.info.map((info) => (info.title[0]));
         } else {
           return poll.info[0].title[0];
         }
       });
+
+      // query.level = level;
+      let query = {};
+      query.level = level;
+      query.candidate_query = candidate_query;
+      console.log(query);
 
       if (!this.state.inspectorCache[query]) {
 
@@ -187,9 +193,9 @@ class BVBallot extends Component {
     }
   }
 
-  onSelectBallot(ballotIndex, cardIndex) {
+  onSelectBallot(ballotIndex, cardIndex, level) {
     // console.log({ ballotIndex, cardIndex });
-
+    console.log(level);
     if (this.state.selectedBallot.ballotIndex === ballotIndex && this.state.selectedBallot.cardIndex === cardIndex) {
       this.setState({ selectedBallot: {}, inspector: [] });
     } else {
@@ -205,7 +211,7 @@ class BVBallot extends Component {
 
       this.setState({ selectedBallot: { ballotIndex, cardIndex }, inspector: [] }, () => {
 
-        this.updateInspector(ballotIndex, cardIndex);
+        this.updateInspector(ballotIndex, cardIndex, level);
 
         function scrollToAnchor(anchor) {
           let node = document.getElementById(anchor);
