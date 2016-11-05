@@ -45,7 +45,7 @@ function getGoogleCivicBallot(address) {
 }
 
 function getIndividualCandidateData(value, j, level, address) {
-
+  console.log(address + "al ;skdj ");
   function parseCandidateFromBP(name, i, resolve, reject) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
@@ -55,12 +55,13 @@ function getIndividualCandidateData(value, j, level, address) {
     else var stateAbrev = address;
     var exists = false;
     if(firstName == "Bill" && lastName == "Weld") firstName = "William";
-    if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
-    if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
-    if(firstName == "Loretta" && lastName == "Sanchez") seatLevel = "federal";
-    if(firstName == "Kamala" && lastName == "Harris") seatLevel = "federal";
+    else if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
+    else if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
+    else if(firstName == "Loretta" && lastName == "Sanchez" && stateAbrev == "CA") seatLevel = "federal";
+    else if(firstName == "Kamala" && lastName == "Harris" && stateAbrev == "CA") seatLevel = "federal";
+    else if(firstName == "Mike" && lastName == "Doyle" && stateAbrev == "PA") seatLevel = "state";
     if(stateAbrev == "") seatLevel = "federal";
-    candidatRef.child(firstName + " " + lastName)
+    candidatRef.child(firstName + " " + lastName + " " + seatLevel + " " + stateAbrev)
       .once('value')
       .then(function (snap) {
         if (snap.exists()) {
@@ -85,7 +86,7 @@ function getIndividualCandidateData(value, j, level, address) {
               data.sortOrder = i;
               // firebase
               console.log("Requested");
-              candidatRef.child(firstName + " " + lastName).set(data);
+              candidatRef.child(firstName + " " + lastName + " " + seatLevel + " " + stateAbrev).set(data);
               return resolve(data);
             }
           });
