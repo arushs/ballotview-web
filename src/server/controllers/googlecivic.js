@@ -64,7 +64,6 @@ function BuildCandidateObject(contest, uniqueCandidates)
   }
 
   for (var candidate of contest.candidates) {
-
     var subPoll = {};
 
     subPoll.info = candidate.name.split(/, |\//).map(function (name) {
@@ -76,15 +75,24 @@ function BuildCandidateObject(contest, uniqueCandidates)
 
     if (uniqueCandidates.hasOwnProperty(subPoll.info[0].title[0]))
     {
-      store = false;
+      //store = false;
       continue;
     }
 
     if ('party' in candidate) {
       subPoll['trail'] = [candidate.party.replace(' Party', '')];
 
+      for(var repeatPartyCheck of contest.candidates){
+      	if(repeatPartyCheck.name == candidate.name){
+      		if(repeatPartyCheck.party == 'Republican Party' || repeatPartyCheck.party == 'Democratic Party' ||
+      			repeatPartyCheck.party == 'Green Party' || repeatPartyCheck.party == 'Libertarian Party') {
+      			subPoll['trail'] = [repeatPartyCheck.party.replace(' Party', '')];
+      		}
+      	}
+      }
+
       for (var key in parties) {
-        if ('party' in candidate && candidate.party.includes(key)) {
+        if ('party' in candidate && subPoll['trail']==key) {
           subPoll['color'] = parties[key];
         }
       }
@@ -115,8 +123,15 @@ function parseGoogleCivic(data) {
     date: 'November 8th, 2016',
     mail_only: data.mailOnly === true
   };
-  if ('local_jurisdiction' in data.state[0]) {
-    resp['heading']['locality'] = data.state[0].local_jurisdiction.name;
+  
+  if(data.state){
+  	if ('local_jurisdiction' in data.state[0]) {
+  		resp['heading']['locality'] = data.state[0].local_jurisdiction.name;	
+  	} else {
+  		resp['heading']['locality'] = " ";
+  	}
+  } else{
+  	resp['heading']['locality'] = " ";
   }
 
   // POLLING LOCATION
@@ -159,8 +174,9 @@ function parseGoogleCivic(data) {
   }
 
   resp['ballot'].push(candidateResp);
-  resp['ballot'].push(stateMeasureResp);
-
+  if (stateMeasureResp.cards.length != 0) {
+  	resp['ballot'].push(stateMeasureResp);
+  }
   // RETURN ALL GENERATED
   return resp;
 }
