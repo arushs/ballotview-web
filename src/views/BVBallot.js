@@ -50,7 +50,7 @@ class BVBallot extends Component {
       api.getWritableBallot(bvId)
         .then(function (data) {
           // console.log(data.body);
-          return _this.setState(data.body, () => {
+          _this.setState(data.body, () => {
 
             // console.log(_this.state.ballot);
             for (var i in _this.state.ballot) {
@@ -62,6 +62,8 @@ class BVBallot extends Component {
 
             Cookies.set('write_id', bvId);
           });
+
+          return null;
         }).catch(function (error) {
           if (error.message.indexOf('exist') > -1) {
             // ballot does not exist
@@ -119,7 +121,7 @@ class BVBallot extends Component {
             saving: false
           });
         }
-      })
+      }).catch(console.error);
   }
 
   onUpdate(ballotIndex, cardIndex, newTally) {
@@ -167,6 +169,8 @@ class BVBallot extends Component {
                 inspectorCache: inspectorCache
               });
             }
+          }).catch(() => {
+            console.error("Could not retrieve candidate info");
           });
 
       } else {
@@ -188,6 +192,8 @@ class BVBallot extends Component {
               inspector: body.data || [],
               inspectorCache: inspectorCache
             });
+          }).catch(() => {
+            console.error("Could not retrieve referendum info");
           });
       } else {
         this.setState({ inspector: this.state.inspectorCache[query] });

@@ -13,7 +13,7 @@ const methods = {};
 function interfacer(reqUrl, verb, data) {
   return new Promise((resolve, reject) => {
     const requestUrl = window.location.origin + reqUrl;
-    buffer();
+    return buffer();
     function buffer() {
       var req = request({
         uri: requestUrl,
@@ -30,6 +30,7 @@ function interfacer(reqUrl, verb, data) {
           return resolve(response);
         }
       });
+      return req;
     }
   });
 }
@@ -37,7 +38,7 @@ function interfacer(reqUrl, verb, data) {
 methods.submitEmail = function (emailAddr) {
   return new Promise((resolve, reject) => {
     let data = { email: emailAddr };
-    interfacer('/email/submit', 'post', data)
+    return interfacer('/email/submit', 'post', data)
       .then(resolve)
       .catch(reject);
   });
@@ -46,7 +47,7 @@ methods.submitEmail = function (emailAddr) {
 methods.createBallot = function (address, address_components) {
   return new Promise((resolve, reject) => {
     let data = { address, address_components };
-    interfacer('/ballot/create', 'post', data)
+    return interfacer('/ballot/create', 'post', data)
       .then(resolve)
       .catch(reject);
   });
@@ -55,7 +56,7 @@ methods.createBallot = function (address, address_components) {
 methods.getWritableBallot = function (bvId) {
   return new Promise((resolve, reject) => {
     let data = { };
-    interfacer('/ballot/write/' + bvId, 'get', data)
+    return interfacer('/ballot/write/' + bvId, 'get', data)
       .then(resolve)
       .catch(reject);
   });
@@ -64,7 +65,7 @@ methods.getWritableBallot = function (bvId) {
 methods.updateWriteableBallot = function (bvId, newTally) {
   return new Promise((resolve, reject) => {
     let data = { tallies: newTally };
-    interfacer('/ballot/write/' + bvId, 'put', data)
+    return interfacer('/ballot/write/' + bvId, 'put', data)
       .then(resolve)
       .catch(reject);
   });
@@ -73,7 +74,7 @@ methods.updateWriteableBallot = function (bvId, newTally) {
 methods.getReadOnlyBallot = function(bvId) {
   return new Promise((resolve, reject) => {
     let data = { };
-    interfacer('/ballot/read/' + bvId, 'get', data)
+    return interfacer('/ballot/read/' + bvId, 'get', data)
       .then(resolve)
       .catch(reject);
   });
@@ -82,7 +83,7 @@ methods.getReadOnlyBallot = function(bvId) {
 methods.searchCandidate = function(query) {
   return new Promise((resolve, reject) => {
     let data = { query: query };
-    interfacer('/ballot/content/candidate', 'get', data)
+    return interfacer('/ballot/content/candidate', 'get', data)
       .then(resolve)
       .catch(reject);
   });
@@ -91,7 +92,7 @@ methods.searchCandidate = function(query) {
 methods.searchReferendum = function(query) {
   return new Promise((resolve, reject) => {
     let data = { query: query };
-    interfacer('/ballot/content/referendum', 'get', data)
+    return interfacer('/ballot/content/referendum', 'get', data)
       .then(resolve)
       .catch(reject);
   });

@@ -96,7 +96,7 @@ class BallotCard extends Component {
     let {
       ballotIndex, cardIndex, title, secondary,
       poll, tally, onUpdate, click, children, className,
-      next, selected,
+      next, selected, level,
       ...other } = this.props;
 
     let president = title.join(' ').toUpperCase().indexOf('VICE PRE') > -1;
