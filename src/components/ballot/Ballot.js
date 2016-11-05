@@ -3,7 +3,7 @@ import BallotHeading from './BallotHeading';
 import BallotCard from './BallotCard';
 import classNames from 'classnames';
 
-const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectBallot }) => (
+const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectBallot, address }) => (
   <section className="ballot">
     {/*<BallotHeading
       title={heading.title}
@@ -18,8 +18,8 @@ const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectB
             selected={(selectedBallot)
               && (selectedBallot.ballotIndex === ballotIndex
               && selectedBallot.cardIndex === cardIndex)}
-            next={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex + 1, card.level) }}
-            onClick={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex, card.level) }}
+            next={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex + 1, card.level, address) }}
+            onClick={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex, card.level, address) }}
             key={"card-" + cardIndex}
             ballotIndex={ballotIndex}
             cardIndex={cardIndex}

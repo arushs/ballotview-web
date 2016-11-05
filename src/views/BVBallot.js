@@ -31,7 +31,9 @@ class BVBallot extends Component {
       inspector: [],
       inspectorCache: {},
       modal: null,
-      redirect: {}
+      redirect: {},
+      address: null,
+      level: null
     };
 
     this.onUpdate = this.onUpdate.bind(this);
@@ -112,6 +114,7 @@ class BVBallot extends Component {
     this.setState({
       saving: true
     });
+    console.log("Saving ballot");
     api.updateWriteableBallot(this.state.write_id, this.state.tallies)
       .then(function (data) {
         if ('error' in data || data.statusCode !== 200) {
@@ -130,7 +133,7 @@ class BVBallot extends Component {
     this.setState({ tallies }, this.saveBallotToDatabase);
   }
 
-  updateInspector(ballotIndex, cardIndex, level, show = true){
+  updateInspector(ballotIndex, cardIndex, level, address, show = true){
 
     let card = this.state.ballot[ballotIndex].cards[cardIndex];
 
@@ -147,9 +150,11 @@ class BVBallot extends Component {
       });
 
       // query.level = level;
+
       let query = {};
       query.level = level;
       query.candidate_query = candidate_query;
+      query.address = address.split(",")[2].substr(1, 2);
       console.log(query);
 
       if (!this.state.inspectorCache[candidate_query]) {
@@ -201,9 +206,8 @@ class BVBallot extends Component {
     }
   }
 
-  onSelectBallot(ballotIndex, cardIndex, level) {
+  onSelectBallot(ballotIndex, cardIndex, level, address) {
     // console.log({ ballotIndex, cardIndex });
-    console.log(level);
     if (this.state.selectedBallot.ballotIndex === ballotIndex && this.state.selectedBallot.cardIndex === cardIndex) {
       this.setState({ selectedBallot: {}, inspector: [] });
     } else {
@@ -219,7 +223,8 @@ class BVBallot extends Component {
 
       this.setState({ selectedBallot: { ballotIndex, cardIndex }, inspector: [] }, () => {
 
-        this.updateInspector(ballotIndex, cardIndex, level);
+        console.log(address);
+        this.updateInspector(ballotIndex, cardIndex, level, address);
 
         function scrollToAnchor(anchor) {
           let node = document.getElementById(anchor);
@@ -285,6 +290,7 @@ class BVBallot extends Component {
             onUpdate={this.onUpdate}
             selectedBallot={this.state.selectedBallot}
             onSelectBallot={this.onSelectBallot}
+            address={this.state.address}
           />
         </section>
         <section id="inspector_nav">
