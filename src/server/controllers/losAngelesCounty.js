@@ -45,7 +45,7 @@ function BuildCandidateObject(candidates) {
   }
 }
 
-function BuildCards(contests) {
+function BuildCards(contests, type) {
   return contests.map(function (contest) {
 
     if (contest.type == 'candidate') {
@@ -54,6 +54,7 @@ function BuildCards(contests) {
         toc: [capitalizeEachWord(contest.office)],
         subtext: ['Vote for 1'],
         type: 'Candidate',
+        level: [type],
         poll: BuildCandidateObject(contest.candidates)
       };
     } else if (contest.type == 'referendum') {
@@ -79,7 +80,6 @@ function losAngelesCounty(address) {
     var polling_location = {};
     var heading = {};
     var lengthElectoral = 0;
-
     retrieve.precinct(address).then(function (data) {
       lengthElectoral = data.electoral_district_id.length;
       heading = {
@@ -92,11 +92,11 @@ function losAngelesCounty(address) {
       for (id of data.electoral_district_id) {
         retrieve.electoral(id)
           .then(function (electoral) {
-
+            console.log("Electoral is");
+            console.log(electoral.type);
             ballot.push({
               title: capitalizeEachWord(electoral.type),
-              cards: BuildCards(electoral.contests),
-              level: electoral.type
+              cards: BuildCards(electoral.contests, electoral.type)
             });
 
             checkDone();

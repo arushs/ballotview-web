@@ -253,7 +253,7 @@ router.route('/write/:bv_id')
       .then(function (snap) {
         if (snap.exists()) {
           var ballotData = snap.val();
-          delete ballotData.address;
+          // delete ballotData.address;
           return res.json(ballotData);
         } else {
           return res.status(400).send({ error: 'ballot does not exist' });

@@ -5,6 +5,7 @@ import Video from './Video';
 
 var decodeEntities = (function() {
   // this prevents any overhead from creating the object each time
+  if (typeof document === 'undefined') return;
   var element = document.createElement('div');
 
   function decodeHTMLEntities (str) {
