@@ -1,0 +1,14 @@
+branch-defaults:
+  master:
+    environment: ballotview
+environment-defaults:
+  ballotview:
+    branch: null
+    repository: null
+global:
+  application_name: Ballotview
+  default_ec2_keyname: null
+  default_platform: 64bit Amazon Linux 2016.09 v3.1.0 running Node.js
+  default_region: us-west-2
+  profile: eb-cli
+  sc: git

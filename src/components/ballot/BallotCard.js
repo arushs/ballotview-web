@@ -2,15 +2,41 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import BallotClickableText from './BallotClickableText';
 import BallotChoice from './BallotChoice';
+import _ from 'lodash';
 
-const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, className, ...other }) => (
-  <ul className={classNames('ballot_poll', className)}>
+Array.prototype.move = function (old_index, new_index) {
+  while (old_index < 0) {
+      old_index += this.length;
+  }
+  while (new_index < 0) {
+      new_index += this.length;
+  }
+  if (new_index >= this.length) {
+      var k = new_index - this.length;
+      while ((k--) + 1) {
+          this.push(undefined);
+      }
+  }
+  this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+  return this; // for testing purposes
+};
+
+const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, className, president, ...other }) => {
+
+  if (president) {
+    let trump_index = _.findIndex(pollData, o => JSON.stringify(o).toUpperCase().indexOf('TRUM') > -1);
+    pollData.move(trump_index, 0);
+    let clinton_index = _.findIndex(pollData, o => JSON.stringify(o).toUpperCase().indexOf('CLINT') > -1);
+    pollData.move(clinton_index, 0);
+  }
+
+  return (<ul className={classNames('ballot_poll', className)}>
     {pollData.map((data, i) => {
 
       let selectOption = (e) => {
         e.stopPropagation();
         pollSelectOption(i);
-      }
+      };
 
       return (<li key={i}>
 
@@ -44,13 +70,14 @@ const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, className, .
 
       </li>);
     })}
-  </ul>
-);
+  </ul>);
+};
 
 BallotPoll.propTypes = {
   pollData: React.PropTypes.array.isRequired,
   pollTally: React.PropTypes.array.isRequired,
   pollSelectOption: React.PropTypes.func,
+  president: React.PropTypes.bool,
   click: React.PropTypes.func
 };
 
@@ -126,6 +153,7 @@ class BallotCard extends Component {
                 pollTally={tally}
                 pollSelectOption={this.pollSelectOption}
                 click={click}
+                president={title.join(' ').toUpperCase().indexOf('VICE PRE') > -1}
               />
             );
           }
