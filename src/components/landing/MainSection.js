@@ -23,6 +23,9 @@ const MainSection = ({ content, children }) => (
       <EnterAddress prefill={content.keyword} />
       {/*<div className="sub"><span>{content.prompt2}</span></div>*/}
     </div>
+    <div id="mobile_disclaimer">
+      Hey, we see you're on mobile. The full educational experience available on Desktop.
+    </div>
     <div id="down_arrow">
       <img src="/dist/images/noun_149006_cc.png" />
     </div>

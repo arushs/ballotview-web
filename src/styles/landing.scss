@@ -88,6 +88,12 @@ main#landing {
       @include respond(phone) {
         margin: 0 auto;
         margin-top: $pad;
+
+        display: none;
+
+        .option_sub {
+          display: none;
+        }
       }
     }
 
@@ -166,8 +172,23 @@ main#landing {
 
       @include respond(phone) {
         margin: $pad 0;
+
+        .title {
+          font-size: $font-md;
+        }
       }
 
+    }
+
+    #mobile_disclaimer {
+      display: none;
+
+      @include respond(phone) {
+        display: block;
+        font-size: $font-sm;
+        margin: $pad-lg;
+        opacity: 0.5;
+      }
     }
 
     // #example {
@@ -243,6 +264,7 @@ main#landing {
       section.detail_module {
         margin: $pad * 4 0;
         max-width: 450px;
+        padding: 0 $pad;
 
         @include respond(phone) {
           margin: $pad-lg 0;
@@ -277,6 +299,7 @@ main#landing {
 
     @include respond(phone) {
       padding: $pad * 2 $pad;
+      font-size: $font-sm;
     }
 
     .heading {
@@ -287,7 +310,7 @@ main#landing {
         // background-color: $highlight;
       }
       @include respond(phone) {
-        font-size: $font-lg * 1.5;
+        font-size: $font-lg;
       }
     }
 
@@ -369,44 +392,50 @@ main#landing {
   }
 }
 
-  footer {
-    padding: 50px 50px !important;
+footer {
+  padding: $pad-lg * 2 $pad-lg * 2 !important;
 
-    .large {
-      font-size: 44px;
-      @include respond(phone) {
-        font-size: $font-lg * 1.5;
-      }
-      font-weight: bold;
-      margin-bottom: $unit * 2;
-      span {
-        // background-color: $highlight;
-      }
-    }
+  @include respond(phone) {
+    font-size: $font-sm;
+    padding: $pad $pad !important;
+  }
 
-    .medium {
-      font-size: 18px;
-      @include respond(phone) {
-        font-size: $font-md * 1.5;
-      }
-      font-weight: bold;
-      margin-bottom: $unit * 1;
+  .large {
+    font-size: 44px;
+    @include respond(phone) {
+      font-size: $font-lg * 1;
+      margin-bottom: $pad-lg;
     }
+    font-weight: bold;
+    margin-bottom: $unit * 2;
+    span {
+      // background-color: $highlight;
+    }
+  }
 
-    .left {
-      text-align: left;
+  .medium {
+    font-size: 18px;
+    @include respond(phone) {
+      font-size: $font-md * 1;
     }
+    font-weight: bold;
+    margin-bottom: $unit * 1;
+  }
 
-    .small {
-      font-size: 16px;
-      @include respond(phone) {
-        font-size: $font-md * 1.5;
-      }
-      margin-bottom: $unit * 1;
-    }
+  .left {
+    text-align: left;
+  }
 
-    .center {
-      text-align: center;
+  .small {
+    font-size: 16px;
+    @include respond(phone) {
+      font-size: $font-md * 1;
     }
+    margin-bottom: $unit * 1;
+  }
+
+  .center {
+    text-align: center;
+  }
 
 }

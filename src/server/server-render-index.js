@@ -1,3 +1,4 @@
+import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
 import routes from '../Routes'
@@ -14,12 +15,36 @@ module.exports = (req, res) => {
       // You can also check renderProps.components or renderProps.routes for
       // your "not found" component or route respectively, and send a 404 as
       // below, if you're using a catch-all route.
-      res.status(200).send(renderToString(<RouterContext {...renderProps} />))
+      let app = renderToString(<RouterContext {...renderProps} />);
+      res.status(200).send(insertAppIntoHTML(app))
     } else {
       res.status(404).send('Not found')
     }
   })
 };
+
+function insertAppIntoHTML(app) {
+  return '<!doctype html>'+
+    '<html>' +
+      '<head>' +
+        '<meta charset="utf-8">' +
+        '<title>BallotView</title>' +
+        '<!-- build:css -->' +
+        '<link rel="stylesheet" href="/dist/styles/main.css">' +
+        '<!-- endbuild -->' +
+        '<meta name="viewport"           content="width=device-width initial-scale=1" />' +
+        '<meta property="og:title"       content="View Your 2016 Ballot" />' +
+        '<meta property="og:description" content="Election day can be confusing, but this website makes voting easy. Not only see your ballot online, but also access non-partisan content to help you make your decisions as an informed voter." />' +
+        '<meta property="og:image"       content="/dist/images/bv-og.png" />' +
+        '<link rel="icon" type="image/png" href="/dist/images/BallotViewLogo.png">' +
+      '</head>' +
+      '<body>' +
+        '<div id="app">' + app + '</div>' +
+        '<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2tXT5LfheFBUIMpaX-VXsdaKIK3UX6GY&libraries=places"></script>' +
+        '<script src="/dist/js/app.js"></script>' +
+      '</body>' +
+    '</html>';
+}
 
 // function insertBodyIntoHTML(body) {
 //   return '<!doctype html>'+
