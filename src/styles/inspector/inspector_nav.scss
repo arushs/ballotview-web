@@ -46,6 +46,14 @@
     }
   }
 
+  li.strike * {
+    text-decoration: line-through;
+  }
+
+  li.selected * {
+    font-weight: 600;
+  }
+
   @include respond(phone) {
     display: none;
   }

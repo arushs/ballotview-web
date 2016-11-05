@@ -20,7 +20,7 @@
 }
 
 .ballot_card {
-  transition: all .15s cubic-bezier(.215,.61,.355,1);
+  // transition: all .15s cubic-bezier(.215,.61,.355,1);
   animation-fill-mode:both;
   z-index: 1;
   transform: translateZ(0);
@@ -29,6 +29,7 @@
   &:hover {
     border-color: rgba(0, 0, 0, 0.25);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), inset 0 0 0 4px $highlight;
+    cursor: pointer;
     transform: scale(1, 1) translateZ(0);
     z-index: 2;
   }
@@ -85,37 +86,40 @@
       margin-right: -16px;
 
       .radio {
-        width: 28px;
-        height: 28px;
-        background-color: rgba(0, 0, 0, 0.5);
-        padding: 2px;
-        border-radius: 14px;
         float: left;
-        margin-right: 16px;
-        // margin-top: 2px;
         cursor: pointer;
+        margin: -8px;
+        padding: 8px;
 
-        > span {
-          display: block;
-          width: 24px;
-          height: 24px;
-          border-radius: 12px;
-          background-color: #FFF;
-          transition: background-color .15s, opacity .15s cubic-bezier(.215,.61,.355,1);
-          animation-fill-mode:both;
+        > div {
+          width: 28px;
+          height: 28px;
+          background-color: rgba(0, 0, 0, 0.5);
+          padding: 2px;
+          border-radius: 14px;
+          margin-right: 16px;
+          // margin-top: 2px;
+
+          > span {
+            display: block;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: #FFF;
+            transition: background-color .15s, opacity .15s cubic-bezier(.215,.61,.355,1);
+            animation-fill-mode:both;
+          }
         }
 
-        &:hover {
+        &:hover > div {
           > span {
             border: 2px solid #FFF;
             background-color: rgba(255, 255, 255, 0.7);
           }
         }
 
-        &.selected {
-          > span {
-            opacity: 0 !important;
-          }
+        &.selected > div > span {
+          opacity: 0 !important;
         }
       }
 
@@ -133,6 +137,8 @@
           float: right;
           font-size: $font-sm;
           color: rgba(0, 0, 0, 0.7);
+          max-width: 30%;
+          text-align: right;
         }
 
         .option_title {

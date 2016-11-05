@@ -20,6 +20,11 @@
 
   &.isolate .ballot_card:not(.selected), &.isolate h2 {
     opacity: 0.5;
+    transition: opacity 1s cubic-bezier(.215,.61,.355,1);
+
+    &:hover {
+      opacity: 0.75;
+    }
 
     @include respond(phone) {
       opacity: 0.2;

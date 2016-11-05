@@ -288,7 +288,11 @@ class BVBallot extends Component {
           />
         </section>
         <section id="inspector_nav">
-          <InspectorNav ballots={this.state.ballot} />
+          <InspectorNav
+            ballots={this.state.ballot}
+            tallies={this.state.tallies}
+            onSelectBallot={this.onSelectBallot}
+            selectedBallot={this.state.selectedBallot} />
         </section>
         {(() => {
           // console.log(this.state.selectedBallot);

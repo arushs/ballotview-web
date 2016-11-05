@@ -19,8 +19,7 @@ const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, className, p
         <div
           className={classNames('radio', { selected: pollTally[i] })}
           onClick={selectOption}
-          style={{ backgroundColor: data.color }}
-        ><span /></div>
+        ><div style={{ backgroundColor: data.color }}><span /></div></div>
 
         <div className="info">
           {(() => { if ('trail' in data) {
@@ -131,7 +130,7 @@ class BallotCard extends Component {
           <div className="title">
             <BallotClickableText text={title} click={click} />
           </div>
-          {(() => { if (secondary) {
+          {(() => { if (secondary && !this.state.collapsed) {
             return (<div className="sub">
               <BallotClickableText text={secondary} click={click} />
             </div>);
