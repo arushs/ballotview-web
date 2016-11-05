@@ -6,30 +6,6 @@ import _ from 'lodash';
 
 const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, className, president, ...other }) => {
 
-  function move(array, old_index, new_index) {
-    while (old_index < 0) {
-        old_index += array.length;
-    }
-    while (new_index < 0) {
-        new_index += array.length;
-    }
-    if (new_index >= array.length) {
-        var k = new_index - array.length;
-        while ((k--) + 1) {
-            array.push(undefined);
-        }
-    }
-    array.splice(new_index, 0, array.splice(old_index, 1)[0]);
-    return array; // for testing purposes
-  };
-
-  if (president) {
-    let trump_index = _.findIndex(pollData, o => JSON.stringify(o).toUpperCase().indexOf('TRUM') > -1);
-    pollData = move(pollData, trump_index, 0);
-    let clinton_index = _.findIndex(pollData, o => JSON.stringify(o).toUpperCase().indexOf('CLINT') > -1);
-    pollData = move(pollData, clinton_index, 0);
-  }
-
   return (<ul className={classNames('ballot_poll', className)}>
     {pollData.map((data, i) => {
 
@@ -120,10 +96,35 @@ class BallotCard extends Component {
     let {
       ballotIndex, cardIndex, title, secondary,
       poll, tally, onUpdate, click, children, className,
-      next, selected,
+      next, selected, level,
       ...other } = this.props;
 
-      // console.log(level);
+    let president = title.join(' ').toUpperCase().indexOf('VICE PRE') > -1;
+
+    function move(array, old_index, new_index) {
+      while (old_index < 0) {
+          old_index += array.length;
+      }
+      while (new_index < 0) {
+          new_index += array.length;
+      }
+      if (new_index >= array.length) {
+          var k = new_index - array.length;
+          while ((k--) + 1) {
+              array.push(undefined);
+          }
+      }
+      array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+      return array; // for testing purposes
+    };
+
+    if (president) {
+      let trump_index = _.findIndex(poll, o => JSON.stringify(o).toUpperCase().indexOf('TRUM') > -1);
+      poll = move(poll, trump_index, 0);
+      let clinton_index = _.findIndex(poll, o => JSON.stringify(o).toUpperCase().indexOf('CLINT') > -1);
+      poll = move(poll, clinton_index, 0);
+    }
+
     return (
       <div className={classNames('ballot_card', { selected }, className)} {...other}>
         <div className="heading">
@@ -154,7 +155,6 @@ class BallotCard extends Component {
                 pollTally={tally}
                 pollSelectOption={this.pollSelectOption}
                 click={click}
-                president={title.join(' ').toUpperCase().indexOf('VICE PRE') > -1}
               />
             );
           }
