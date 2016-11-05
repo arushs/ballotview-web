@@ -12,6 +12,8 @@ const parseGoogleCivic = require('./googlecivic');
 const parseBallotpediaCandidate = require('./ballotpedia')
 const losAngelesCounty = require('./losAngelesCounty');
 const data = require('./data');
+const stateLetters = require('./stateAbbrevs');
+const levelName = require('./levelChanges');
 
 var bvRef = db.ref('ballotview');
 var laRef = db.ref('la_county');
@@ -42,18 +44,25 @@ function getGoogleCivicBallot(address) {
   });
 }
 
-function getIndividualCandidateData(value, j, level) {
-
+function getIndividualCandidateData(value, j, level, address) {
+  console.log(address);
+  if(address.length > 2) console.log("FROM MAP: "+stateLetters[address]);
+  console.log(level);
   function parseCandidateFromBP(name, i, resolve, reject) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
     var lastName = nameArray[nameArray.length - 1];
-    // var seatLevel = //GET THIS SORTED;
-    // var stateAbrev = //GET THIS SORTED;
+    var seatLevel = levelName[level];
+    if(address.length > 2) var stateAbrev = stateLetters[address];
+    else var stateAbrev = address;
     var exists = false;
     if(firstName == "Bill" && lastName == "Weld") firstName = "William";
     if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
     if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
+    if(firstName == "Loretta" && lastName == "Sanchez") seatLevel = "federal";
+    if(firstName == "Kamala" && lastName == "Harris") seatLevel = "federal";
+    if(stateAbrev == "") seatLevel = "federal";
+    console.log("-->"+stateAbrev+"<----");
     candidatRef.child(firstName + " " + lastName)
       .once('value')
       .then(function (snap) {
@@ -63,46 +72,25 @@ function getIndividualCandidateData(value, j, level) {
           return resolve(snap.val());
         }  else {
           console.log("Requesting");
+          var pedia_api_url = ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName
+              + "&Office.Level=" + seatLevel;
+          if(stateAbrev != "") pedia_api_url = pedia_api_url + "&Office.District.State=" + stateAbrev;
+          console.log(pedia_api_url);
           request({
-            uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName +
-              "&Office.Level=" + seatLevel + "&Office.District.State=" + stateAbrev,
+            uri: pedia_api_url,
             method: 'get',
             json: true,
           }, function (error, response, body) {
             if (error || response.statusCode !== 200) {
+              console.log(body);
               return reject(new Error('could not get candidate from Ballotpedia'))
             } else {
-              if(body.NumResults == 0){ //Didn't get anything from Ballotpedia
-                if(firstName == "Bill" || firstName == "Michael"){ //Get info on Bill Weld/Mike Pence, or some other Bill for that matter
-                  if(firstName == "Bill") firstName = "William";
-                  if(firstName == "Michael") firstName = "Mike";
-
-                  request({
-                    uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName +
-                      "&Office.Level=" + seatLevel + "&Office.District.State=" + stateAbrev,
-                    method: 'get',
-                    json: true,
-                  }, function(error, response, body) {
-                    if (error || response.statusCode !== 200) {
-                      return reject(new Error('could not get candidate from Ballotpedia'))
-                    } else {
-                      var data = parseBallotpediaCandidate(body);
-                      data.sortOrder = i;
-                      // firebase
-                      console.log("Requested");
-                      candidatRef.child(firstName + " " + lastName).set(data);
-                      return resolve(data);
-                    }
-                  });
-                }
-              } else{
-                var data = parseBallotpediaCandidate(body);
-                data.sortOrder = i;
-                // firebase
-                console.log("Requested");
-                candidatRef.child(firstName + " " + lastName).set(data);
-                return resolve(data);
-              }
+              var data = parseBallotpediaCandidate(body);
+              data.sortOrder = i;
+              // firebase
+              console.log("Requested");
+              candidatRef.child(firstName + " " + lastName).set(data);
+              return resolve(data);
             }
           });
         }
@@ -136,7 +124,7 @@ function getCandidateData(query) {
     var ret = [];
     var promiseFinished = 0;
     for (var i in query.candidate_query) {
-      getIndividualCandidateData(query.candidate_query[i], i, query.level[0])
+      getIndividualCandidateData(query.candidate_query[i], i, query.level[0], query.address)
         .then(function (data) {
           ret.push(data);
           if (ret.length === query.candidate_query.length) {
@@ -164,7 +152,6 @@ router.get('/', function (req, res) {
         return res.status(400).send({ error: error.message });
       });
   } else if ('address' in req.query){
-    console.log("Getting google");
     getGoogleCivicBallot(req.query.address)
       .then(function(data) { res.json(data); })
       .catch(function(error) {
@@ -225,7 +212,6 @@ router.route('/create')
     }
 
     function useGoogleCivic() {
-      console.log("Use Google civic");
       getGoogleCivicBallot(address)
         .then(processData)
         .catch(function(error) {
@@ -327,8 +313,8 @@ router.route('/read/:bv_id')
 router.route('/content/candidate')
   .get(function (req, res) {
     var query = req.query.query;
-    // console.log("ballotpedia candidate info testing   "+req.query.query[0]); //Line added
     console.log(query);
+    // console.log("ballotpedia candidate info testing   "+req.query.query[0]); //Line added
     getCandidateData(query)
       .then(function(data) {
         // console.log(data);

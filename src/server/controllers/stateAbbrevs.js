@@ -50,3 +50,5 @@ const stateAbbreviations = {
 	'Wisconsin': 'WI',
 	'Wyoming': 'WY',
 };
+
+module.exports = stateAbbreviations;
