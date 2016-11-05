@@ -187,9 +187,9 @@ class BVBallot extends Component {
     }
   }
 
-  onSelectBallot(ballotIndex, cardIndex) {
+  onSelectBallot(ballotIndex, cardIndex, title) {
     // console.log({ ballotIndex, cardIndex });
-
+    console.log(title);
     if (this.state.selectedBallot.ballotIndex === ballotIndex && this.state.selectedBallot.cardIndex === cardIndex) {
       this.setState({ selectedBallot: {}, inspector: [] });
     } else {

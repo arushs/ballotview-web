@@ -168,6 +168,7 @@ function parseGoogleCivic(data) {
     }
     else if (contest.type == "General") {
       var candidate_data = BuildCandidateObject(contest, uniqueCandidates);
+      candidate_data.level = contest.level;
       if (candidate_data != null)
         candidateResp['cards'].push(candidate_data);
     }
