@@ -51,6 +51,7 @@ function getIndividualCandidateData(value, j) {
     var exists = false;
     if(firstName == "Bill" && lastName == "Weld") firstName = "William";
     if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
+    if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
     candidatRef.child(firstName + " " + lastName)
       .once('value')
       .then(function (snap) {
