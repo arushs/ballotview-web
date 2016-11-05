@@ -12,6 +12,8 @@ const parseGoogleCivic = require('./googlecivic');
 const parseBallotpediaCandidate = require('./ballotpedia')
 const losAngelesCounty = require('./losAngelesCounty');
 const data = require('./data');
+const stateLetters = require('./stateAbbrevs');
+const levelName = require('./levelChanges');
 
 var bvRef = db.ref('ballotview');
 var laRef = db.ref('la_county');
@@ -42,18 +44,25 @@ function getGoogleCivicBallot(address) {
   });
 }
 
-function getIndividualCandidateData(value, j, level) {
-
+function getIndividualCandidateData(value, j, level, address) {
+  console.log(address);
+  if(address.length > 2) console.log("FROM MAP: "+stateLetters[address]);
+  console.log(level);
   function parseCandidateFromBP(name, i, resolve, reject) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
     var lastName = nameArray[nameArray.length - 1];
-    // var seatLevel = //GET THIS SORTED;
-    // var stateAbrev = //GET THIS SORTED;
+    var seatLevel = levelName[level];
+    if(address.length > 2) var stateAbrev = stateLetters[address];
+    else var stateAbrev = address;
     var exists = false;
     if(firstName == "Bill" && lastName == "Weld") firstName = "William";
     if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
     if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
+    if(firstName == "Loretta" && lastName == "Sanchez") seatLevel = "federal";
+    if(firstName == "Kamala" && lastName == "Harris") seatLevel = "federal";
+    if(stateAbrev == "") seatLevel = "federal";
+    console.log("-->"+stateAbrev+"<----");
     candidatRef.child(firstName + " " + lastName)
       .once('value')
       .then(function (snap) {
@@ -63,9 +72,12 @@ function getIndividualCandidateData(value, j, level) {
           return resolve(snap.val());
         }  else {
           console.log("Requesting");
+          var pedia_api_url = ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName
+              + "&Office.Level=" + seatLevel;
+          if(stateAbrev != "") pedia_api_url = pedia_api_url + "&Office.District.State=" + stateAbrev;
+          console.log(pedia_api_url);
           request({
-            uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
-              //+ "&Office.Level=" + seatLevel + "&Office.District.State=" + stateAbrev,
+            uri: pedia_api_url,
             method: 'get',
             json: true,
           }, function (error, response, body) {
@@ -112,7 +124,7 @@ function getCandidateData(query) {
     var ret = [];
     var promiseFinished = 0;
     for (var i in query.candidate_query) {
-      getIndividualCandidateData(query.candidate_query[i], i, query.level[0])
+      getIndividualCandidateData(query.candidate_query[i], i, query.level[0], query.address)
         .then(function (data) {
           ret.push(data);
           if (ret.length === query.candidate_query.length) {
@@ -301,6 +313,7 @@ router.route('/read/:bv_id')
 router.route('/content/candidate')
   .get(function (req, res) {
     var query = req.query.query;
+    console.log(query);
     // console.log("ballotpedia candidate info testing   "+req.query.query[0]); //Line added
     getCandidateData(query)
       .then(function(data) {
