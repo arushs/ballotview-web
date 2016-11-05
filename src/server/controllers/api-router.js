@@ -64,45 +64,21 @@ function getIndividualCandidateData(value, j, level) {
         }  else {
           console.log("Requesting");
           request({
-            uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName +
-              "&Office.Level=" + seatLevel + "&Office.District.State=" + stateAbrev,
+            uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+              //+ "&Office.Level=" + seatLevel + "&Office.District.State=" + stateAbrev,
             method: 'get',
             json: true,
           }, function (error, response, body) {
             if (error || response.statusCode !== 200) {
+              console.log(body);
               return reject(new Error('could not get candidate from Ballotpedia'))
             } else {
-              if(body.NumResults == 0){ //Didn't get anything from Ballotpedia
-                if(firstName == "Bill" || firstName == "Michael"){ //Get info on Bill Weld/Mike Pence, or some other Bill for that matter
-                  if(firstName == "Bill") firstName = "William";
-                  if(firstName == "Michael") firstName = "Mike";
-
-                  request({
-                    uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName +
-                      "&Office.Level=" + seatLevel + "&Office.District.State=" + stateAbrev,
-                    method: 'get',
-                    json: true,
-                  }, function(error, response, body) {
-                    if (error || response.statusCode !== 200) {
-                      return reject(new Error('could not get candidate from Ballotpedia'))
-                    } else {
-                      var data = parseBallotpediaCandidate(body);
-                      data.sortOrder = i;
-                      // firebase
-                      console.log("Requested");
-                      candidatRef.child(firstName + " " + lastName).set(data);
-                      return resolve(data);
-                    }
-                  });
-                }
-              } else{
-                var data = parseBallotpediaCandidate(body);
-                data.sortOrder = i;
-                // firebase
-                console.log("Requested");
-                candidatRef.child(firstName + " " + lastName).set(data);
-                return resolve(data);
-              }
+              var data = parseBallotpediaCandidate(body);
+              data.sortOrder = i;
+              // firebase
+              console.log("Requested");
+              candidatRef.child(firstName + " " + lastName).set(data);
+              return resolve(data);
             }
           });
         }
@@ -136,7 +112,6 @@ function getCandidateData(query) {
     var ret = [];
     var promiseFinished = 0;
     for (var i in query.candidate_query) {
-      console.log("Query is: " + query.candidate_query[i]);
       getIndividualCandidateData(query.candidate_query[i], i, query.level[0])
         .then(function (data) {
           ret.push(data);
@@ -165,7 +140,6 @@ router.get('/', function (req, res) {
         return res.status(400).send({ error: error.message });
       });
   } else if ('address' in req.query){
-    console.log("Getting google");
     getGoogleCivicBallot(req.query.address)
       .then(function(data) { res.json(data); })
       .catch(function(error) {
@@ -226,7 +200,6 @@ router.route('/create')
     }
 
     function useGoogleCivic() {
-      console.log("Use Google civic");
       getGoogleCivicBallot(address)
         .then(processData)
         .catch(function(error) {
@@ -329,7 +302,6 @@ router.route('/content/candidate')
   .get(function (req, res) {
     var query = req.query.query;
     // console.log("ballotpedia candidate info testing   "+req.query.query[0]); //Line added
-    console.log(query);
     getCandidateData(query)
       .then(function(data) {
         // console.log(data);
