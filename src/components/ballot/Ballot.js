@@ -18,8 +18,8 @@ const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectB
             selected={(selectedBallot)
               && (selectedBallot.ballotIndex === ballotIndex
               && selectedBallot.cardIndex === cardIndex)}
-            next={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex + 1, card.title) }}
-            onClick={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex, card.title) }}
+            next={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex + 1, card.level) }}
+            onClick={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex, card.level) }}
             key={"card-" + cardIndex}
             ballotIndex={ballotIndex}
             cardIndex={cardIndex}

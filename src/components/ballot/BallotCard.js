@@ -123,7 +123,7 @@ class BallotCard extends Component {
       next, selected,
       ...other } = this.props;
 
-      console.log(level);
+      // console.log(level);
     return (
       <div className={classNames('ballot_card', { selected }, className)} {...other}>
         <div className="heading">
