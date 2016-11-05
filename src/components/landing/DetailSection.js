@@ -31,6 +31,7 @@ class DetailSection extends Component {
 
     return (
       <section id="detail">
+      <div className="large"> How it works </div>
         <section id="left">
           <Ballot
             heading={heading}

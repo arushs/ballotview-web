@@ -18,8 +18,8 @@ const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectB
             selected={(selectedBallot)
               && (selectedBallot.ballotIndex === ballotIndex
               && selectedBallot.cardIndex === cardIndex)}
-            next={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex + 1) }}
-            onClick={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex) }}
+            next={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex + 1, card.level) }}
+            onClick={(e) => { e.stopPropagation(); onSelectBallot(ballotIndex, cardIndex, card.level) }}
             key={"card-" + cardIndex}
             ballotIndex={ballotIndex}
             cardIndex={cardIndex}
@@ -28,6 +28,7 @@ const Ballot = ({ heading, ballots, tallies, onUpdate, selectedBallot, onSelectB
             poll={card.poll}
             tally={tallies[ballotIndex][cardIndex]}
             onUpdate={onUpdate}
+            level={card.level}
             click={() => {}}
             id={ballotIndex + "-" + cardIndex}
           />
