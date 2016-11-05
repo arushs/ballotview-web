@@ -45,9 +45,7 @@ function getGoogleCivicBallot(address) {
 }
 
 function getIndividualCandidateData(value, j, level, address) {
-  console.log(address);
-  if(address.length > 2) console.log("FROM MAP: "+stateLetters[address]);
-  console.log(level);
+
   function parseCandidateFromBP(name, i, resolve, reject) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
@@ -62,7 +60,6 @@ function getIndividualCandidateData(value, j, level, address) {
     if(firstName == "Loretta" && lastName == "Sanchez") seatLevel = "federal";
     if(firstName == "Kamala" && lastName == "Harris") seatLevel = "federal";
     if(stateAbrev == "") seatLevel = "federal";
-    console.log("-->"+stateAbrev+"<----");
     candidatRef.child(firstName + " " + lastName)
       .once('value')
       .then(function (snap) {
@@ -82,7 +79,6 @@ function getIndividualCandidateData(value, j, level, address) {
             json: true,
           }, function (error, response, body) {
             if (error || response.statusCode !== 200) {
-              console.log(body);
               return reject(new Error('could not get candidate from Ballotpedia'))
             } else {
               var data = parseBallotpediaCandidate(body);

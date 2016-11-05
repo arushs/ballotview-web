@@ -7,14 +7,6 @@ function parseBallotpediaCandidate(data) {
 
   var candidate = data.Results[0];
 
-  // if(data.Results.length == 7){ // Short term fix for Gary Johnson situation
-  //   var candidate = data.Results[2];
-  // } else if(data.Results.length == 3){
-  //   var candidate = data.Results[2];
-  // } else{ // For candidates like Gary Johnson where there exist multiple with the same name
-  //   var candidate = data.Results[0];
-  // }
-
   var improvedSummary = "";
   for(var i = 0, len = candidate.Summary.length; i<len; i++){ // Sort out the ugly ballotpedia reference link that comes up as plain text
     if(candidate.Summary[i] == "<"){
