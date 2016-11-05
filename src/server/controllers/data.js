@@ -63,6 +63,16 @@ var data = [
   {
     type: 'video',
     embed: 'youtube',
+    embed_id: '',
+    source: 'SeePolitical',
+    source_url: 'http://seepolitical.com/',
+    keywords: 'Proposition 57, STATE MEASURE 57',
+    ballotfyi_url: 'https://ballot.fyi/57/',
+    voterguide_url: 'http://voterguide.sos.ca.gov/en/propositions/57/'
+  },
+  {
+    type: 'video',
+    embed: 'youtube',
     embed_id: 'QC5gMcLR7b8',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
@@ -76,7 +86,7 @@ var data = [
     embed_id: 'nDje-Pm1hYg',
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
-    keywords: 'Proposition 59, STATE MEASURE 59'
+    keywords: 'Proposition 59, STATE MEASURE 59',
     ballotfyi_url: 'https://ballot.fyi/59/',
     voterguide_url: 'http://voterguide.sos.ca.gov/en/propositions/59/'
   },

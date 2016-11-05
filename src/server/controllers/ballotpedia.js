@@ -33,8 +33,8 @@ function parseBallotpediaCandidate(data) {
     source: "ballotpedia" 
   };
 
-  if ("PageUrl" in candidate) {
-    ret.PageUrl = candidate.PageUrl;
+  if ("PageURL" in candidate) {
+    ret.PageURL = candidate.PageURL;
   }
 
   if ("Office" in candidate.Websites) {

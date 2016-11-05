@@ -24,11 +24,14 @@ var decodeEntities = (function() {
 })();
 
 const Candidate = ({ data }) => {
+  let openBallotPedia = () => {
+    window.open(data.PageURL);
+  };
 
   return (
     <div>
       {Object.keys(data).map(item => {
-        if (['type', 'num_results', 'sortOrder'].indexOf(item) > -1) return;
+        if (['type', 'num_results', 'sortOrder', 'PageURL'].indexOf(item) > -1) return;
 
         if (!data[item]) return;
 
@@ -56,6 +59,7 @@ const Candidate = ({ data }) => {
           </div>);
         }
       })}
+      <button onClick={openBallotPedia}>View more on BallotPedia</button>
     </div>
   );
 }
@@ -85,7 +89,7 @@ const Inspector = ({ modules, cardInfo }) => (
       else if (module.type == 'video') {
         return (
           <li key={i}
-            className={classNames('inspector_widget', 'video')}>
+            className={classNames('inspector_widget', 'video', 'card')}>
             <Video data={module} />
           </li>
         );

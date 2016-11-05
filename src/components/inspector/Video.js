@@ -1,25 +1,44 @@
 import React from 'react';
 
 const Video = ({ data, ...other }) => {
-  let { type, embed, embed_id, source, source_url, title } = data;
+  let { type, embed, embed_id, source, source_url, title, ballotfyi_url, voterguide_url} = data;
+  let openBallotFYI = () => {
+    window.open(ballotfyi_url);
+  };
 
-  if (embed === 'youtube') {
+  let openVoterGuide = () => {
+    window.open(voterguide_url);
+  };
+
+
+  if (embed === 'youtube' && embed_id != "") {
     return (
-      <div class="card">
-        <section>
-          <iframe
-            width="560"
-            height="315"
-            src={"https://www.youtube.com/embed/" + embed_id + "?rel=0"}
-            frameBorder="0"
-            allowFullScreen>
-          </iframe>
-          <div>
-            from <a href={source_url} target="_blank">{source}</a>
-          </div>
-        </section>
-      </div>
+      <section>
+        <iframe
+          width="560"
+          height="315"
+          src={"https://www.youtube.com/embed/" + embed_id + "?rel=0"}
+          frameBorder="0"
+          allowFullScreen>
+        </iframe>
+        <div>
+          from <a href={source_url} target="_blank">{source}</a>
+        </div>
+        <br />
+        <button onClick={openBallotFYI}>View more on Ballot.Fyi</button>
+        <button onClick={openVoterGuide}>View more on VoterGuide</button>
+      </section>
     );
+  } else if (embed ==='youtube') {
+    return (
+      <section>
+        <div>
+          {title}
+        </div>
+        <button onClick={openBallotFYI}>View more on Ballot.Fyi</button>
+        <button onClick={openVoterGuide}>View more on VoterGuide</button>
+      </section>
+      );
   } else {
     return (<div>Error</div>);
   }
