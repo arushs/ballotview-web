@@ -5,18 +5,20 @@ const Video = ({ data, ...other }) => {
 
   if (embed === 'youtube') {
     return (
-      <section>
-        <iframe
-          width="560"
-          height="315"
-          src={"https://www.youtube.com/embed/" + embed_id + "?rel=0"}
-          frameBorder="0"
-          allowFullScreen>
-        </iframe>
-        <div>
-          from <a href={source_url} target="_blank">{source}</a>
-        </div>
-      </section>
+      <div class="card">
+        <section>
+          <iframe
+            width="560"
+            height="315"
+            src={"https://www.youtube.com/embed/" + embed_id + "?rel=0"}
+            frameBorder="0"
+            allowFullScreen>
+          </iframe>
+          <div>
+            from <a href={source_url} target="_blank">{source}</a>
+          </div>
+        </section>
+      </div>
     );
   } else {
     return (<div>Error</div>);

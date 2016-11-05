@@ -27,6 +27,7 @@ render(
       <Route path="ballot">
         <Route path="/ballot/:bvId" component={Ballot} />
         <Route path="/receipt/:bvId" component={Receipt} />
+        {/* <Route path="/create/:preset" component={Create} /> */}
       </Route>
     </Route>
   </Router>),
