@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import request from 'request';
 import Cookies from 'js-cookie';
+import _ from 'lodash';
 
 import api from '../api-interface';
+
+import ModalPolling from '../components/inspector/ModalPolling';
 
 import Ballot from '../components/ballot/BallotReceipt';
 // import Inspector from '../components/inspector/Inspector';
 // import InspectorNav from '../components/inspector/InspectorNav';
 
-import ballots from '../components/ballot/examples/sample_data';
+// import ballots from '../components/ballot/examples/sample_data';
 // const tallies = ballots.ballot.map((ballot) => ballot.cards.map((card) => card.poll.map((option) => (false))));
 
 class BVReceipt extends Component {
@@ -16,9 +19,10 @@ class BVReceipt extends Component {
     super(props);
 
     this.state = {
-      heading: ballots.heading,
+      // heading: ballots.heading,
       ballot: [],
       tallies: [],
+      polling_location: {},
       read_id: null
     };
 
@@ -58,7 +62,16 @@ class BVReceipt extends Component {
           </div>
           <div id="saveActions">
             <span>Read-Only Mode</span>
-            <button onClick={this.createNewBallot}>Create New Ballot</button>
+            {(() => {
+              if (!_.isEmpty(this.state.polling_location)) {
+                return (
+                  <button className="big" onClick={() => {
+                    this.setState({ modal: 'POLL' });
+                  }}>Voting Location</button>
+                );
+              }
+            })()}
+            <button className="big" onClick={window.print}>Print</button>
           </div>
         </section>
         <section id="ballot_receipt">
@@ -71,6 +84,22 @@ class BVReceipt extends Component {
             onSelectBallot={this.onSelectBallot}
           />
         </section>
+        {(() => {
+          switch (this.state.modal) {
+            case 'POLL':
+              return (
+                <ModalPolling
+                  polling_location={this.state.polling_location}
+                  onClose={() => {
+                    this.setState({ modal: null });
+                  }}
+                />
+              );
+              break;
+            default:
+              break;
+          }
+        })()}
       </main>
     );
   }

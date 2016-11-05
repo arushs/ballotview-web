@@ -34,7 +34,7 @@ export default ({ polling_location, onClose }) => {
       </div>
       <br />
       <div>
-        <button onClick={() => {openGoogleMaps(one_line);}}>Get Directions</button>
+        <button className="small" onClick={() => {openGoogleMaps(one_line);}}>Get Directions</button>
       </div>
     </section>
   );

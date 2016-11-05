@@ -123,6 +123,31 @@ button {
   &:disabled {
     background-color: #CCC;
   }
+
+  &.big {
+    margin: 4px 4px;
+    padding: 8px 16px;
+    height: 40px;
+
+    @include respond(phone) {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 14px;
+      font-size: $font-sm;
+      margin-right: 0;
+    }
+  }
+
+  &.small {
+
+    line-height: 28px;
+    padding: 0 14px;
+    height: 28px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 3px;
+
+  }
 }
 
 ul, li {

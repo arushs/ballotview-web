@@ -1,0 +1,69 @@
+#toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $toolbar-h-lg;
+  padding: 4px 8px;
+  background-color: #FFF;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+
+  @include respond(phone) {
+    height: $toolbar-h-sm;
+  }
+
+  @media print {
+    box-shadow: none;
+    background-color: transparent;
+    position: absolute;
+
+    #saveActions {
+      display :none;
+    }
+  }
+
+  button {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+
+  #logo {
+    .title {
+      line-height: 48px;
+      font-size: 28px;
+      @include respond(phone) {
+        display: none;
+      }
+    }
+
+    @include respond(phone) {
+      .logo_img {
+        width: $toolbar-h-sm;
+      }
+    }
+  }
+
+  #saveActions {
+    position: absolute;
+    right: $unit;
+    top: $unit;
+    color: rgba(0, 0, 0, 0.4);
+    text-align: right;
+
+    span {
+      display: inline-block;
+      margin: 0 $pad;
+    }
+
+    @include respond(phone) {
+      top: $unit / 2;
+
+      span {
+        margin: 0 $pad / 2;
+        font-size: $font-sm;
+        display: none;
+      }
+    }
+  }
+}

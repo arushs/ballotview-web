@@ -1,0 +1,13 @@
+#ballotview {
+
+  $toolbar-h-lg: 56px;
+  $toolbar-h-sm: 44px;
+
+  @import 'inspector/toolbar';
+  @import 'inspector/ballot';
+  @import 'inspector/ballot_receipt';
+  @import 'inspector/modal';
+  @import 'inspector/inspector_nav';
+  @import 'inspector/inspector';
+
+}

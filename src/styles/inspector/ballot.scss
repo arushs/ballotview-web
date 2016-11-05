@@ -1,0 +1,35 @@
+#ballot {
+  position: absolute;
+  top: $toolbar-h-lg;
+  left: 220px;
+  padding-bottom: 100px;
+
+  @include respond(phone) {
+    top: $toolbar-h-sm;
+    left: 0;
+    right: 0;
+    padding: $unit * 2;
+  }
+
+  & > .ballot {
+    // width: 400px;
+    margin: 20px auto;
+  }
+
+  &.isolate .ballot_card:not(.selected), &.isolate h2 {
+    opacity: 0.5;
+
+    @include respond(phone) {
+      opacity: 0.2;
+    }
+  }
+
+  h2 {
+    font-size: $font-md;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  & .ballot > section {
+    margin-bottom: $pad-lg;
+  }
+}

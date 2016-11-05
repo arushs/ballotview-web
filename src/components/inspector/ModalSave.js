@@ -36,7 +36,7 @@ export default ({ write_id, read_id, onClose }) => {
       <br />
       {/* <div>Send this ballot to yourself via <u>Facebook Messenger</u> (includes a receipt):</div>
       <div>
-        <button>Send to Facebook Messenger</button>
+        <button className="small">Send to Facebook Messenger</button>
       </div> */}
 
       {/* <hr /> */}
@@ -46,9 +46,9 @@ export default ({ write_id, read_id, onClose }) => {
       <div><Copy toCopy={'http://' + receiptUrl}>{receiptUrl}</Copy></div>
       <br />
       <div>
-        <button onClick={shareOnFacebook}>Share to Facebook</button>
-        <button onClick={() => {printExternal('http://' + receiptUrl + '?print=1')}}>Print</button>
-        {/*<button onClick={shareOnTwitter}>Twitter</button>*/}
+        <button className="small" onClick={shareOnFacebook}>Share to Facebook</button>
+        <button className="small" onClick={() => {printExternal('http://' + receiptUrl + '?print=1')}}>Print</button>
+        {/*<button className="small" onClick={shareOnTwitter}>Twitter</button>*/}
       </div>
     </section>
   );

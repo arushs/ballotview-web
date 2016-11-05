@@ -39,8 +39,8 @@ export default ({ id, onClose }) => {
       <div>You can share a receipt of your choices to your friends using this non-editable link:</div>
       <div><Copy toCopy={'http://' + receiptUrl}>{receiptUrl}</Copy></div>
       <div>
-        <button onClick={shareOnFacebook}>Share to Facebook</button>
-        {/*<button onClick={shareOnTwitter}>Twitter</button>*/}
+        <button className="small" onClick={shareOnFacebook}>Share to Facebook</button>
+        {/*<button className="small" onClick={shareOnTwitter}>Twitter</button>*/}
       </div>
     </section>
   );

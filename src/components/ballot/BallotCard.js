@@ -120,7 +120,7 @@ class BallotCard extends Component {
     let {
       ballotIndex, cardIndex, title, secondary,
       poll, tally, onUpdate, click, children, className,
-      deselect, selected,
+      next, selected,
       ...other } = this.props;
 
     return (
@@ -163,10 +163,10 @@ class BallotCard extends Component {
         { children }
 
         <div className={classNames('button_wrap', {
-          visible: this.state.collapsed || this.checkRadioSelected() && !this.state.collapsed
+          visible: !this.state.collapsed
         })}>
-          <button onClick={this.collapseToggle}>Collapse</button>
-          <button onClick={this.props.deselect}>Done</button>
+          <button className='small' onClick={this.collapseToggle}>Collapse</button>
+          <button className='small' onClick={this.props.next}>Next</button>
         </div>
       </div>
     );
@@ -183,7 +183,7 @@ BallotCard.propTypes = {
   tally: React.PropTypes.array,
   onUpdate: React.PropTypes.func,
   selected: React.PropTypes.bool,
-  deselect: React.PropTypes.func,
+  next: React.PropTypes.func,
   children: React.PropTypes.element
 };
 

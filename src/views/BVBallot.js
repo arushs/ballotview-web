@@ -48,7 +48,7 @@ class BVBallot extends Component {
 
       api.getWritableBallot(bvId)
         .then(function (data) {
-          console.log(data.body);
+          // console.log(data.body);
           return _this.setState(data.body, () => {
             Cookies.set('write_id', bvId);
           });
@@ -64,6 +64,22 @@ class BVBallot extends Component {
 
     } else {
       Cookies.set('write_id', this.state.write_id);
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.printExternal.bind(this), false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.printExternal.bind(this));
+  }
+
+  printExternal(e) {
+    let url = 'http://ballotview.org' + '/receipt/' + this.state.read_id;
+    if((e.ctrlKey || e.metaKey) && e.keyCode == 'P'.charCodeAt(0)) {
+      e.preventDefault();
+      window.open(url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
     }
   }
 
@@ -103,7 +119,7 @@ class BVBallot extends Component {
   }
 
   onSelectBallot(ballotIndex, cardIndex) {
-
+    console.log({ ballotIndex, cardIndex });
     let updateInspector = () => {
 
       let card = this.state.ballot[ballotIndex].cards[cardIndex];
@@ -161,7 +177,28 @@ class BVBallot extends Component {
     if (this.state.selectedBallot.ballotIndex === ballotIndex && this.state.selectedBallot.cardIndex === cardIndex) {
       this.setState({ selectedBallot: {}, inspector: [] });
     } else {
-      this.setState({ selectedBallot: { ballotIndex, cardIndex }, inspector: [] }, updateInspector);
+
+      if (this.state.ballot[ballotIndex].cards.length <= cardIndex) {
+        ballotIndex += 1;
+        cardIndex = 0;
+      }
+
+      if (this.state.ballot.length <= ballotIndex) {
+        return this.setState({ selectedBallot: {} });
+      }
+
+      this.setState({ selectedBallot: { ballotIndex, cardIndex }, inspector: [] }, () => {
+        updateInspector();
+        function scrollToAnchor(anchor) {
+          let node = document.getElementById(anchor);
+          if (node) {
+            // console.log(node.offsetTop);
+            let top = node.offsetTop;
+            window.scrollTo(0, top - 16*4);
+          }
+        }
+        scrollToAnchor(ballotIndex + "-" + cardIndex);
+      });
     }
   }
 
@@ -171,6 +208,14 @@ class BVBallot extends Component {
   }
 
   render() {
+    let isolate = 'cardIndex' in this.state.selectedBallot;
+
+    // if (isolate) {
+    //   document.body.style.overflow = "hidden";
+    // } else {
+    //   document.body.style.overflow = "auto";
+    // }
+
     return (
       <main id="ballotview">
         <section id="toolbar">
@@ -182,14 +227,14 @@ class BVBallot extends Component {
           </div>
           <div id="saveActions">
             <span>{this.state.saving ? 'Saving...' : 'Edit Mode'}</span>
-            <button onClick={() => {
+            <button className="big" onClick={() => {
               this.saveBallotToDatabase();
               this.setState({ modal: 'SAVE' });
             }}>Save Ballot</button>
             {(() => {
               if (!_.isEmpty(this.state.polling_location)) {
                 return (
-                  <button onClick={() => {
+                  <button className="big" onClick={() => {
                     this.setState({ modal: 'POLL' });
                   }}>Voting Location</button>
                 );
@@ -197,7 +242,10 @@ class BVBallot extends Component {
             })()}
           </div>
         </section>
-        <section id="ballot" className={classNames({ isolate: 'cardIndex' in this.state.selectedBallot })}>
+        <section id="ballot"
+          className={classNames({
+            isolate: isolate
+          })}>
           <Ballot
             heading={this.state.heading}
             ballots={this.state.ballot}
@@ -211,11 +259,13 @@ class BVBallot extends Component {
           <InspectorNav ballots={this.state.ballot} />
         </section>
         {(() => {
-          if (!_.isEmpty(this.state.inspector)) {
+          // console.log(this.state.selectedBallot);
+          if (!_.isEmpty(this.state.inspector) && this.state.ballot[this.state.selectedBallot.ballotIndex]) {
+            let cardInfo = this.state.ballot[this.state.selectedBallot.ballotIndex].cards[this.state.selectedBallot.cardIndex];
             return (<section id="inspector">
               <Inspector
                 modules={this.state.inspector}
-                cardInfo={this.state.ballot[this.state.selectedBallot.ballotIndex].cards[this.state.selectedBallot.cardIndex]}/>
+                cardInfo={cardInfo}/>
             </section>);
           }
         })()}

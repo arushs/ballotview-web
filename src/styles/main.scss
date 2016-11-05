@@ -34,8 +34,11 @@ body {
   font-weight: 400;
 }
 
+@import 'print';
 @import 'responsive-mixin';
+
 @import 'components';
 @import 'ballot';
+
 @import 'landing';
-@import 'inspector';
+@import 'ballot_view';

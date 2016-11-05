@@ -1,0 +1,53 @@
+#inspector_nav {
+  width: 200px;
+  padding: $pad / 2;
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  left: 0;
+  padding-bottom: 100px;
+  overflow-y: auto;
+
+  ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  ul.nav {
+    a {
+      cursor: pointer;
+      color: #000;
+      display: inline-block;
+      text-decoration: none;
+
+      &:hover span {
+        background-color: $highlight;
+      }
+    }
+    > li > a {
+      font-size: $font-md;
+      line-height: 1.2em;
+      font-weight: bold;
+    }
+    > li {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    ul {
+      margin-left: 8px;
+      > li > a {
+        font-size: $font-sm * 0.9;
+        line-height: 1.2em;
+        font-weight: normal;
+        margin: 0;
+      }
+    }
+  }
+
+  @include respond(phone) {
+    display: none;
+  }
+
+}

@@ -59,7 +59,7 @@ const Candidate = ({ data }) => {
           </div>);
         }
       })}
-      <button onClick={openBallotPedia}>View more on BallotPedia</button>
+      <button className="small" onClick={openBallotPedia}>View more on BallotPedia</button>
     </div>
   );
 }

@@ -25,8 +25,8 @@ const Video = ({ data, ...other }) => {
           from <a href={source_url} target="_blank">{source}</a>
         </div>
         <br />
-        <button onClick={openBallotFYI}>View more on Ballot.Fyi</button>
-        <button onClick={openVoterGuide}>View more on VoterGuide</button>
+        <button className="small" onClick={openBallotFYI}>View more on Ballot.Fyi</button>
+        <button className="small" onClick={openVoterGuide}>View more on VoterGuide</button>
       </section>
     );
   } else if (embed ==='youtube') {
@@ -35,8 +35,8 @@ const Video = ({ data, ...other }) => {
         <div>
           {title}
         </div>
-        <button onClick={openBallotFYI}>View more on Ballot.Fyi</button>
-        <button onClick={openVoterGuide}>View more on VoterGuide</button>
+        <button className="small" onClick={openBallotFYI}>View more on Ballot.Fyi</button>
+        <button className="small" onClick={openVoterGuide}>View more on VoterGuide</button>
       </section>
       );
   } else {
