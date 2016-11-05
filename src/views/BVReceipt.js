@@ -47,6 +47,7 @@ class BVReceipt extends Component {
   createNewBallot() {
     Cookies.remove('write_id');
     this.context.router.push({ pathname: '/' });
+    window.scrollTo(0, 0);
   }
 
   render() {
