@@ -3,6 +3,26 @@ import classNames from 'classnames';
 
 import Video from './Video';
 
+var decodeEntities = (function() {
+  // this prevents any overhead from creating the object each time
+  var element = document.createElement('div');
+
+  function decodeHTMLEntities (str) {
+    if(str && typeof str === 'string') {
+      // strip script/html tags
+      str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+      str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+      element.innerHTML = str;
+      str = element.textContent;
+      element.textContent = '';
+    }
+
+    return str;
+  }
+
+  return decodeHTMLEntities;
+})();
+
 const Candidate = ({ data }) => {
 
   return (
@@ -29,6 +49,7 @@ const Candidate = ({ data }) => {
         }
 
         if (typeof data[item] !== 'object') {
+          data[item] = decodeEntities(data[item]);
           return (<div key={item} className="item">
             <div className="heading2">{item}</div>
             <div className="info">{data[item]}</div>

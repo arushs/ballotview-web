@@ -34,7 +34,9 @@ class BVReceipt extends Component {
           console.log('error');
         } else {
           _this.setState(data.body);
-          console.log(data.body);
+          if (parseInt(_this.props.location.query.print) === 1) {
+            window.print();
+          }
         }
       });
   }
