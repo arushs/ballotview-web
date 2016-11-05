@@ -28,9 +28,9 @@ app.use('/ballot', router);
 
 app.use('/dist', express.static(path.join(__dirname, '..', '..', 'dist')));
 
-// require("babel-register");
-// app.get('*', require('./server-render-index'));
-app.get('*', function(req, res) { res.sendFile(indexPath); });
+require("babel-register");
+app.get('*', require('./server-render-index'));
+// app.get('*', function(req, res) { res.sendFile(indexPath); });
 
 http.listen(app.get('port'), () => {
   console.log('RUNNING.');
