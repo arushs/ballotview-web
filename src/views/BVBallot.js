@@ -38,6 +38,7 @@ class BVBallot extends Component {
     this.saveBallotToDatabase = this.saveBallotToDatabase.bind(this);
     this.onSelectBallot = this.onSelectBallot.bind(this);
     this.createNewBallot = this.createNewBallot.bind(this);
+    this.updateInspector = this.updateInspector.bind(this);
   }
 
   componentWillMount() {
@@ -50,6 +51,15 @@ class BVBallot extends Component {
         .then(function (data) {
           // console.log(data.body);
           return _this.setState(data.body, () => {
+
+            // console.log(_this.state.ballot);
+            for (var i in _this.state.ballot) {
+              // console.log(_this.state.ballot[i]);
+              for (var j in _this.state.ballot[i].cards) {
+                _this.updateInspector(i, j, false);
+              }
+            }
+
             Cookies.set('write_id', bvId);
           });
         }).catch(function (error) {
@@ -118,61 +128,67 @@ class BVBallot extends Component {
     this.setState({ tallies }, this.saveBallotToDatabase);
   }
 
-  onSelectBallot(ballotIndex, cardIndex) {
-    console.log({ ballotIndex, cardIndex });
-    let updateInspector = () => {
+  updateInspector(ballotIndex, cardIndex, show = true){
 
-      let card = this.state.ballot[ballotIndex].cards[cardIndex];
+    let card = this.state.ballot[ballotIndex].cards[cardIndex];
 
-      let isReferenendum = card.poll.length == 2 && card.poll[0].info[0].title[0] == "Yes" && card.poll[1].info[0].title[0] == "No";
+    let isReferenendum = card.poll.length == 2 && card.poll[0].info[0].title[0] == "Yes" && card.poll[1].info[0].title[0] == "No";
 
-      if (!isReferenendum ) {
-        // Append names together
-        let query = card.poll.map(poll => {
-          if (poll.info.length > 1) {
-            return poll.info.map((info) => (info.title[0]));
-          } else {
-            return poll.info[0].title[0];
-          }
-        });
+    if (!isReferenendum ) {
+      // Append names together
+      let query = card.poll.map(poll => {
+        if (poll.info.length > 1) {
+          return poll.info.map((info) => (info.title[0]));
+        } else {
+          return poll.info[0].title[0];
+        }
+      });
 
-        if (!this.state.inspectorCache[query]) {
+      if (!this.state.inspectorCache[query]) {
 
-          api.searchCandidate(query)
-            .then(({ body }) => {
-              let inspectorCache = this.state.inspectorCache;
-              inspectorCache[query] = body.data;
+        api.searchCandidate(query)
+          .then(({ body }) => {
+            let inspectorCache = this.state.inspectorCache;
+            inspectorCache[query] = body.data;
+            if (show) {
               this.setState({
                 inspector: body.data || [],
                 inspectorCache: inspectorCache
               });
-            });
-
-        } else {
-          this.setState({ inspector: this.state.inspectorCache[query] });
-        }
-
+            } else {
+              this.setState({
+                inspectorCache: inspectorCache
+              });
+            }
+          });
 
       } else {
+        this.setState({ inspector: this.state.inspectorCache[query] });
+      }
 
-        let query = card.toc[0];
 
-        if (!this.state.inspectorCache[query]) {
-          api.searchReferendum(query)
-            .then(({ body }) => {
-              let inspectorCache = this.state.inspectorCache;
-              inspectorCache[query] = body.data;
-              this.setState({
-                inspector: body.data || [],
-                inspectorCache: inspectorCache
-              });
+    } else {
+
+      let query = card.toc[0];
+
+      if (!this.state.inspectorCache[query]) {
+        api.searchReferendum(query)
+          .then(({ body }) => {
+            let inspectorCache = this.state.inspectorCache;
+            inspectorCache[query] = body.data;
+            this.setState({
+              inspector: body.data || [],
+              inspectorCache: inspectorCache
             });
-        } else {
-          this.setState({ inspector: this.state.inspectorCache[query] });
-        }
+          });
+      } else {
+        this.setState({ inspector: this.state.inspectorCache[query] });
       }
     }
-    updateInspector = updateInspector.bind(this);
+  }
+
+  onSelectBallot(ballotIndex, cardIndex) {
+    // console.log({ ballotIndex, cardIndex });
 
     if (this.state.selectedBallot.ballotIndex === ballotIndex && this.state.selectedBallot.cardIndex === cardIndex) {
       this.setState({ selectedBallot: {}, inspector: [] });
@@ -188,7 +204,9 @@ class BVBallot extends Component {
       }
 
       this.setState({ selectedBallot: { ballotIndex, cardIndex }, inspector: [] }, () => {
-        updateInspector();
+
+        this.updateInspector(ballotIndex, cardIndex);
+
         function scrollToAnchor(anchor) {
           let node = document.getElementById(anchor);
           if (node) {

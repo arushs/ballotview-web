@@ -4,30 +4,30 @@ import BallotClickableText from './BallotClickableText';
 import BallotChoice from './BallotChoice';
 import _ from 'lodash';
 
-Array.prototype.move = function (old_index, new_index) {
-  while (old_index < 0) {
-      old_index += this.length;
-  }
-  while (new_index < 0) {
-      new_index += this.length;
-  }
-  if (new_index >= this.length) {
-      var k = new_index - this.length;
-      while ((k--) + 1) {
-          this.push(undefined);
-      }
-  }
-  this.splice(new_index, 0, this.splice(old_index, 1)[0]);
-  return this; // for testing purposes
-};
-
 const BallotPoll = ({ pollData, pollTally, pollSelectOption, click, className, president, ...other }) => {
+
+  function move(array, old_index, new_index) {
+    while (old_index < 0) {
+        old_index += array.length;
+    }
+    while (new_index < 0) {
+        new_index += array.length;
+    }
+    if (new_index >= array.length) {
+        var k = new_index - array.length;
+        while ((k--) + 1) {
+            array.push(undefined);
+        }
+    }
+    array.splice(new_index, 0, array.splice(old_index, 1)[0]);
+    return array; // for testing purposes
+  };
 
   if (president) {
     let trump_index = _.findIndex(pollData, o => JSON.stringify(o).toUpperCase().indexOf('TRUM') > -1);
-    pollData.move(trump_index, 0);
+    pollData = move(pollData, trump_index, 0);
     let clinton_index = _.findIndex(pollData, o => JSON.stringify(o).toUpperCase().indexOf('CLINT') > -1);
-    pollData.move(clinton_index, 0);
+    pollData = move(pollData, clinton_index, 0);
   }
 
   return (<ul className={classNames('ballot_poll', className)}>
@@ -165,8 +165,17 @@ class BallotCard extends Component {
         <div className={classNames('button_wrap', {
           visible: !this.state.collapsed
         })}>
-          <button className='small' onClick={this.collapseToggle}>Collapse</button>
-          <button className='small' onClick={this.props.next}>Next</button>
+          {(() => {
+            if (this.checkRadioSelected()) {
+              return <button className='small' onClick={this.collapseToggle}>Collapse</button>;
+            }
+          })()}
+          <button className='small' onClick={(e) => {
+            this.props.next(e);
+            if (this.checkRadioSelected()) {
+              this.collapseToggle();
+            }
+          }}>Next</button>
         </div>
       </div>
     );
