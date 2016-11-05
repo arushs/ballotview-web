@@ -48,8 +48,8 @@ function getIndividualCandidateData(value, j, level) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
     var lastName = nameArray[nameArray.length - 1];
-    var seatLevel = //GET THIS SORTED;
-    var stateAbrev = //GET THIS SORTED;
+    // var seatLevel = //GET THIS SORTED;
+    // var stateAbrev = //GET THIS SORTED;
     var exists = false;
     if(firstName == "Bill" && lastName == "Weld") firstName = "William";
     if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";

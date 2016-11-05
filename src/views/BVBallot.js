@@ -150,12 +150,13 @@ class BVBallot extends Component {
       query.candidate_query = candidate_query;
       console.log(query);
 
-      if (!this.state.inspectorCache[query]) {
+      if (!this.state.inspectorCache[candidate_query]) {
 
         api.searchCandidate(query)
           .then(({ body }) => {
             let inspectorCache = this.state.inspectorCache;
-            inspectorCache[query] = body.data;
+            console.log(inspectorCache, candidate_query);
+            inspectorCache[candidate_query] = body.data;
             if (show) {
               this.setState({
                 inspector: body.data || [],
@@ -169,7 +170,8 @@ class BVBallot extends Component {
           });
 
       } else {
-        this.setState({ inspector: this.state.inspectorCache[query] });
+        console.log("State attached");
+        this.setState({ inspector: this.state.inspectorCache[candidate_query] });
       }
 
 
