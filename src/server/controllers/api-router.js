@@ -48,6 +48,8 @@ function getIndividualCandidateData(value, j, level) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
     var lastName = nameArray[nameArray.length - 1];
+    // var seatLevel = //GET THIS SORTED;
+    // var stateAbrev = //GET THIS SORTED;
     var exists = false;
     if(firstName == "Bill" && lastName == "Weld") firstName = "William";
     if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
@@ -62,7 +64,8 @@ function getIndividualCandidateData(value, j, level) {
         }  else {
           console.log("Requesting");
           request({
-            uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+            uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName +
+              "&Office.Level=" + seatLevel + "&Office.District.State=" + stateAbrev,
             method: 'get',
             json: true,
           }, function (error, response, body) {
@@ -75,7 +78,8 @@ function getIndividualCandidateData(value, j, level) {
                   if(firstName == "Michael") firstName = "Mike";
 
                   request({
-                    uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName,
+                    uri: ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName +
+                      "&Office.Level=" + seatLevel + "&Office.District.State=" + stateAbrev,
                     method: 'get',
                     json: true,
                   }, function(error, response, body) {
