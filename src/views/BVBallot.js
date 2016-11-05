@@ -153,8 +153,13 @@ class BVBallot extends Component {
 
       let query = {};
       query.level = level;
+      if (cardIndex != 0) {
+        query.address = address.split(",")[2].substr(1, 2);
+      } else {
+        query.address = "";
+      }
       query.candidate_query = candidate_query;
-      query.address = address.split(",")[2].substr(1, 2);
+      
       console.log(query);
 
       if (!this.state.inspectorCache[candidate_query]) {
