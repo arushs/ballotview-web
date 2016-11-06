@@ -136,6 +136,7 @@ class EnterAddress extends Component {
   componentWillUpdate(newProps, newState) {
     if (!_.isEmpty(newState.redirect)) {
       this.context.router.push(newState.redirect);
+      window.scrollTo(0, 0);
     }
   }
 

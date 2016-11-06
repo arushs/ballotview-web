@@ -39,4 +39,17 @@
   & .ballot > section {
     margin-bottom: $pad-lg;
   }
+
+  .inspector_widget {
+
+    display: none;
+
+    margin: $pad-lg 0;
+    min-width: auto !important;
+
+    @include respond(phone) {
+      display: block;
+    }
+  }
+
 }

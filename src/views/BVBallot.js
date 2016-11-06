@@ -321,6 +321,7 @@ class BVBallot extends Component {
             selectedBallot={this.state.selectedBallot}
             onSelectBallot={this.onSelectBallot}
             address={this.state.address}
+            inspector={this.state.inspector}
           />
         </section>
         <section id="inspector_nav">

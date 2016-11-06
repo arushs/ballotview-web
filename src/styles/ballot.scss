@@ -52,9 +52,18 @@
       margin: 0;
       z-index: 10;
 
-      overflow-y: scroll;
-      overflow-x: hidden;
-      -webkit-overflow-scrolling: touch;
+      > div {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        padding: inherit;
+        padding-bottom: $pad-lg * 2;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+      }
     }
   }
 
@@ -214,7 +223,7 @@
       left: 0;
       right: 0;
       margin: 0;
-      // background-color: rgba(0, 0, 0, 0.05);
+      background-color: white;
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       display: block;
     }

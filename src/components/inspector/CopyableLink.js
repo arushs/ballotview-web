@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-var canUseDOM = !!(
-  (typeof window !== 'undefined' &&
-  window.document && window.document.createElement)
-);
+// var canUseDOM = !!(
+//   (typeof window !== 'undefined' &&
+//   window.document && window.document.createElement)
+// );
 
-if (canUseDOM) {
+// if (canUseDOM) {
   const Clipboard = require('clipboard');
-}
+// }
 
 class CopyableLink extends Component {
 
@@ -16,6 +16,7 @@ class CopyableLink extends Component {
     this.state = {
       copied: false
     }
+    this.selectText = this.selectText.bind(this);
   }
 
   render() {
@@ -25,7 +26,7 @@ class CopyableLink extends Component {
       <span
         className='copiable'
         ref='select'
-        onClick={this.selectText.bind(this)}>
+        onClick={this.selectText}>
         {children}
       </span>
       {(() => {
@@ -38,7 +39,7 @@ class CopyableLink extends Component {
 
   componentDidMount() {
     let _this = this;
-    if (canUseDOM) {
+    // if (canUseDOM) {
       this.clipboard = new Clipboard(this.refs.select, {
         text: trigger => {
           _this.setState({ copied: true }, () => {
@@ -49,7 +50,7 @@ class CopyableLink extends Component {
           return this.props.toCopy || this.props.children.join('');
         }
       });
-    }
+    // }
   }
 
   componentWillUnmount() {
@@ -59,7 +60,7 @@ class CopyableLink extends Component {
   }
 
   selectText() {
-    if (canUseDOM) {
+    // if (canUseDOM) {
       var doc = document;
       var text = this.refs.select;
 
@@ -74,7 +75,7 @@ class CopyableLink extends Component {
         selection.removeAllRanges();
         selection.addRange(range);
       }
-    }
+    // }
   }
 }
 

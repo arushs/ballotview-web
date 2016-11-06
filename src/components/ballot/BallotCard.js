@@ -127,7 +127,7 @@ class BallotCard extends Component {
     }
 
     return (
-      <div className={classNames('ballot_card', { selected }, className)} {...other}>
+      <div className={classNames('ballot_card', { selected }, className)} {...other}><div>
         <div className="heading">
           <div className="title">
             <BallotClickableText text={title} click={click} />
@@ -175,7 +175,7 @@ class BallotCard extends Component {
             }
           }}>Next</button>
         </div>
-      </div>
+      </div></div>
     );
   }
 }

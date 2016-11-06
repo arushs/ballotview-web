@@ -70,9 +70,9 @@ function getIndividualCandidateData(value, j, level, address) {
           return resolve(snap.val());
         }  else {
           console.log("Requesting");
-          var pedia_api_url = ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName
-              + "&Office.Level=" + seatLevel;
-          if(stateAbrev != "") pedia_api_url = pedia_api_url + "&Office.District.State=" + stateAbrev;
+          var pedia_api_url = ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName;
+          if (seatLevel) pedia_api_url += seatLevel;
+          if (stateAbrev && stateAbrev != "") pedia_api_url = pedia_api_url + "&Office.District.State=" + stateAbrev;
           console.log(pedia_api_url);
           request({
             uri: pedia_api_url,
@@ -92,7 +92,7 @@ function getIndividualCandidateData(value, j, level, address) {
           });
         }
       });
-    } 
+    }
 
   return new Promise(function (resolve, reject) {
     // If [Hillary Clinton, Tim Kaine]
@@ -121,12 +121,16 @@ function getCandidateData(query) {
     var ret = [];
     var promiseFinished = 0;
     for (var i in query.candidate_query) {
-      getIndividualCandidateData(query.candidate_query[i], i, query.level[0], query.address)
+      let level = null;
+      if (query.level) {
+        level = query.level[0];
+      }
+      getIndividualCandidateData(query.candidate_query[i], i, level, query.address)
         .then(function (data) {
           ret.push(data);
           if (ret.length === query.candidate_query.length) {
             resolve(_.sortBy(ret, ['sortOrder']).map(function (obj) {
-              return obj.data; 
+              return obj.data;
             }));
           }
         }).catch (reject);
@@ -310,7 +314,7 @@ router.route('/read/:bv_id')
 router.route('/content/candidate')
   .get(function (req, res) {
     var query = req.query.query;
-    console.log(query);
+    // console.log(query);
     // console.log("ballotpedia candidate info testing   "+req.query.query[0]); //Line added
     getCandidateData(query)
       .then(function(data) {

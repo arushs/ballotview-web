@@ -9,6 +9,12 @@
   overflow-y: auto;
   overflow-x: hidden;
 
+  @include respond(phone) {
+    display: none;
+  }
+}
+
+
   .inspector_widget {
     margin: 20px;
     min-width: 400px;
@@ -61,6 +67,10 @@
 
       .info {
         font-size: $font-md;
+
+        @include respond(phone) {
+          font-size: $font-sm;
+        }
       }
     }
 
@@ -75,7 +85,7 @@
     & > div {
       position: relative;
       display: block;
-      overflow: hidden;
+      // overflow: hidden;
     }
 
     & > div:not(:last-of-type) {
@@ -109,4 +119,3 @@
       display: none;
     }
   }
-}
