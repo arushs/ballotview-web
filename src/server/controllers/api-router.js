@@ -123,7 +123,6 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   
   //Presidents don't have a state
   if(stateAbrev == "") seatLevel = "Federal";
-  console.log(fName+lName+stateAbrev+seatLevel);
 
   // first check if we can find it in our database
   ballotpediaRef.orderByChild('FirstName').startAt(fName).limitToFirst(30).once('value')
@@ -133,16 +132,11 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
 
       var vals = snap.val();
 
-      console.log(stateAbrev+ "<----");
-  console.log(fName+lName+stateAbrev+seatLevel);
       var results = Object.keys(snap.val()).filter(function (key) {
         if(stateAbrev == ""){
           return (vals[key].FirstName.indexOf(fName) == 0 && vals[key].LastName.indexOf(lName) > -1
           && vals[key].Offices[0].Level.indexOf(seatLevel) == 0);
         } else{
-          if(vals[key].FirstName.indexOf(fName) == 0 && vals[key].LastName.indexOf(lName) > -1)
-console.log("there exists someone");
-            //console.log(vals[key].Offices[0].Level+" "+vals[key].Offices[0].District.State+" "+vals[key].Summary);
           return (vals[key].FirstName.indexOf(fName) == 0 && vals[key].LastName.indexOf(lName) > -1
           && vals[key].Offices[0].Level.indexOf(seatLevel) == 0
           && vals[key].Offices[0].District.State.indexOf(stateAbrev) == 0);
