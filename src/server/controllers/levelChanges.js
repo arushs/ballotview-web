@@ -1,10 +1,10 @@
 const levelChanges = {
-	'country': 'federal',
-	'administrativeArea1': 'state',
-	'administrativeArea2': 'local',
-	'COUNTYWIDE': 'local',
-	'CONGRESSIONAL': 'federal',
-	'STATE ASSEMBLY': 'state'
+	'country': 'Federal',
+	'administrativeArea1': 'State',
+	'administrativeArea2': 'Local',
+	'COUNTYWIDE': 'Local',
+	'CONGRESSIONAL': 'Federal',
+	'STATE ASSEMBLY': 'State'
 }
 
 module.exports = levelChanges;

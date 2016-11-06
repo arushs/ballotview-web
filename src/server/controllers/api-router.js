@@ -18,6 +18,7 @@ const levelName = require('./levelChanges');
 var bvRef = db.ref('ballotview');
 var laRef = db.ref('la_county');
 var candidatRef = db.ref('candidates');
+var ballotpediaRef = db.ref('ballotpedia');
 
 const googleKey = 'AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ';
 const ballotpedia_url = "http://api.ballotpedia.org/v1/api.php?Key=1a9895801d0409ace45990a746d5d94b&DataSet=People";
@@ -44,7 +45,8 @@ function getGoogleCivicBallot(address) {
   });
 }
 
-function getIndividualCandidateData(value, j, level, address) {
+//<<<<<<< HEAD
+/*function getIndividualCandidateData(value, j, level, address) {
   console.log(address + "   al ;skdj ");
   function parseCandidateFromBP(name, i, resolve, reject) {
     var nameArray = name.split(" ");
@@ -91,28 +93,144 @@ function getIndividualCandidateData(value, j, level, address) {
               return resolve(data);
             }
           });
+        }*/
+//=======
+function parseName(name) {
+
+  var nameArray = name.split(" ");
+  var firstName = nameArray[0];
+  var lastName = nameArray[nameArray.length - 1];
+  if(firstName == "Bill" && lastName == "Weld") firstName = "William";
+  else if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
+  else if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
+  return { firstName, lastName };
+}
+
+function ballotPediaRequest(name, i, level, address, resolve, reject) {
+
+  var nameObj = parseName(name);
+  var fName = nameObj.firstName;
+  var lName = nameObj.lastName;
+  var seatLevel = levelName[level];
+  console.log("LEVEL: "+level+"  seatLevel: "+seatLevel);
+  if(address.length > 2) var stateAbrev = stateLetters[address];
+  else var stateAbrev = address;
+
+  //Some checks for specific people that have known errors with current system
+  if(fName == "Loretta" && lName == "Sanchez" && stateAbrev == "CA") seatLevel = "Federal";
+  else if(fName == "Kamala" && lName == "Harris" && stateAbrev == "CA") seatLevel = "Federal";
+  else if(fName == "Mike" && lName == "Doyle" && stateAbrev == "PA") seatLevel = "State";
+  
+  //Presidents don't have a state
+  if(stateAbrev == "") seatLevel = "Federal";
+  console.log(fName+lName+stateAbrev+seatLevel);
+
+  // first check if we can find it in our database
+  ballotpediaRef.orderByChild('FirstName').startAt(fName).limitToFirst(30).once('value')
+    .then(function (snap) {
+      // if we couldn't find any results, look for ballotpedia
+      if (!snap.exists()) return cacheBallotPedia();
+
+      var vals = snap.val();
+
+      console.log(stateAbrev+ "<----");
+  console.log(fName+lName+stateAbrev+seatLevel);
+      var results = Object.keys(snap.val()).filter(function (key) {
+        if(stateAbrev == ""){
+          return (vals[key].FirstName.indexOf(fName) == 0 && vals[key].LastName.indexOf(lName) > -1
+          && vals[key].Offices[0].Level.indexOf(seatLevel) == 0);
+        } else{
+          if(vals[key].FirstName.indexOf(fName) == 0 && vals[key].LastName.indexOf(lName) > -1)
+console.log("there exists someone");
+            //console.log(vals[key].Offices[0].Level+" "+vals[key].Offices[0].District.State+" "+vals[key].Summary);
+          return (vals[key].FirstName.indexOf(fName) == 0 && vals[key].LastName.indexOf(lName) > -1
+          && vals[key].Offices[0].Level.indexOf(seatLevel) == 0
+          && vals[key].Offices[0].District.State.indexOf(stateAbrev) == 0);
         }
       });
-    }
+
+      results = results.map(function (key) {
+        return vals[key];
+      });
+
+      // find results?
+      if (results.length > 0) {
+        // for now!!!
+        resolve(results);
+
+      } else {
+        // not in our cache. ballotpedia again
+        cacheBallotPedia();
+      }
+
+    }).catch(reject);
+
+  // if it doesn't work, then find and cache ballotpedia
+  function cacheBallotPedia() {
+
+    var pedia_api_url = ballotpedia_url + "&FirstName=" + fName + "&LastName=" + lName;
+
+    request({
+      uri: pedia_api_url,
+      method: 'get',
+      json: true,
+    }, function (error, response, body) {
+      if (error || response.statusCode !== 200) {
+        return reject(new Error('could not get candidate from Ballotpedia'))
+      } else {
+
+        var data = body.Results;
+
+        for (var obj of data) {
+          ballotpediaRef.push(obj);
+        }
+
+        data = data.filter(function (obj) {
+          return (obj.FirstName.indexOf(fName) == 0 && obj.LastName.indexOf(lName) > -1);
+        });
+
+        return resolve(data);
+      }
+    });
+
+  }
+
+}
+
+function getIndividualCandidateData(value, j, level, address) {
+  // console.log(address + "----- ADDRESS");
 
   return new Promise(function (resolve, reject) {
     // If [Hillary Clinton, Tim Kaine]
     if (value.constructor === Array) {
       var toRet = [];
+      var done = 0;
       for (var i in value) {
         var name = value[i];
-        parseCandidateFromBP(name, i, function (data) {
-          toRet.push(data);
-          if (toRet.length === value.length) {
-            resolve({ sortOrder: j, data: _.sortBy(toRet, ['sortOrder']) });
+        ballotPediaRequest(name, i, level, address, function (data) {
+          done += 1;
+          var result = parseBallotpediaCandidate(data);
+          result['sortOrder'] = i;
+          toRet.push(result);
+          if (done >= value.length) {
+            if (!_.isEmpty(toRet)) {
+              resolve({ sortOrder: j, data: _.sortBy(toRet, ['sortOrder']) });
+            } else {
+              resolve({});
+            }
           }
-        }, reject);
+        }, function (error){
+          done += 1;
+          console.error(error);
+        });
       }
       // Else, value = Kamala Harris
     } else {
-      parseCandidateFromBP(value, 0, function (data) {
-        resolve({ sortOrder: j, data: data });
-      }, reject);
+      ballotPediaRequest(value, 0, level, address, function (data) {
+        resolve({ sortOrder: j, data: parseBallotpediaCandidate(data) });
+      }, function (err) {
+        resolve({});
+      });
     }
   })
 }
@@ -128,13 +246,17 @@ function getCandidateData(query) {
       }
       getIndividualCandidateData(query.candidate_query[i], i, level, query.address)
         .then(function (data) {
-          ret.push(data);
-          if (ret.length === query.candidate_query.length) {
+          // console.log(data);
+          promiseFinished += 1;
+          if (!_.isEmpty(data)) {
+            ret.push(data);
+          }
+          if (promiseFinished === query.candidate_query.length) {
             resolve(_.sortBy(ret, ['sortOrder']).map(function (obj) {
               return obj.data;
             }));
           }
-        }).catch (reject);
+        }).catch(console.error);
     }
   });
 }

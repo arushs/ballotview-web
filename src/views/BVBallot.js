@@ -88,7 +88,7 @@ class BVBallot extends Component {
     for (var i in this.state.ballot) {
       // console.log(_this.state.ballot[i]);
       for (var j in this.state.ballot[i].cards) {
-        this.updateInspector(i, j, this.state.ballot[i].cards[j].level, false);
+        // this.updateInspector(i, j, this.state.ballot[i].cards[j].level, false);
 
         if (this.state.prefill && this.state.ballot[i].cards[j].title.join(' ').toUpperCase().indexOf('VICE PRES') > -1) {
           let tallies = this.state.tallies;

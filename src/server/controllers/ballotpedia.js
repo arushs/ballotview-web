@@ -1,46 +1,41 @@
 
 function parseBallotpediaCandidate(data) {
   var ret = {};
-  if (data.NumResults == 0) {
+  if (data.length === 0) {
     return ret;
-  } 
-
-  var candidate = data.Results[0];
-
-  var improvedSummary = "";
-  for(var i = 0, len = candidate.Summary.length; i<len; i++){ // Sort out the ugly ballotpedia reference link that comes up as plain text
-    if(candidate.Summary[i] == "<"){
-      if(!candidate.Summary[i+1]) break;
-      if(candidate.Summary[i+1] == "a") break;
-    }
-    improvedSummary = improvedSummary + candidate.Summary[i];
   }
+
+  var candidate = data[0];
 
   var ret = {
     type: 'candidate',
     num_results: '1',
     Name: candidate.Name,
     Image: candidate.Image,
-    Summary: improvedSummary, //candidate.Summary,
+    Summary: candidate.Summary, //candidate.Summary,
     Party: candidate.PartyAffiliation,
     Websites: {},
-    source: "ballotpedia" 
+    source: "ballotpedia"
   };
 
   if ("PageURL" in candidate) {
     ret.PageURL = candidate.PageURL;
   }
 
-  if ("Office" in candidate.Websites) {
-    ret.Websites.Office = candidate.Websites.Office;
-  }
+  if ('Websites' in candidate) {
 
-  if ("Campaign" in candidate.Websites) {
-    ret.Websites.Campaign = candidate.Websites.Campaign;
-  }
+    if ("Office" in candidate.Websites) {
+      ret.Websites.Office = candidate.Websites.Office;
+    }
 
-  if ("Personal" in candidate.Websites) {
-    ret.Websites.Personal = candidate.Websites.Personal;
+    if ("Campaign" in candidate.Websites) {
+      ret.Websites.Campaign = candidate.Websites.Campaign;
+    }
+
+    if ("Personal" in candidate.Websites) {
+      ret.Websites.Personal = candidate.Websites.Personal;
+    }
+
   }
 
   return ret;
