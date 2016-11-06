@@ -45,7 +45,7 @@ function getGoogleCivicBallot(address) {
 }
 
 function getIndividualCandidateData(value, j, level, address) {
-  console.log(address + "al ;skdj ");
+  console.log(address + "   al ;skdj ");
   function parseCandidateFromBP(name, i, resolve, reject) {
     var nameArray = name.split(" ");
     var firstName = nameArray[0];
@@ -71,9 +71,10 @@ function getIndividualCandidateData(value, j, level, address) {
         }  else {
           console.log("Requesting");
           var pedia_api_url = ballotpedia_url + "&FirstName=" + firstName + "&LastName=" + lastName;
-          if (seatLevel) pedia_api_url += seatLevel;
+          if (seatLevel) pedia_api_url += "&Office.Level=" + seatLevel;
           if (stateAbrev && stateAbrev != "") pedia_api_url = pedia_api_url + "&Office.District.State=" + stateAbrev;
           console.log(pedia_api_url);
+          console.log(stateAbrev + " THIS WAS THE STATE");
           request({
             uri: pedia_api_url,
             method: 'get',
