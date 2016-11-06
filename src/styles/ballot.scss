@@ -52,7 +52,7 @@
       margin: 0;
       z-index: 10;
 
-      > div {
+      > div:not(.button_wrap) {
         position: fixed;
         top: 0;
         right: 0;
@@ -63,6 +63,7 @@
         overflow-y: scroll;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
+        -webkit-transform: translateZ(0);
       }
     }
   }

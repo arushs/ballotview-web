@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 
 import MainSection from '../components/landing/MainSection';
 import DetailSection from '../components/landing/DetailSection';
@@ -56,6 +57,14 @@ class BVCreate extends Component {
 
     if (this.props.params.preset in prefill) {
       this.setState({ pf: this.props.params.preset });
+      return;
+    }
+
+    let write_id = Cookies.get('write_id');
+    if (write_id) {
+      this.context.router.push({
+        pathname: '/ballot/' + write_id
+      });
     }
 
   }

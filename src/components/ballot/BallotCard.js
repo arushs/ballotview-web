@@ -163,19 +163,21 @@ class BallotCard extends Component {
         })()}
 
         { children }
+        
+      </div>
 
-        <div className={classNames('button_wrap', {
-          visible: !this.state.collapsed
-        })}>
-          <button className='small' onClick={this.click} style={{ opacity: 0.65 }}>Close</button>
-          <button className='small' onClick={(e) => {
-            this.props.next(e);
-            if (this.checkRadioSelected()) {
-              this.collapseToggle();
-            }
-          }}>Next</button>
-        </div>
-      </div></div>
+      <div className={classNames('button_wrap', {
+        visible: !this.state.collapsed
+      })}>
+        <button className='small' onClick={this.click} style={{ opacity: 0.65 }}>Close</button>
+        <button className='small' onClick={(e) => {
+          this.props.next(e);
+          if (this.checkRadioSelected()) {
+            this.collapseToggle();
+          }
+        }}>Next</button>
+      </div>
+      </div>
     );
   }
 }

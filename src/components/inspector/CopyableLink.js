@@ -54,9 +54,9 @@ class CopyableLink extends Component {
   }
 
   componentWillUnmount() {
-    if (canUseDOM) {
+    // if (canUseDOM) {
       this.clipboard.destroy();
-    }
+    // }
   }
 
   selectText() {
