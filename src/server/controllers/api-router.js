@@ -112,6 +112,7 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   var fName = nameObj.firstName;
   var lName = nameObj.lastName;
   var seatLevel = levelName[level];
+  
   console.log("LEVEL: "+level+"  seatLevel: "+seatLevel);
   if(address.length > 2) var stateAbrev = stateLetters[address];
   else var stateAbrev = address;
@@ -120,28 +121,33 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   if(fName == "Loretta" && lName == "Sanchez" && stateAbrev == "CA") seatLevel = "Federal";
   else if(fName == "Kamala" && lName == "Harris" && stateAbrev == "CA") seatLevel = "Federal";
   else if(fName == "Mike" && lName == "Doyle" && stateAbrev == "PA") seatLevel = "State";
-  
-  //Presidents don't have a state
+  else if(fName == "John" && lName == "Brown" && stateAbrev == "PA") seatLevel = "Federal";
+
+  //Presidents don't have a state"
   if(stateAbrev == "") seatLevel = "Federal";
 
   // first check if we can find it in our database
-  ballotpediaRef.orderByChild('FirstName').startAt(fName).limitToFirst(30).once('value')
+  ballotpediaRef.orderByChild('FirstName').startAt(fName).endAt(fName).limitToFirst(30).once('value')
     .then(function (snap) {
       // if we couldn't find any results, look for ballotpedia
       if (!snap.exists()) return cacheBallotPedia();
 
       var vals = snap.val();
 
-      var results = Object.keys(snap.val()).filter(function (key) {
-        if(stateAbrev == ""){
-          return (vals[key].FirstName.indexOf(fName) == 0 && vals[key].LastName.indexOf(lName) > -1
+      if(stateAbrev == "") {
+        var results = Object.keys(snap.val()).filter(function (key) {
+          return (vals[key].FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+          && vals[key].LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
           && vals[key].Offices[0].Level.indexOf(seatLevel) == 0);
-        } else{
-          return (vals[key].FirstName.indexOf(fName) == 0 && vals[key].LastName.indexOf(lName) > -1
+        });
+      } else{
+        var results = Object.keys(snap.val()).filter(function (key) {
+          return (vals[key].FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+          && vals[key].LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
           && vals[key].Offices[0].Level.indexOf(seatLevel) == 0
           && vals[key].Offices[0].District.State.indexOf(stateAbrev) == 0);
-        }
-      });
+        });
+      }
 
       results = results.map(function (key) {
         return vals[key];
