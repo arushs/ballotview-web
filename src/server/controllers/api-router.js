@@ -221,7 +221,7 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   }
 
   // first check if we can find it in our database
-  ballotpediaRef.orderByChild('FirstName').startAt(fName).limitToFirst(30).once('value')
+  ballotpediaRef.orderByChild('FirstName').startAt(fName).endAt(fName).limitToFirst(30).once('value')
     .then(function (snap) {
       // if we couldn't find any results, look for ballotpedia
       if (!snap.exists()) return cacheBallotPedia();
