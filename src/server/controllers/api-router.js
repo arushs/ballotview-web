@@ -97,8 +97,10 @@ function getGoogleCivicBallot(address) {
         }*/
 
 
-function ballotPediaMeasuresRequest(name, state, resolve = () => {}) {
+function ballotPediaMeasuresRequest(name, state, resolve) {
   console.log(name, state);
+
+  resolve = resolve || function () {};
 
   // first check if we can find it in our database
   ballotpediaMeasuresRef.orderByChild('State').equalTo(state).once('value')
@@ -128,7 +130,6 @@ function ballotPediaMeasuresRequest(name, state, resolve = () => {}) {
 
 
       var toRet = result[0];
-      toRet.type = 'referendum';
 
       resolve(toRet);
 
@@ -172,16 +173,15 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   function filterResults(results) {
     if(stateAbrev == "") {
       results = results.filter(function (obj) {
-        return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
-        && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
-        && obj.Offices[0].Level.indexOf(seatLevel) == 0);
+        return (obj.FirstName.indexOf(fName) == 0
+        && obj.LastName.indexOf(lName) > -1);
       });
     } else{
       results = results.filter(function (obj) {
-        return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
-        && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
-        && obj.Offices[0].Level.indexOf(seatLevel) == 0
-        && obj.Offices[0].District.State.indexOf(stateAbrev) == 0);
+        return (obj.FirstName.indexOf(fName) == 0
+        && obj.LastName.indexOf(lName) > -1
+        // && JSON.stringify(obj.Offices[0]).indexOf(seatLevel) > -1
+        && JSON.stringify(obj.Offices[0]).indexOf(stateAbrev) > -1);
       });
     }
     return results;
@@ -529,8 +529,26 @@ router.route('/content/referendum')
 
       return ballotPediaMeasuresRequest(query, state, function (data) {
         if (!('error' in data)) {
-          filtered_data.push(data);
+
+          var summary = {
+            type: 'referendum_summary',
+            Name: data.Name,
+            Summary: data.Summary,
+            PageURL: data.PageURL
+          };
+          filtered_data.push(summary);
+
+          if (data.YesVote != "") {
+            var yesno = {
+              type: 'referendum_yesno',
+              YesVote: data.YesVote,
+              NoVote: data.NoVote
+            }
+            filtered_data.push(yesno);
+          }
+
         }
+        console.log(filtered_data);
         return res.json({ data: filtered_data });
       });
     } else {

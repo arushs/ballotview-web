@@ -65,9 +65,9 @@ const Candidate = ({ data }) => {
   );
 };
 
-const Referendum = ({ data }) => {
+const ReferendumSummary = ({ data }) => {
 
-  let { Name, NoVote, YesVote, PageURL } = data;
+  let { Name, Summary, PageURL } = data;
 
   let openBallotPedia = () => {
     window.open(PageURL);
@@ -77,6 +77,24 @@ const Referendum = ({ data }) => {
     <div>
       <div className="item">
         <div className="heading1">{Name}</div>
+      </div>
+      <div className="item">
+        <div className="heading2">Summary</div>
+        <div className="info">{Summary}</div>
+      </div>
+      <button className="small" onClick={openBallotPedia}>View more on BallotPedia</button>
+    </div>
+  );
+
+};
+
+const ReferendumYesNo = ({ data }) => {
+
+  let { NoVote, YesVote } = data;
+
+  return (
+    <div>
+      <div className="item">
         <div className="heading2">What does my vote mean?</div>
       </div>
       <div className="item">
@@ -87,7 +105,6 @@ const Referendum = ({ data }) => {
         <div className="heading1">No</div>
         <div className="info">{NoVote}</div>
       </div>
-      <button className="small" onClick={openBallotPedia}>View more on BallotPedia</button>
     </div>
   );
 
@@ -99,7 +116,7 @@ const Inspector = ({ modules, cardInfo }) => (
 
       let style = {};
 
-      if ('color' in cardInfo.poll[i]) {
+      if (cardInfo.poll[i] && 'color' in cardInfo.poll[i]) {
         style['borderColor'] = cardInfo.poll[i].color;
       }
 
@@ -122,10 +139,16 @@ const Inspector = ({ modules, cardInfo }) => (
             <Video data={module} />
           </li>
         );
-      } else if (module.type == 'referendum') {
+      } else if (module.type == 'referendum_summary') {
         return(
           <li key={i} className={classNames('inspector_widget', 'card')}>
-            <Referendum data={module} />
+            <ReferendumSummary data={module} />
+          </li>
+        );
+      } else if (module.type == 'referendum_yesno') {
+        return(
+          <li key={i} className={classNames('inspector_widget', 'card')}>
+            <ReferendumYesNo data={module} />
           </li>
         );
       }
