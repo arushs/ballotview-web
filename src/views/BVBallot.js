@@ -177,9 +177,9 @@ class BVBallot extends Component {
 
       let query = {};
       query.level = level;
-      if (address && cardIndex == 0 && ballotIndex == 0) {
+      if (cardIndex == 0 && ballotIndex == 0) {
         query.address = "";
-      } else {
+      } else if(address) {
         query.address = address.split(",")[2].substr(1, 2);
       }
       query.candidate_query = candidate_query;
