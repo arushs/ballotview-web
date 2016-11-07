@@ -177,17 +177,17 @@ class BVBallot extends Component {
 
       let query = {};
       query.level = level;
-      if (address && cardIndex != 0 && ballotIndex != 0) {
-        query.address = address.split(",")[2].substr(1, 2);
-      } else {
+      if (address && cardIndex == 0 && ballotIndex == 0) {
         query.address = "";
+      } else {
+        query.address = address.split(",")[2].substr(1, 2);
       }
       query.candidate_query = candidate_query;
 
       // console.log(query);
 
       if (!this.state.inspectorCache[candidate_query]) {
-
+        this.setState({ inspector: [{ type: 'loading' }]});
         api.searchCandidate(query)
           .then(({ body }) => {
             let inspectorCache = this.state.inspectorCache;
@@ -215,14 +215,15 @@ class BVBallot extends Component {
 
     } else {
 
-      let query = card.toc[0];
+      let query = card.toc[0] + '::' + card.subtext[0].split('.')[0];
       let state = null;
       if (address) {
         state = address.split(",")[2].substr(1, 2);
       }
 
       if (!this.state.inspectorCache[query]) {
-        api.searchReferendum(query, state)
+        this.setState({ inspector: [{ type: 'loading' }]});
+        api.searchReferendum(query, state, this.state.heading.locality)
           .then(({ body }) => {
             let inspectorCache = this.state.inspectorCache;
             inspectorCache[query] = body.data;

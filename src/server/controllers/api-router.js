@@ -97,7 +97,7 @@ function getGoogleCivicBallot(address) {
         }*/
 
 
-function ballotPediaMeasuresRequest(name, state, resolve) {
+function ballotPediaMeasuresRequest(name, state, locality, summ, resolve) {
   console.log(name, state);
 
   resolve = resolve || function () {};
@@ -117,21 +117,53 @@ function ballotPediaMeasuresRequest(name, state, resolve) {
       var options = {
         shouldSort: true,
         tokenize: true,
-        threshold: 1,
+        threshold: 0.1,
         location: 0,
         distance: 100,
         maxPatternLength: 32,
-        keys: [
-          "Name"
-        ]
+        keys: [ "County" ]
       };
       var fuse = new Fuse(results, options); // "list" is the item array
-      var result = fuse.search(name);
+      results = fuse.search('* ' + locality);
 
+      try {
+        options.keys = [ "Name" ];
+        options.threshold = 0.1;
+        options.tokenize = true;
+        fuse = new Fuse(results, options);
+        results = fuse.search(name);
+      } catch (e) {
+        // don't update results
+      }
 
-      var toRet = result[0];
+      console.log(results);
 
-      resolve(toRet);
+      if (typeof summ != 'undefined' && results.length > 3) {
+        try {
+          console.log(summ);
+          options.keys = [ "Name" ];
+          options.threshold = 0.3;
+          options.tokenize = true;
+          fuse = new Fuse(results, options);
+          results = fuse.search(summ);
+        } catch (e) {
+          // don't update results
+        }
+      }
+
+      // options.keys = [ "PageURL", "Summary", "Name" ];
+      // options.threshold = 0.5;
+      // options.tokenize = false;
+      // fuse = new Fuse(results, options);
+      // results = fuse.search(locality);
+
+      var toRet = results[0];
+
+      if (toRet) {
+        resolve(toRet)
+      } else {
+        resolve({ error: "NONE FOUND" });
+      }
 
     }).catch(console.error);
 
@@ -506,8 +538,10 @@ router.route('/content/candidate')
 router.route('/content/referendum')
   .get(function (req, res) {
 
-    var query = req.query.query;
+    var query = req.query.query.split('::')[0];
+    var summ = req.query.query.split('::')[1].toLowerCase();
     var state = req.query.state;
+    var locality = req.query.locality;
 
     // preset info
     var filtered_data = [];
@@ -520,7 +554,11 @@ router.route('/content/referendum')
         });
       }
 
+      query = query.toUpperCase();
+
       query = query.replace('STATE MEASURE ', '');
+      query = query.replace('COUNTY', '');
+      // query = query.replace('MEASURE', '');
       if (query.indexOf(':') > -1) {
         query = query.split(':')[1];
       }
@@ -528,7 +566,7 @@ router.route('/content/referendum')
         query = query.split('-')[1];
       }
 
-      return ballotPediaMeasuresRequest(query, state, function (data) {
+      return ballotPediaMeasuresRequest(query, state, locality, summ, function (data) {
         if (!('error' in data)) {
 
           var summary = {
@@ -562,12 +600,19 @@ router.route('/content/grabFromBP')
 
     var state = req.query.state;
 
-    grabPage(1)
+    var pages = 1;
+    var currPage = 1;
+    var allResults = [];
+
+    grabPage(currPage);
 
     function grabPage(i) {
 
+      var uri = ballotpedia_measures_url + "&State=" + state + "&Page=" + i;
+      console.log(uri);
+
       request({
-        uri: ballotpedia_measures_url + "&State=" + state + "&Page=" + i,
+        uri: uri,
         method: 'get',
         json: true,
       }, function (error, response, body) {
@@ -578,17 +623,21 @@ router.route('/content/grabFromBP')
           var results = body.Results;
 
           for (var obj of results) {
-            ballotpediaRef.push(obj);
+            ballotpediaMeasuresRef.push(obj);
           }
 
           if (i == 1 && parseInt(body.NumResults) > 100) {
-            var times = Math.ceil(parseInt(body.NumResults) / 100);
-            for (var ind = 2; ind <= times; ind++) {
-              grabPage(ind);
-            }
+            pages = Math.ceil(parseInt(body.NumResults) / 100);
           }
 
-          return res.json(results);
+          allResults = allResults.concat(results);
+
+          if (currPage < pages) {
+            currPage += 1;
+            grabPage(currPage);
+          } else {
+            res.json(allResults);
+          }
         }
       });
     }

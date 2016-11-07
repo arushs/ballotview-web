@@ -151,6 +151,12 @@ const Inspector = ({ modules, cardInfo }) => (
             <ReferendumYesNo data={module} />
           </li>
         );
+      } else if (module.type == 'loading') {
+        return (
+          <li key={i} className={classNames('inspector_widget', 'card')}>
+            <i>Loading...</i>
+          </li>
+        )
       }
     })}
   </ul>
