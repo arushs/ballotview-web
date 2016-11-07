@@ -117621,9 +117621,9 @@ methods.searchCandidate = function (query) {
   });
 };
 
-methods.searchReferendum = function (query) {
+methods.searchReferendum = function (query, state) {
   return new _bluebird2.default(function (resolve, reject) {
-    var data = { query: query };
+    var data = { query: query, state: state };
     return interfacer('/ballot/content/referendum', 'get', data).then(resolve).catch(reject);
   });
 };
@@ -118877,9 +118877,74 @@ var Candidate = function Candidate(_ref) {
   );
 };
 
-var Inspector = function Inspector(_ref2) {
-  var modules = _ref2.modules;
-  var cardInfo = _ref2.cardInfo;
+var Referendum = function Referendum(_ref2) {
+  var data = _ref2.data;
+  var Name = data.Name;
+  var NoVote = data.NoVote;
+  var YesVote = data.YesVote;
+  var PageURL = data.PageURL;
+
+
+  var openBallotPedia = function openBallotPedia() {
+    window.open(PageURL);
+  };
+
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement(
+      'div',
+      { className: 'item' },
+      _react2.default.createElement(
+        'div',
+        { className: 'heading1' },
+        Name
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'heading2' },
+        'What does my vote mean?'
+      )
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'item' },
+      _react2.default.createElement(
+        'div',
+        { className: 'heading1' },
+        'Yes'
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'info' },
+        YesVote
+      )
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'item' },
+      _react2.default.createElement(
+        'div',
+        { className: 'heading1' },
+        'No'
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'info' },
+        NoVote
+      )
+    ),
+    _react2.default.createElement(
+      'button',
+      { className: 'small', onClick: openBallotPedia },
+      'View more on BallotPedia'
+    )
+  );
+};
+
+var Inspector = function Inspector(_ref3) {
+  var modules = _ref3.modules;
+  var cardInfo = _ref3.cardInfo;
   return _react2.default.createElement(
     'ul',
     null,
@@ -118911,6 +118976,12 @@ var Inspector = function Inspector(_ref2) {
           { key: i,
             className: (0, _classnames2.default)('inspector_widget', 'video', 'card') },
           _react2.default.createElement(_Video2.default, { data: module })
+        );
+      } else if (module.type == 'referendum') {
+        return _react2.default.createElement(
+          'li',
+          { key: i, className: (0, _classnames2.default)('inspector_widget', 'card') },
+          _react2.default.createElement(Referendum, { data: module })
         );
       }
     })
@@ -120482,7 +120553,7 @@ var BVBallot = function (_Component) {
 
           var query = {};
           query.level = level;
-          if (cardIndex != 0 && address) {
+          if (address && cardIndex != 0 && ballotIndex != 0) {
             query.address = address.split(",")[2].substr(1, 2);
           } else {
             query.address = "";
@@ -120521,9 +120592,13 @@ var BVBallot = function (_Component) {
         (function () {
 
           var query = card.toc[0];
+          var state = null;
+          if (address) {
+            state = address.split(",")[2].substr(1, 2);
+          }
 
           if (!_this4.state.inspectorCache[query]) {
-            _apiInterface2.default.searchReferendum(query).then(function (_ref2) {
+            _apiInterface2.default.searchReferendum(query, state).then(function (_ref2) {
               var body = _ref2.body;
 
               var inspectorCache = _this4.state.inspectorCache;
@@ -120532,8 +120607,8 @@ var BVBallot = function (_Component) {
                 inspector: body.data || [],
                 inspectorCache: inspectorCache
               });
-            }).catch(function () {
-              console.error("Could not retrieve referendum info");
+            }).catch(function (error) {
+              console.error(error);
             });
           } else {
             _this4.setState({ inspector: _this4.state.inspectorCache[query] });

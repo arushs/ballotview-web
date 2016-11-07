@@ -177,7 +177,7 @@ class BVBallot extends Component {
 
       let query = {};
       query.level = level;
-      if (cardIndex != 0 && address) {
+      if (address && cardIndex != 0 && ballotIndex != 0) {
         query.address = address.split(",")[2].substr(1, 2);
       } else {
         query.address = "";
@@ -216,9 +216,13 @@ class BVBallot extends Component {
     } else {
 
       let query = card.toc[0];
+      let state = null;
+      if (address) {
+        state = address.split(",")[2].substr(1, 2);
+      }
 
       if (!this.state.inspectorCache[query]) {
-        api.searchReferendum(query)
+        api.searchReferendum(query, state)
           .then(({ body }) => {
             let inspectorCache = this.state.inspectorCache;
             inspectorCache[query] = body.data;
@@ -226,8 +230,8 @@ class BVBallot extends Component {
               inspector: body.data || [],
               inspectorCache: inspectorCache
             });
-          }).catch(() => {
-            console.error("Could not retrieve referendum info");
+          }).catch((error) => {
+            console.error(error);
           });
       } else {
         this.setState({ inspector: this.state.inspectorCache[query] });

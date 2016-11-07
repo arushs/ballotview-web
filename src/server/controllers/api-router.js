@@ -6,22 +6,24 @@ const router = express.Router();
 const request = require('request');
 const shortid = require('shortid');
 const _ = require('lodash');
+const Fuse = require('fuse.js');
 
 const db = require('./firebase');
 const parseGoogleCivic = require('./googlecivic');
 const parseBallotpediaCandidate = require('./ballotpedia')
 const losAngelesCounty = require('./losAngelesCounty');
-const data = require('./data');
 const stateLetters = require('./stateAbbrevs');
 const levelName = require('./levelChanges');
 
 var bvRef = db.ref('ballotview');
 var laRef = db.ref('la_county');
-var candidatRef = db.ref('candidates');
+// var candidatRef = db.ref('candidates');
 var ballotpediaRef = db.ref('ballotpedia');
+var ballotpediaMeasuresRef = db.ref('ballotpedia_measures');
 
 const googleKey = 'AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ';
 const ballotpedia_url = "http://api.ballotpedia.org/v1/api.php?Key=1a9895801d0409ace45990a746d5d94b&DataSet=People";
+const ballotpedia_measures_url = "http://api.ballotpedia.org/v1/api.php?Key=1a9895801d0409ace45990a746d5d94b&DataSet=BallotMeasures&ElectionDate=2016-11-08";
 
 function getGoogleCivicBallot(address) {
   return new Promise(function (resolve) {
@@ -45,7 +47,6 @@ function getGoogleCivicBallot(address) {
   });
 }
 
-//<<<<<<< HEAD
 /*function getIndividualCandidateData(value, j, level, address) {
   console.log(address + "   al ;skdj ");
   function parseCandidateFromBP(name, i, resolve, reject) {
@@ -94,26 +95,68 @@ function getGoogleCivicBallot(address) {
             }
           });
         }*/
-//=======
-function parseName(name) {
 
-  var nameArray = name.split(" ");
-  var firstName = nameArray[0];
-  var lastName = nameArray[nameArray.length - 1];
-  if(firstName == "Bill" && lastName == "Weld") firstName = "William";
-  else if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
-  else if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
-  return { firstName, lastName };
+
+function ballotPediaMeasuresRequest(name, state, resolve = () => {}) {
+  console.log(name, state);
+
+  // first check if we can find it in our database
+  ballotpediaMeasuresRef.orderByChild('State').equalTo(state).once('value')
+    .then(function (snap) {
+
+      if (!snap.exists()) return cacheBallotPediaMeasures();
+
+      // turn it into an array
+      var results = _.toArray(snap.val());
+      results = results.filter(function (obj) {
+        return (obj.Status !== "Not on the ballot");
+      });
+
+      var options = {
+        shouldSort: true,
+        tokenize: true,
+        threshold: 1,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        keys: [
+          "Name"
+        ]
+      };
+      var fuse = new Fuse(results, options); // "list" is the item array
+      var result = fuse.search(name);
+
+
+      var toRet = result[0];
+      toRet.type = 'referendum';
+
+      resolve(toRet);
+
+    }).catch(console.error);
+
+  function cacheBallotPediaMeasures() {
+    resolve({error: "NONE FOUND"})
+  }
 }
 
 function ballotPediaRequest(name, i, level, address, resolve, reject) {
+
+  function parseName(name) {
+    var nameArray = name.split(" ");
+    var firstName = nameArray[0];
+    var lastName = nameArray[nameArray.length - 1];
+    if(firstName == "Bill" && lastName == "Weld") firstName = "William";
+    else if(firstName == "Michael" && lastName == "Pence") firstName = "Mike";
+    else if(firstName == "Katie" && lastName == "McGinty") firstName = "Kathleen";
+    return { firstName, lastName };
+  }
 
   var nameObj = parseName(name);
   var fName = nameObj.firstName;
   var lName = nameObj.lastName;
   var seatLevel = levelName[level];
-  
-  console.log("LEVEL: "+level+"  seatLevel: "+seatLevel);
+
+  console.log("LEVEL: "+level, "seatLevel: "+seatLevel, address);
   if(address.length > 2) var stateAbrev = stateLetters[address];
   else var stateAbrev = address;
 
@@ -126,32 +169,36 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   //Presidents don't have a state"
   if(stateAbrev == "") seatLevel = "Federal";
 
+  function filterResults(results) {
+    if(stateAbrev == "") {
+      results = results.filter(function (obj) {
+        return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+        && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
+        && obj.Offices[0].Level.indexOf(seatLevel) == 0);
+      });
+    } else{
+      results = results.filter(function (obj) {
+        return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+        && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
+        && obj.Offices[0].Level.indexOf(seatLevel) == 0
+        && obj.Offices[0].District.State.indexOf(stateAbrev) == 0);
+      });
+    }
+    return results;
+  }
+
   // first check if we can find it in our database
-  ballotpediaRef.orderByChild('FirstName').startAt(fName).endAt(fName).limitToFirst(30).once('value')
+  ballotpediaRef.orderByChild('FirstName').startAt(fName).limitToFirst(30).once('value')
     .then(function (snap) {
       // if we couldn't find any results, look for ballotpedia
       if (!snap.exists()) return cacheBallotPedia();
 
       var vals = snap.val();
 
-      if(stateAbrev == "") {
-        var results = Object.keys(snap.val()).filter(function (key) {
-          return (vals[key].FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
-          && vals[key].LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
-          && vals[key].Offices[0].Level.indexOf(seatLevel) == 0);
-        });
-      } else{
-        var results = Object.keys(snap.val()).filter(function (key) {
-          return (vals[key].FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
-          && vals[key].LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
-          && vals[key].Offices[0].Level.indexOf(seatLevel) == 0
-          && vals[key].Offices[0].District.State.indexOf(stateAbrev) == 0);
-        });
-      }
+      // turn into array
+      var results = _.toArray(vals);
 
-      results = results.map(function (key) {
-        return vals[key];
-      });
+      results = filterResults(results);
 
       // find results?
       if (results.length > 0) {
@@ -162,6 +209,14 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
         // not in our cache. ballotpedia again
         cacheBallotPedia();
       }
+
+      // snap.ref.orderByChild('LastName').endAt(lName).limitToFirst(10).once('value')
+      //   .then(function (snap2) {
+      //
+      //     if (!snap2.exists()) return cacheBallotPedia();
+      //
+      //
+      //   }).catch(reject);
 
     }).catch(reject);
 
@@ -179,17 +234,15 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
         return reject(new Error('could not get candidate from Ballotpedia'))
       } else {
 
-        var data = body.Results;
+        var results = body.Results;
 
-        for (var obj of data) {
+        for (var obj of results) {
           ballotpediaRef.push(obj);
         }
 
-        data = data.filter(function (obj) {
-          return (obj.FirstName.indexOf(fName) == 0 && obj.LastName.indexOf(lName) > -1);
-        });
+        results = filterResults(results);
 
-        return resolve(data);
+        return resolve(results);
       }
     });
 
@@ -453,12 +506,74 @@ router.route('/content/referendum')
   .get(function (req, res) {
 
     var query = req.query.query;
-    var filtered_data = data.filter(function (obj) {
-      // console.log(obj.keywords, query)
-      return obj.keywords.indexOf(query) > -1;
-    });
+    var state = req.query.state;
 
-    return res.json({ data: filtered_data });
+    // preset info
+    var filtered_data = [];
+
+    if (state) {
+      if (state == 'CA') {
+        filtered_data = require('./data').filter(function (obj) {
+          // console.log(obj.keywords, query)
+          return obj.keywords.indexOf(query) > -1;
+        });
+      }
+
+      query = query.replace('STATE MEASURE ', '');
+      if (query.indexOf(':') > -1) {
+        query = query.split(':')[1];
+      }
+      if (query.indexOf('-') > -1) {
+        query = query.split('-')[1];
+      }
+
+      return ballotPediaMeasuresRequest(query, state, function (data) {
+        if (!('error' in data)) {
+          filtered_data.push(data);
+        }
+        return res.json({ data: filtered_data });
+      });
+    } else {
+      return res.json({ data: filtered_data });
+    }
+  });
+
+router.route('/content/grabFromBP')
+  .get(function (req, res) {
+
+    var state = req.query.state;
+
+    grabPage(1)
+
+    function grabPage(i) {
+
+      request({
+        uri: ballotpedia_measures_url + "&State=" + state + "&Page=" + i,
+        method: 'get',
+        json: true,
+      }, function (error, response, body) {
+        if (error || response.statusCode !== 200) {
+          return reject(new Error('could not get candidate from Ballotpedia'))
+        } else {
+
+          var results = body.Results;
+
+          for (var obj of results) {
+            ballotpediaRef.push(obj);
+          }
+
+          if (i == 1 && parseInt(body.NumResults) > 100) {
+            var times = Math.ceil(parseInt(body.NumResults) / 100);
+            for (var ind = 2; ind <= times; ind++) {
+              grabPage(ind);
+            }
+          }
+
+          return res.json(results);
+        }
+      });
+    }
+
   });
 
 module.exports = router;
