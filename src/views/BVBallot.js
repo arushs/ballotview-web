@@ -215,7 +215,7 @@ class BVBallot extends Component {
 
     } else {
 
-      let query = card.toc[0];
+      let query = card.toc[0] + '::' + card.subtext[0].split('.')[0];
       let state = null;
       if (address) {
         state = address.split(",")[2].substr(1, 2);
