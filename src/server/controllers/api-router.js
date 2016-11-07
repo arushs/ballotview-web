@@ -197,7 +197,6 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   if(fName == "Loretta" && lName == "Sanchez" && stateAbrev == "CA") seatLevel = "Federal";
   else if(fName == "Kamala" && lName == "Harris" && stateAbrev == "CA") seatLevel = "Federal";
   else if(fName == "Mike" && lName == "Doyle" && stateAbrev == "PA") seatLevel = "State";
-  else if(fName == "John" && lName == "Brown" && stateAbrev == "PA") seatLevel = "Federal";
 
   //Presidents don't have a state"
   if(stateAbrev == "") seatLevel = "Federal";
@@ -211,10 +210,12 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
       });
     } else{
       results = results.filter(function (obj) {
-        return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
-        && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
-        && obj.Offices[0].Level.indexOf(seatLevel) == 0
-        && obj.Offices[0].District.State.indexOf(stateAbrev) == 0);
+        if(obj.Offices[0].District){
+          return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+          && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
+          && obj.Offices[0].Level.indexOf(seatLevel) == 0
+          && obj.Offices[0].District.State.indexOf(stateAbrev) == 0);
+        }
       });
     }
     return results;
