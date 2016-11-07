@@ -63,7 +63,35 @@ const Candidate = ({ data }) => {
       <button className="small" onClick={openBallotPedia}>View more on BallotPedia</button>
     </div>
   );
-}
+};
+
+const Referendum = ({ data }) => {
+
+  let { Name, NoVote, YesVote, PageURL } = data;
+
+  let openBallotPedia = () => {
+    window.open(PageURL);
+  };
+
+  return (
+    <div>
+      <div className="item">
+        <div className="heading1">{Name}</div>
+        <div className="heading2">What does my vote mean?</div>
+      </div>
+      <div className="item">
+        <div className="heading1">Yes</div>
+        <div className="info">{YesVote}</div>
+      </div>
+      <div className="item">
+        <div className="heading1">No</div>
+        <div className="info">{NoVote}</div>
+      </div>
+      <button className="small" onClick={openBallotPedia}>View more on BallotPedia</button>
+    </div>
+  );
+
+};
 
 const Inspector = ({ modules, cardInfo }) => (
   <ul>
@@ -92,6 +120,12 @@ const Inspector = ({ modules, cardInfo }) => (
           <li key={i}
             className={classNames('inspector_widget', 'video', 'card')}>
             <Video data={module} />
+          </li>
+        );
+      } else if (module.type == 'referendum') {
+        return(
+          <li key={i} className={classNames('inspector_widget', 'card')}>
+            <Referendum data={module} />
           </li>
         );
       }

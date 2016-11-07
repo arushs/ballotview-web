@@ -89,9 +89,9 @@ methods.searchCandidate = function(query) {
   });
 }
 
-methods.searchReferendum = function(query) {
+methods.searchReferendum = function(query, state) {
   return new Promise((resolve, reject) => {
-    let data = { query: query };
+    let data = { query: query, state: state };
     return interfacer('/ballot/content/referendum', 'get', data)
       .then(resolve)
       .catch(reject);
