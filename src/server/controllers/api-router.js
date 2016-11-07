@@ -157,7 +157,7 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   var lName = nameObj.lastName;
   var seatLevel = levelName[level];
 
-  console.log("LEVEL: "+level, "seatLevel: "+seatLevel, address);
+  console.log("LEVEL: "+level, "seatLevel: "+seatLevel+" address: "+address);
   if(address.length > 2) var stateAbrev = stateLetters[address];
   else var stateAbrev = address;
 
@@ -173,15 +173,16 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   function filterResults(results) {
     if(stateAbrev == "") {
       results = results.filter(function (obj) {
-        return (obj.FirstName.indexOf(fName) == 0
-        && obj.LastName.indexOf(lName) > -1);
+        return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+        && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
+        && obj.Offices[0].Level.indexOf(seatLevel) == 0);
       });
     } else{
       results = results.filter(function (obj) {
-        return (obj.FirstName.indexOf(fName) == 0
-        && obj.LastName.indexOf(lName) > -1
-        // && JSON.stringify(obj.Offices[0]).indexOf(seatLevel) > -1
-        && JSON.stringify(obj.Offices[0]).indexOf(stateAbrev) > -1);
+        return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+        && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
+        && obj.Offices[0].Level.indexOf(seatLevel) == 0
+        && obj.Offices[0].District.State.indexOf(stateAbrev) == 0);
       });
     }
     return results;
