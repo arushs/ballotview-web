@@ -122,7 +122,7 @@ function ballotPediaMeasuresRequest(name, state, resolve) {
         distance: 100,
         maxPatternLength: 32,
         keys: [
-          "Name"
+          "Name", "Summary"
         ]
       };
       var fuse = new Fuse(results, options); // "list" is the item array
@@ -507,6 +507,7 @@ router.route('/content/referendum')
 
     var query = req.query.query;
     var state = req.query.state;
+    var locality = req.query.locality;
 
     // preset info
     var filtered_data = [];
@@ -527,7 +528,7 @@ router.route('/content/referendum')
         query = query.split('-')[1];
       }
 
-      return ballotPediaMeasuresRequest(query, state, function (data) {
+      return ballotPediaMeasuresRequest(query + ' ' + locality, state, function (data) {
         if (!('error' in data)) {
 
           var summary = {

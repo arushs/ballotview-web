@@ -117,7 +117,7 @@ var data = [
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
     keywords: 'Proposition 62, STATE MEASURE 62',
-    ballotfyi_url: 'https://ballot.fyi/62/',
+    ballotfyi_url: 'https://ballot.fyi/62-66/',
     voterguide_url: 'http://voterguide.sos.ca.gov/en/propositions/62/'
   },
   {
@@ -147,7 +147,7 @@ var data = [
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
     keywords: 'Proposition 65, STATE MEASURE 65',
-    ballotfyi_url: 'https://ballot.fyi/65/',
+    ballotfyi_url: 'https://ballot.fyi/65-67/',
     voterguide_url: 'http://voterguide.sos.ca.gov/en/propositions/65/'
   },
   {
@@ -157,7 +157,7 @@ var data = [
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
     keywords: 'Proposition 66, STATE MEASURE 66',
-    ballotfyi_url: 'https://ballot.fyi/66/',
+    ballotfyi_url: 'https://ballot.fyi/62-66/',
     voterguide_url: 'http://voterguide.sos.ca.gov/en/propositions/66/'
   },
   {
@@ -167,7 +167,7 @@ var data = [
     source: 'SeePolitical',
     source_url: 'http://seepolitical.com/',
     keywords: 'Proposition 67, STATE MEASURE 67',
-    ballotfyi_url: 'https://ballot.fyi/67/',
+    ballotfyi_url: 'https://ballot.fyi/65-67/',
     voterguide_url: 'http://voterguide.sos.ca.gov/en/propositions/67/'
   }
 ];

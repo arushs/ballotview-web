@@ -222,7 +222,7 @@ class BVBallot extends Component {
       }
 
       if (!this.state.inspectorCache[query]) {
-        api.searchReferendum(query, state)
+        api.searchReferendum(query, state, this.state.heading.locality)
           .then(({ body }) => {
             let inspectorCache = this.state.inspectorCache;
             inspectorCache[query] = body.data;
