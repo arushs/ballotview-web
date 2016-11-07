@@ -187,7 +187,7 @@ class BVBallot extends Component {
       // console.log(query);
 
       if (!this.state.inspectorCache[candidate_query]) {
-
+        this.setState({ inspector: [{ type: 'loading' }]});
         api.searchCandidate(query)
           .then(({ body }) => {
             let inspectorCache = this.state.inspectorCache;
@@ -222,6 +222,7 @@ class BVBallot extends Component {
       }
 
       if (!this.state.inspectorCache[query]) {
+        this.setState({ inspector: [{ type: 'loading' }]});
         api.searchReferendum(query, state, this.state.heading.locality)
           .then(({ body }) => {
             let inspectorCache = this.state.inspectorCache;

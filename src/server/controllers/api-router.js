@@ -129,14 +129,16 @@ function ballotPediaMeasuresRequest(name, state, locality, summ, resolve) {
       try {
         options.keys = [ "Name" ];
         options.threshold = 0.1;
-        options.tokenize = false;
+        options.tokenize = true;
         fuse = new Fuse(results, options);
         results = fuse.search(name);
       } catch (e) {
         // don't update results
       }
 
-      if (typeof summ != 'undefined' && results.length > 1) {
+      console.log(results);
+
+      if (typeof summ != 'undefined' && results.length > 3) {
         try {
           console.log(summ);
           options.keys = [ "Name" ];
@@ -154,8 +156,6 @@ function ballotPediaMeasuresRequest(name, state, locality, summ, resolve) {
       // options.tokenize = false;
       // fuse = new Fuse(results, options);
       // results = fuse.search(locality);
-
-      console.log(results);
 
       var toRet = results[0];
 
@@ -538,7 +538,7 @@ router.route('/content/referendum')
   .get(function (req, res) {
 
     var query = req.query.query.split('::')[0];
-    var summ = req.query.query.split('::')[1];
+    var summ = req.query.query.split('::')[1].toLowerCase();
     var state = req.query.state;
     var locality = req.query.locality;
 
@@ -555,7 +555,7 @@ router.route('/content/referendum')
 
       query = query.toUpperCase();
 
-      query = query.replace('STATE', '');
+      query = query.replace('STATE MEASURE ', '');
       query = query.replace('COUNTY', '');
       // query = query.replace('MEASURE', '');
       if (query.indexOf(':') > -1) {
