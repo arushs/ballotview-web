@@ -20,6 +20,7 @@ var laRef = db.ref('la_county');
 // var candidatRef = db.ref('candidates');
 var ballotpediaRef = db.ref('ballotpedia');
 var ballotpediaMeasuresRef = db.ref('ballotpedia_measures');
+var ballotpediaNamesSearchedRef = db.ref('ballotpedia_names_called');
 
 const googleKey = 'AIzaSyChX3BTs57b15Q-rTx2nxwhazzJ4jpi2xQ';
 const ballotpedia_url = "http://api.ballotpedia.org/v1/api.php?Key=1a9895801d0409ace45990a746d5d94b&DataSet=People";
@@ -247,7 +248,33 @@ function ballotPediaRequest(name, i, level, address, running_position, resolve, 
 
       } else {
         // not in our cache. ballotpedia again
-        cacheBallotPedia();
+        //ONLY BALLOTPEDIA IF WE'VE NEVER SEARCHED THIS NAME BEFORE
+        ballotpediaNamesSearchedRef.orderByChild('Name').startAt(fName+" "+lName).endAt(fName+" "+lName)
+          .once('value').then(function (snap) {
+            if(!snap.exists()) return cacheBallotPedia();
+            else{
+              console.log("we've already api called this name, do larger search on our db");
+              ballotpediaRef.orderByChild('FirstName').startAt(fName).endAt(fName).limitToFirst(100).once('value')
+                .then(function (snap) {
+                  if (!snap.exists()) resolve([]); //Do nothing, we've already searched this name on ballotpedia and dnot in our db
+
+                  var vals = snap.val();
+
+                  // turn into array
+                  var results = _.toArray(vals);
+
+                  results = filterResults(results);
+
+                  // find results?
+                  if (results.length > 0) {
+                    // for now!!!
+                    resolve(results);
+
+                  } else resolve([]); //Do nothing, this person doesn't exist on ballotpedia or our api with this first and last name
+                }).catch(reject);
+              //resolve([]);
+          } 
+        }).catch(reject);
       }
 
       // snap.ref.orderByChild('LastName').endAt(lName).limitToFirst(10).once('value')
@@ -270,6 +297,11 @@ function ballotPediaRequest(name, i, level, address, running_position, resolve, 
       method: 'get',
       json: true,
     }, function (error, response, body) {
+      //console.log("got here");
+      ballotpediaNamesSearchedRef.push({
+        Name: fName+" "+lName
+      });
+      //console.log("but not here");
       if (error || response.statusCode !== 200) {
         return reject(new Error('could not get candidate from Ballotpedia'))
       } else {
