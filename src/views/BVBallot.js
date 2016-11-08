@@ -183,6 +183,7 @@ class BVBallot extends Component {
         query.address = address.split(",")[2].substr(1, 2);
       }
       query.candidate_query = candidate_query;
+      query.running_position = card.title.join(' ');
 
       // console.log(query);
 
@@ -215,7 +216,8 @@ class BVBallot extends Component {
 
     } else {
 
-      let query = card.toc[0] + '::' + card.subtext[0].split('.')[0];
+      let query = card.title[0] + '::' + card.subtext[0].split('.')[0];
+      // let query = card.toc[0] + '::' + card.title.join(' ');
       let state = null;
       if (address) {
         state = address.split(",")[2].substr(1, 2);

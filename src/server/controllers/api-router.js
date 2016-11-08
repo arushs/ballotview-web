@@ -116,46 +116,39 @@ function ballotPediaMeasuresRequest(name, state, locality, summ, resolve) {
 
       var options = {
         shouldSort: true,
-        tokenize: true,
-        threshold: 0.1,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
+        tokenize: false,
+        threshold: 0.2,
+        distance: 1000,
         keys: [ "County" ]
       };
       var fuse = new Fuse(results, options); // "list" is the item array
-      results = fuse.search('* ' + locality);
+      results = fuse.search(locality);
+      var results2 = fuse.search("*");
+      results = results.concat(results2);
 
-      try {
-        options.keys = [ "Name" ];
-        options.threshold = 0.1;
-        options.tokenize = true;
-        fuse = new Fuse(results, options);
-        results = fuse.search(name);
-      } catch (e) {
-        // don't update results
-      }
+      options.keys = [ "Name", "Summary" ];
+      options.tokenize = true;
+      fuse = new Fuse(results, options);
+      results = fuse.search(summ);
 
+      options.keys = [ { name: "Name", weight: 0.3 }, { name: "Summary", weight: 0.7 } ];
+      options.tokenize = false;
+      options.threshold = 0.35;
+      fuse = new Fuse(results, options);
+      results = fuse.search(name);
       console.log(results);
 
-      if (typeof summ != 'undefined' && results.length > 3) {
-        try {
-          console.log(summ);
-          options.keys = [ "Name" ];
-          options.threshold = 0.3;
-          options.tokenize = true;
-          fuse = new Fuse(results, options);
-          results = fuse.search(summ);
-        } catch (e) {
-          // don't update results
-        }
-      }
+      // try {
+      //   options.keys = [ "Name" ];
+      //   options.threshold = 0.01;
+      //   fuse = new Fuse(results, options);
+      //   results = fuse.search(name);
+      // } catch (e) {
+      //   // don't update results
+      // }
 
-      // options.keys = [ "PageURL", "Summary", "Name" ];
-      // options.threshold = 0.5;
-      // options.tokenize = false;
-      // fuse = new Fuse(results, options);
-      // results = fuse.search(locality);
+
+      console.log(results[0]);
 
       var toRet = results[0];
 
@@ -172,7 +165,7 @@ function ballotPediaMeasuresRequest(name, state, locality, summ, resolve) {
   }
 }
 
-function ballotPediaRequest(name, i, level, address, resolve, reject) {
+function ballotPediaRequest(name, i, level, address, running_position, resolve, reject) {
 
   function parseName(name) {
     var nameArray = name.split(" ");
@@ -202,22 +195,35 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   if(stateAbrev == "") seatLevel = "Federal";
 
   function filterResults(results) {
-    if(stateAbrev == "") {
-      results = results.filter(function (obj) {
-        return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
-        && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
-        && obj.Offices[0].Level.indexOf(seatLevel) == 0);
-      });
-    } else{
-      results = results.filter(function (obj) {
-        if(obj.Offices[0].District){
-          return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
-          && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1
-          && obj.Offices[0].Level.indexOf(seatLevel) == 0
-          && obj.Offices[0].District.State.indexOf(stateAbrev) == 0);
-        }
-      });
-    }
+    var options = {
+      shouldSort: true,
+      tokenize: true,
+      threshold: 0.5,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      keys: [ "Summary" ]
+    };
+    // var fuse = new Fuse(results, options); // "list" is the item array
+    // results = fuse.search(running_position);
+
+    options.keys = [ "LastName" ];
+    options.threshold = 0.2;
+    var fuse = new Fuse(results, options);
+    results = fuse.search(lName);
+    // if(stateAbrev == "") {
+    //   results = results.filter(function (obj) {
+    //     return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+    //     && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1);
+    //   });
+    // } else{
+    //   results = results.filter(function (obj) {
+    //     if(obj.Offices[0].District){
+    //       return (obj.FirstName.toUpperCase().indexOf(fName.toUpperCase()) == 0
+    //       && obj.LastName.toUpperCase().indexOf(lName.toUpperCase()) > -1);
+    //     }
+    //   });
+    // }
     return results;
   }
 
@@ -284,7 +290,7 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
 
 }
 
-function getIndividualCandidateData(value, j, level, address) {
+function getIndividualCandidateData(value, j, level, address, running_position) {
   // console.log(address + "----- ADDRESS");
 
   return new Promise(function (resolve, reject) {
@@ -294,7 +300,7 @@ function getIndividualCandidateData(value, j, level, address) {
       var done = 0;
       for (var i in value) {
         var name = value[i];
-        ballotPediaRequest(name, i, level, address, function (data) {
+        ballotPediaRequest(name, i, level, address, running_position, function (data) {
           done += 1;
           var result = parseBallotpediaCandidate(data);
           result['sortOrder'] = i;
@@ -313,7 +319,7 @@ function getIndividualCandidateData(value, j, level, address) {
       }
       // Else, value = Kamala Harris
     } else {
-      ballotPediaRequest(value, 0, level, address, function (data) {
+      ballotPediaRequest(value, 0, level, address, running_position, function (data) {
         resolve({ sortOrder: j, data: parseBallotpediaCandidate(data) });
       }, function (err) {
         resolve({});
@@ -331,7 +337,7 @@ function getCandidateData(query) {
       if (query.level) {
         level = query.level[0];
       }
-      getIndividualCandidateData(query.candidate_query[i], i, level, query.address)
+      getIndividualCandidateData(query.candidate_query[i], i, level, query.address, query.running_position)
         .then(function (data) {
           // console.log(data);
           promiseFinished += 1;
@@ -540,7 +546,8 @@ router.route('/content/referendum')
   .get(function (req, res) {
 
     var query = req.query.query.split('::')[0];
-    var summ = req.query.query.split('::')[1].toLowerCase();
+    var summ = req.query.query.split('::')[1];
+    console.log(query, summ);
     var state = req.query.state;
     var locality = req.query.locality;
 
@@ -549,22 +556,27 @@ router.route('/content/referendum')
 
     if (state) {
       if (state == 'CA') {
+
+      query = query.toLowerCase();
+
+        query = query.replace('proposition ', '');
+        query = query.replace('state measure ', '');
+        query = query.replace('county', '');
+        // query = query.replace('MEASURE', '');
+        // if (query.indexOf(':') > -1) {
+        //   // query = query.replace(':', ' ');
+        // }
+        if (query.indexOf('-') > -1) {
+          query = query.split('-')[1];
+        }
+
         filtered_data = require('./data').filter(function (obj) {
           // console.log(obj.keywords, query)
-          return obj.keywords.indexOf(query) > -1;
+          var newQuery = query.replace(':', '');
+          newQuery = newQuery.replace(' ', '');
+          console.log(newQuery);
+          return obj.keywords.indexOf(newQuery) > -1;
         });
-      }
-
-      query = query.toUpperCase();
-
-      query = query.replace('STATE MEASURE ', '');
-      query = query.replace('COUNTY', '');
-      // query = query.replace('MEASURE', '');
-      if (query.indexOf(':') > -1) {
-        query = query.split(':')[1];
-      }
-      if (query.indexOf('-') > -1) {
-        query = query.split('-')[1];
       }
 
       return ballotPediaMeasuresRequest(query, state, locality, summ, function (data) {
