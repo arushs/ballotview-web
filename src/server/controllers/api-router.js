@@ -99,7 +99,7 @@ function getGoogleCivicBallot(address) {
 
 
 function ballotPediaMeasuresRequest(name, state, locality, summ, resolve) {
-  console.log(name, state);
+  // console.log(name, state);
 
   resolve = resolve || function () {};
 
@@ -137,7 +137,7 @@ function ballotPediaMeasuresRequest(name, state, locality, summ, resolve) {
       options.threshold = 0.35;
       fuse = new Fuse(results, options);
       results = fuse.search(name);
-      console.log(results);
+      // console.log(results);
 
       // try {
       //   options.keys = [ "Name" ];
@@ -149,7 +149,7 @@ function ballotPediaMeasuresRequest(name, state, locality, summ, resolve) {
       // }
 
 
-      console.log(results[0]);
+      // console.log(results[0]);
 
       var toRet = results[0];
 
@@ -253,7 +253,7 @@ function ballotPediaRequest(name, i, level, address, running_position, resolve, 
           .once('value').then(function (snap) {
             if(!snap.exists()) return cacheBallotPedia();
             else{
-              console.log("we've already api called this name, do larger search on our db");
+              // console.log("we've already api called this name, do larger search on our db");
               ballotpediaRef.orderByChild('FirstName').startAt(fName).endAt(fName).limitToFirst(100).once('value')
                 .then(function (snap) {
                   if (!snap.exists()) resolve([]); //Do nothing, we've already searched this name on ballotpedia and dnot in our db
@@ -303,7 +303,7 @@ function ballotPediaRequest(name, i, level, address, running_position, resolve, 
       });
       //console.log("but not here");
       if (error || response.statusCode !== 200) {
-        return reject(new Error('could not get candidate from Ballotpedia'))
+        return reject(new Error('could not get candidate from Ballotpedia' + fName))
       } else {
 
         var results = body.Results;
@@ -345,6 +345,7 @@ function getIndividualCandidateData(value, j, level, address, running_position) 
             }
           }
         }, function (error){
+          console.log("In error");
           done += 1;
           console.error(error);
         });
@@ -497,7 +498,7 @@ router.route('/create')
           if (error) {
             return res.status(400).send({ error: 'could not create user' });
           } else {
-            console.log("bvData 265:  "+bvData);
+            // console.log("bvData 265:  "+bvData);
             return res.json(bvData);
           }
         });
@@ -533,7 +534,7 @@ router.route('/write/:bv_id')
       if (!error) {
         return res.json({ success: 'user updated' });
       } else {
-        console.log(error);
+        // console.log(error);
         return res.status(400).send({ error: error.message });
       }
     });
@@ -579,7 +580,7 @@ router.route('/content/referendum')
 
     var query = req.query.query.split('::')[0];
     var summ = req.query.query.split('::')[1];
-    console.log(query, summ);
+    // console.log(query, summ);
     var state = req.query.state;
     var locality = req.query.locality;
 
@@ -606,7 +607,7 @@ router.route('/content/referendum')
           // console.log(obj.keywords, query)
           var newQuery = query.replace(':', '');
           newQuery = newQuery.replace(' ', '');
-          console.log(newQuery);
+          // console.log(newQuery);
           return obj.keywords.indexOf(newQuery) > -1;
         });
       }
@@ -632,7 +633,7 @@ router.route('/content/referendum')
           }
 
         }
-        console.log(filtered_data);
+        // console.log(filtered_data);
         return res.json({ data: filtered_data });
       });
     } else {
@@ -654,7 +655,7 @@ router.route('/content/grabFromBP')
     function grabPage(i) {
 
       var uri = ballotpedia_measures_url + "&State=" + state + "&Page=" + i;
-      console.log(uri);
+      // console.log(uri);
 
       request({
         uri: uri,
