@@ -223,7 +223,7 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
   }
 
   // first check if we can find it in our database
-  ballotpediaRef.orderByChild('FirstName').startAt(fName).endAt(fName).limitToFirst(20).once('value')
+  ballotpediaRef.orderByChild('FirstName').startAt(fName).endAt(fName).limitToFirst(30).once('value')
     .then(function (snap) {
       // if we couldn't find any results, look for ballotpedia
       if (!snap.exists()) return cacheBallotPedia();
@@ -243,11 +243,9 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
       } else {
         // not in our cache. ballotpedia again
         //ONLY BALLOTPEDIA IF WE'VE NEVER SEARCHED THIS NAME BEFORE
-        console.log("name is: "+fName+" "+lName);
         ballotpediaNamesSearchedRef.orderByChild('Name').startAt(fName+" "+lName).endAt(fName+" "+lName)
           .once('value').then(function (snap) {
-            console.log(snap.val());
-            if(!snap.exists()){ console.log("making api call"); return cacheBallotPedia(); }
+            if(!snap.exists()) return cacheBallotPedia();
             else{
               console.log("we've already api called this name, do larger search on our db");
               ballotpediaRef.orderByChild('FirstName').startAt(fName).endAt(fName).limitToFirst(100).once('value')
@@ -303,8 +301,6 @@ function ballotPediaRequest(name, i, level, address, resolve, reject) {
       } else {
 
         var results = body.Results;
-
-        console.log(results);
 
         for (var obj of results) {
           ballotpediaRef.push(obj);
