@@ -11,7 +11,7 @@ function scrollToAnchor(anchor) {
   }
 }
 
-const InspectorNav = ({ ballots, tallies, selectedBallot, onSelectBallot }) => {
+const InspectorNav = ({ ballots, tallies, selectedBallot, address, onSelectBallot }) => {
 
   function checkRadioSelected(tally) {
     return tally.filter(bool => bool).length > 0;
@@ -27,9 +27,10 @@ const InspectorNav = ({ ballots, tallies, selectedBallot, onSelectBallot }) => {
               strike: checkRadioSelected(tallies[ballotIndex][cardIndex]),
               selected: (selectedBallot.ballotIndex === ballotIndex && selectedBallot.cardIndex === cardIndex)
             })}>
-              <a onClick={() => {
+              <a onClick={(e) => {
                 scrollToAnchor(ballotIndex + "-" + cardIndex);
-                onSelectBallot(ballotIndex, cardIndex, card.level)
+                e.stopPropagation(); 
+                onSelectBallot(ballotIndex, cardIndex, card.level, address);
                }}>
                 <BallotClickableText text={card.toc || card.title} click={()=>{}} />
               </a>

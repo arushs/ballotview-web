@@ -336,6 +336,7 @@ class BVBallot extends Component {
             ballots={this.state.ballot}
             tallies={this.state.tallies}
             onSelectBallot={this.onSelectBallot}
+            address={this.state.address}
             selectedBallot={this.state.selectedBallot} />
         </section>
         {(() => {

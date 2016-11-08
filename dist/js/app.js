@@ -27422,7 +27422,7 @@ module.exports={
         "spec": ">=6.0.0 <7.0.0",
         "type": "range"
       },
-      "/Users/andrewjiang/Desktop/ballotview-web/node_modules/browserify-sign"
+      "/Users/arushshankar/Development/ballotview-web/node_modules/browserify-sign"
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
@@ -27458,7 +27458,7 @@ module.exports={
   "_shasum": "e4c81e0829cf0a65ab70e998b8232723b5c1bc48",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/Users/andrewjiang/Desktop/ballotview-web/node_modules/browserify-sign",
+  "_where": "/Users/arushshankar/Development/ballotview-web/node_modules/browserify-sign",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -96735,7 +96735,6 @@ function Redirect (request) {
   this.followRedirect = true
   this.followRedirects = true
   this.followAllRedirects = false
-  this.followOriginalHttpMethod = false
   this.allowRedirect = function () {return true}
   this.maxRedirects = 10
   this.redirects = []
@@ -96763,9 +96762,6 @@ Redirect.prototype.onRequest = function (options) {
   }
   if (options.removeRefererHeader !== undefined) {
     self.removeRefererHeader = options.removeRefererHeader
-  }
-  if (options.followOriginalHttpMethod !== undefined) {
-    self.followOriginalHttpMethod = options.followOriginalHttpMethod
   }
 }
 
@@ -96846,7 +96842,7 @@ Redirect.prototype.onResponse = function (response) {
   )
   if (self.followAllRedirects && request.method !== 'HEAD'
     && response.statusCode !== 401 && response.statusCode !== 307) {
-    request.method = self.followOriginalHttpMethod ? request.method : 'GET'
+    request.method = 'GET'
   }
   // request.method = 'GET' // Force all redirects to use GET || commented out fixes #215
   delete request.src
@@ -98403,59 +98399,38 @@ Request.prototype.start = function () {
     self.emit('drain')
   })
   self.req.on('socket', function(socket) {
-    var setReqTimeout = function() {
-      // This timeout sets the amount of time to wait *between* bytes sent
-      // from the server once connected.
-      //
-      // In particular, it's useful for erroring if the server fails to send
-      // data halfway through streaming a response.
-      self.req.setTimeout(timeout, function () {
-        if (self.req) {
-          self.abort()
-          var e = new Error('ESOCKETTIMEDOUT')
-          e.code = 'ESOCKETTIMEDOUT'
-          e.connect = false
-          self.emit('error', e)
-        }
-      })
-    }
-    // `._connecting` was the old property which was made public in node v6.1.0
-    var isConnecting = socket._connecting || socket.connecting
     if (timeout !== undefined) {
-      // Only start the connection timer if we're actually connecting a new
-      // socket, otherwise if we're already connected (because this is a
-      // keep-alive connection) do not bother. This is important since we won't
-      // get a 'connect' event for an already connected socket.
-      if (isConnecting) {
-        var onReqSockConnect = function() {
-          socket.removeListener('connect', onReqSockConnect)
-          clearTimeout(self.timeoutTimer)
-          self.timeoutTimer = null
-          setReqTimeout()
-        }
-
-        socket.on('connect', onReqSockConnect)
-
-        self.req.on('error', function(err) {
-          socket.removeListener('connect', onReqSockConnect)
+      socket.once('connect', function() {
+        clearTimeout(self.timeoutTimer)
+        self.timeoutTimer = null
+        // Set an additional timeout on the socket, via the `setsockopt` syscall.
+        // This timeout sets the amount of time to wait *between* bytes sent
+        // from the server once connected.
+        //
+        // In particular, it's useful for erroring if the server fails to send
+        // data halfway through streaming a response.
+        self.req.setTimeout(timeout, function () {
+          if (self.req) {
+            self.abort()
+            var e = new Error('ESOCKETTIMEDOUT')
+            e.code = 'ESOCKETTIMEDOUT'
+            e.connect = false
+            self.emit('error', e)
+          }
         })
+      })
 
-        // Set a timeout in memory - this block will throw if the server takes more
-        // than `timeout` to write the HTTP status and headers (corresponding to
-        // the on('response') event on the client). NB: this measures wall-clock
-        // time, not the time between bytes sent by the server.
-        self.timeoutTimer = setTimeout(function () {
-          socket.removeListener('connect', onReqSockConnect)
-          self.abort()
-          var e = new Error('ETIMEDOUT')
-          e.code = 'ETIMEDOUT'
-          e.connect = true
-          self.emit('error', e)
-        }, timeout)
-      } else {
-        // We're already connected
-        setReqTimeout()
-      }
+      // Set a timeout in memory - this block will throw if the server takes more
+      // than `timeout` to write the HTTP status and headers (corresponding to
+      // the on('response') event on the client). NB: this measures wall-clock
+      // time, not the time between bytes sent by the server.
+      self.timeoutTimer = setTimeout(function () {
+        self.abort()
+        var e = new Error('ETIMEDOUT')
+        e.code = 'ETIMEDOUT'
+        e.connect = true
+        self.emit('error', e)
+      }, timeout)
     }
     self.emit('socket', socket)
   })
@@ -111556,7 +111531,7 @@ module.exports={
         "spec": ">=2.3.0 <2.4.0",
         "type": "range"
       },
-      "/Users/andrewjiang/Desktop/ballotview-web/node_modules/request"
+      "/Users/arushshankar/Development/ballotview-web/node_modules/request"
     ]
   ],
   "_from": "tough-cookie@>=2.3.0 <2.4.0",
@@ -111592,7 +111567,7 @@ module.exports={
   "_shasum": "f081f76e4c85720e6c37a5faced737150d84072a",
   "_shrinkwrap": null,
   "_spec": "tough-cookie@~2.3.0",
-  "_where": "/Users/andrewjiang/Desktop/ballotview-web/node_modules/request",
+  "_where": "/Users/arushshankar/Development/ballotview-web/node_modules/request",
   "author": {
     "name": "Jeremy Stashewsky",
     "email": "jstashewsky@salesforce.com"
@@ -117046,7 +117021,7 @@ var BallotReceiptCard = function BallotReceiptCard(_ref) {
     poll = move(poll, clinton_index, 0);
   }
 
-  console.log(poll);
+  // console.log(poll);
 
   return _react2.default.createElement(
     'div',
@@ -117712,6 +117687,7 @@ var InspectorNav = function InspectorNav(_ref) {
   var ballots = _ref.ballots,
       tallies = _ref.tallies,
       selectedBallot = _ref.selectedBallot,
+      address = _ref.address,
       onSelectBallot = _ref.onSelectBallot;
 
 
@@ -117747,9 +117723,10 @@ var InspectorNav = function InspectorNav(_ref) {
                 }) },
               _react2.default.createElement(
                 'a',
-                { onClick: function onClick() {
+                { onClick: function onClick(e) {
                     scrollToAnchor(ballotIndex + "-" + cardIndex);
-                    onSelectBallot(ballotIndex, cardIndex, card.level);
+                    e.stopPropagation();
+                    onSelectBallot(ballotIndex, cardIndex, card.level, address);
                   } },
                 _react2.default.createElement(_BallotClickableText2.default, { text: card.toc || card.title, click: function click() {} })
               )
@@ -119435,6 +119412,7 @@ var BVBallot = function (_Component) {
             ballots: this.state.ballot,
             tallies: this.state.tallies,
             onSelectBallot: this.onSelectBallot,
+            address: this.state.address,
             selectedBallot: this.state.selectedBallot })
         ),
         function () {

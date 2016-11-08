@@ -32,7 +32,7 @@ const BallotReceiptCard = ({ ballotIndex, cardIndex, title, poll, tally, childre
     poll = move(poll, clinton_index, 0);
   }
 
-  console.log(poll);
+  // console.log(poll);
 
   return (
     <div className={classNames('ballot_card', 'ballot_receipt', className)} {...other}>
