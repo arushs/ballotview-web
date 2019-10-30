@@ -90,7 +90,7 @@
     "browser-sync": "^2.9.1",
     "browserify": "^13.0.0",
     "cssnano": "^3.0.0",
-    "eslint": "^2.3.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb": "^6.1.0",
     "eslint-plugin-react": "^4.2.1",
     "gulp": "^3.9.0",
